@@ -38,7 +38,6 @@ int		is_file_valid(char *file_name)
 
 int		rt_verify_parsing(char *line, t_scene **scene)
 {
-	(void) scene;
 	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(line))
 		return (rt_parse_ambient(line, scene));
 	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(line))
@@ -48,9 +47,9 @@ int		rt_verify_parsing(char *line, t_scene **scene)
 	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
 		return (rt_parse_sphere(line, scene));
 	else if (ft_strncmp(line, "pl\t", 3) == 0 && rt_verify_plane(line))
-		return (1);
+		return (rt_parse_plane(line, scene));
 	else if (ft_strncmp(line, "cy\t", 3) == 0 && rt_verify_cylinder(line))
-		return (1);
+		return (rt_parse_cylinder(line, scene));
 	else
 	{
 		if (line[0] != '\r')

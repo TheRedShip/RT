@@ -36,5 +36,7 @@ int			rt_parse_ambient(char *line, t_scene **scene);
 int			rt_parse_camera(char *line, t_scene **scene);
 int			rt_parse_light(char *line, t_scene **scene);
 int			rt_parse_sphere(char *line, t_scene **scene);
+int			rt_parse_plane(char *line, t_scene **scene);
+int			rt_parse_cylinder(char *line, t_scene **scene);
 
 #endif
