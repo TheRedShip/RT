@@ -32,7 +32,7 @@ int		rt_verify_ambient(char *line)
 		if (i == 2 && rt_atoi3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
 
@@ -58,7 +58,7 @@ int		rt_verify_camera(char *line)
 		if (i == 3 && rt_range_atoi(split[i], 0, 180) == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
 
@@ -84,7 +84,7 @@ int		rt_verify_light(char *line)
 		if (i == 3 && rt_atoi3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
 

@@ -30,7 +30,7 @@ int		rt_verify_sphere(char *line)
 		if (i == 3 && rt_atoi3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
 
@@ -52,7 +52,7 @@ int		rt_verify_plane(char *line)
 		if (i == 3 && rt_atoi3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
 
@@ -78,6 +78,6 @@ int		rt_verify_cylinder(char *line)
 		if (i == 5 && rt_atoi3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
-	free(split);
+	ft_free_tab((void **)(split));
 	return (1);
 }
