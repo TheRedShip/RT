@@ -1,40 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   objects.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 19:09:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:09:30 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/29 17:24:09 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/29 17:24:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef OBJECTS_H
+# define OBJECTS_H
 
-# include <stdio.h>
+# include "minirt.h"
 
-typedef struct	s_veci3
+typedef enum e_obj_type
 {
-	int		x;
-	int		y;
-	int		z;
-}				t_veci3;
+	OBJ_SPHER = 0,
+	OBJ_PLANE = 1,
+	OBJ_CYLIN = 2
+}	t_obj_type;
 
-typedef struct	s_vecf3
-{
-	float	x;
-	float	y;
-	float	z;
-}				t_vecf3;
-
-# include "libft.h"
-# include "parsing_struct.h"
-# include "objects.h"
-# include "parsing.h"
-
-void	rt_free_scene(t_scene *scene);
-
+t_objects	*rt_add_objects(t_scene **scene, char *type);
+t_objects	*rt_objlast(t_objects *lst);
 
 #endif

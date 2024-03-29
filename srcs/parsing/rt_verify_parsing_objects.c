@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minirt.h"
 
 int		rt_verify_sphere(char *line)
 {

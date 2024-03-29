@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minirt.h"
 
 int		rt_verify_ambient(char *line)
 {
@@ -28,9 +28,9 @@ int		rt_verify_ambient(char *line)
 	while (split[++i])
 	{
 		if (i == 1 && rt_range_atof(split[i], 0.0, 1.0) == -1)
-			return rt_return(split);
+			return (rt_return(split));
 		if (i == 2 && rt_atoi3(split[i], 0, 255).x == -1)
-			return rt_return(split);
+			return (rt_return(split));
 	}
 	ft_free_tab((void **)(split));
 	return (1);

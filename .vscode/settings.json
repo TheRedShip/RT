@@ -4,6 +4,9 @@
 		"minirt.h": "c",
 		"parsing.h": "c",
 		"libft.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"parsing_struct.h": "c",
+		"fcntl.h": "c",
+		"objects.h": "c"
 	}
 }

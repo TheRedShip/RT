@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minirt.h"
 
 int		rt_return(char **split)
 {
@@ -33,7 +33,7 @@ float		rt_range_atof(char *line, float min, float max)
 {
 	float		n;
 
-	n = ft_atof(line, 1);
+	n = ft_atof(line, 2);
 	if (n < min || n > max)
 		return (-1.0);
 	return (1.0);

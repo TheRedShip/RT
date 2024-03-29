@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minirt.h"
 
 int		is_file_valid(char *file_name)
 {
@@ -36,20 +36,21 @@ int		is_file_valid(char *file_name)
 	return (1);
 }
 
-int		rt_verify_parsing(char *line)
+int		rt_verify_parsing(char *line, t_scene **scene)
 {
-	if (ft_strncmp(line, "A\t", 2) == 0)
-		return (rt_verify_ambient(line));
-	else if (ft_strncmp(line, "C\t", 2) == 0)
-		return (rt_verify_camera(line));
-	else if (ft_strncmp(line, "L\t", 2) == 0)
-		return (rt_verify_light(line));
-	else if (ft_strncmp(line, "sp\t", 3) == 0)
-		return (rt_verify_sphere(line));
-	else if (ft_strncmp(line, "pl\t", 3) == 0)
-		return (rt_verify_plane(line));
-	else if (ft_strncmp(line, "cy\t", 3) == 0)
-		return (rt_verify_cylinder(line));
+	(void) scene;
+	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(line))
+		return (rt_parse_ambient(line, scene));
+	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(line))
+		return (rt_parse_camera(line, scene));
+	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(line))
+		return (rt_parse_light(line, scene));
+	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
+		return (rt_parse_sphere(line, scene));
+	else if (ft_strncmp(line, "pl\t", 3) == 0 && rt_verify_plane(line))
+		return (1);
+	else if (ft_strncmp(line, "cy\t", 3) == 0 && rt_verify_cylinder(line))
+		return (1);
 	else
 	{
 		if (line[0] != '\r')
@@ -58,51 +59,33 @@ int		rt_verify_parsing(char *line)
 	return (1);
 }
 
-void	*rt_exit_parsing(char *line, t_scene *scene, int fd)
+void	rt_exit_parsing(char *line, t_scene *scene, int fd)
 {
-	printf("Error: Parsing failed : %s\n", line);
-	if (scene->ambient_light)
-		free(scene->ambient_light);
-	if (scene->camera)
-		free(scene->camera);
-	if (scene->lights)
-		free(scene->lights);
-	if (scene->objects)
+	if (line)
 	{
-		if (scene->objects->sphere)
-			free(scene->objects->sphere);
-		if (scene->objects->plane)
-			free(scene->objects->plane);
-		if (scene->objects->cylinder)
-			free(scene->objects->cylinder);
-		free(scene->objects);
+		printf("Error: Parsing failed : %s\n", line);
+		free(line);
 	}
-	free(scene);
-	free(line);
-	close(fd);
-	return (NULL);
+	if (fd != -1)
+		close(fd);
+	rt_free_scene(scene);
 }
 
-t_scene *rt_parse(char *file)
+void	rt_parse(char *file, t_scene **scene)
 {
 	int		fd;
 	char	*line;
-	t_scene	*scene;
 
 	if (!is_file_valid(file))
-		return (0);
-	scene = ft_calloc(1, sizeof(t_scene));
-	if (!scene)
-		return (0);
+		rt_exit_parsing(NULL, *scene, -1);
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (!rt_verify_parsing(line))
-			return rt_exit_parsing(line, scene, fd);
+		if (!rt_verify_parsing(line, scene))
+			rt_exit_parsing(line, *scene, fd);
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (scene);
 }
