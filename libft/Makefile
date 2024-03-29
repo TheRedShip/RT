@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/28 19:21:45 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/28 23:06:34 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ SRC_MEM		:=	memory/ft_bzero.c memory/ft_calloc.c memory/ft_memchr.c memory/ft_me
 SRC_PRINT	:=	stdout/ft_putchar_fd.c stdout/ft_putendl_fd.c stdout/ft_putnbr_fd.c stdout/ft_putstr_fd.c stdout/ft_itoa.c
 
 # STRING
-SRC_STRING	:=	string/ft_strtab.c string/ft_strupp.c string/ft_strlow.c string/ft_strsjoin.c string/ft_wc.c string/ft_strtok.c string/ft_atoi.c string/ft_split.c string/ft_strchr.c string/ft_striteri.c string/ft_strdup.c string/ft_strjoin.c string/ft_strlcat.c string/ft_strlcpy.c string/ft_strlen.c string/ft_strmapi.c string/ft_strncmp.c string/ft_strnstr.c string/ft_strrchr.c string/ft_strtrim.c string/ft_substr.c string/ft_tablen.c
+SRC_STRING	:=	string/ft_strtab.c string/ft_strupp.c string/ft_strlow.c string/ft_strsjoin.c string/ft_wc.c string/ft_strtok.c string/ft_atoi.c string/ft_atof.c string/ft_split.c string/ft_strchr.c string/ft_striteri.c string/ft_strdup.c string/ft_strjoin.c string/ft_strlcat.c string/ft_strlcpy.c string/ft_strlen.c string/ft_strmapi.c string/ft_strncmp.c string/ft_strnstr.c string/ft_strrchr.c string/ft_strtrim.c string/ft_substr.c string/ft_tablen.c
 
 # GNL
 SRC_GNL		:=	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c

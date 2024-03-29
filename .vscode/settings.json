@@ -2,6 +2,8 @@
 	"files.associations": {
 		"*.cs": "csharp",
 		"minirt.h": "c",
-		"parsing.h": "c"
+		"parsing.h": "c",
+		"libft.h": "c",
+		"stdio.h": "c"
 	}
 }

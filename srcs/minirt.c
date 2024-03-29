@@ -12,8 +12,17 @@
 
 #include "minirt.h"
 
-int main(void)
+int	main(int argc, char **argv)
 {
-	rt_parse("scene.rt");
+	t_scene		*scene;
+
+	if (argc != 2)
+	{
+		printf("Usage: %s scenes/<file.rt>\n", argv[0]);
+		return (1);
+	}
+	scene = rt_parse(argv[1]);
+	printf("Parsing successful\n");
+	free(scene);
 	return (0);
 }

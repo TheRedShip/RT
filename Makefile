@@ -47,6 +47,10 @@ OBJS_DIR	:=	.objs
 
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
+				parsing/rt_parse_misc.c				\
+				parsing/parse_utils.c				\
+				parsing/rt_verify_parsing_objects.c	\
+				parsing/rt_verify_parsing_settings.c\
 
 
 ALL_SRCS	:=	$(SRC_PARSING)						\
