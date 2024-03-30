@@ -116,6 +116,9 @@ void	show_objects(t_scene *scene)
 void	setup_mlx(t_scene *scene, t_mlx *mlx)
 {
 	mlx_hook(mlx->win, 17, 1L << 2, rt_free_scene, scene);
+	mlx_mouse_hook(mlx->win, mouse_hook, scene);
+	mlx_key_hook(mlx->win, key_hook, scene);
+	mlx_loop_hook(mlx->mlx, rt_render_scene, scene);
 	mlx_loop(mlx->mlx);
 }
 
@@ -135,13 +138,6 @@ int	main(int argc, char **argv)
 	printf("Parsing successful\n");
 	show_objects(scene);
 	
-	for (int i = 0; i < ft_min(WIDTH, HEIGHT); i++)
-	{
-		put_pixel(scene, i, i, 0x00FF0000);
-	}
-	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, \
-							scene->mlx->img.img, 0, 0);
-
 	setup_mlx(scene, scene->mlx);
 	return (0);
 }

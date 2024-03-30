@@ -61,12 +61,18 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 
-SRC_WINDOW :=	window/window.c						\
+SRC_WINDOW	:=	window/window.c						\
+				window/hook.c						\
 
+SRC_RENDER	:=	render/render.c						\
+
+SRC_VECTOR	:=	vector/vec_num.c					\
+				vector/vec_vec.c
 
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
-				$(SRC_WINDOW)						\
+				$(SRC_WINDOW) $(SRC_RENDER)			\
+				$(SRC_VECTOR)						\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

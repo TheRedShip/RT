@@ -22,8 +22,8 @@ void		rt_parse(char *file, t_scene **scene);
 int			rt_return(char **split);
 int			rt_range_atoi(char *line, int min, int max);
 float		rt_range_atof(char *line, float min, float max);
-t_veci3		rt_atoi3(char *line, int min, int max);
-t_vecf3		rt_atof3(char *line, float min, float max);
+t_vec3i		rt_atoi3(char *line, int min, int max);
+t_vec3f		rt_atof3(char *line, float min, float max);
 
 int			rt_verify_camera(char *line);
 int			rt_verify_ambient(char *line);

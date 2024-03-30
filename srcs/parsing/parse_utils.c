@@ -39,16 +39,16 @@ float		rt_range_atof(char *line, float min, float max)
 	return (1.0);
 }
 
-t_veci3		rt_atoi3(char *line, int min, int max)
+t_vec3i		rt_atoi3(char *line, int min, int max)
 {
-	t_veci3		vec;
+	t_vec3i		vec;
 	char		**split;
 
 	split = ft_split(line, ',');
 	if (ft_tab_len(split) != 3)
 	{
 		ft_free_tab((void **)(split));
-		return ((t_veci3){-1, -1, -1});
+		return ((t_vec3i){-1, -1, -1});
 	}
 	vec.x = ft_atoi(split[0]);
 	vec.y = ft_atoi(split[1]);
@@ -56,20 +56,20 @@ t_veci3		rt_atoi3(char *line, int min, int max)
 	ft_free_tab((void **)(split));
 	if (vec.x < min || vec.x > max || vec.y < min || \
 		vec.y > max || vec.z < min || vec.z > max)
-		return ((t_veci3){-1, -1, -1});
+		return ((t_vec3i){-1, -1, -1});
 	return (vec);
 }
 
-t_vecf3		rt_atof3(char *line, float min, float max)
+t_vec3f		rt_atof3(char *line, float min, float max)
 {
-	t_vecf3		vec;
+	t_vec3f		vec;
 	char		**split;
 
 	split = ft_split(line, ',');
 	if (ft_tab_len(split) != 3)
 	{
 		ft_free_tab((void **)(split));
-		return ((t_vecf3){-1, -1, -1});
+		return ((t_vec3f){-1, -1, -1});
 	}
 	vec.x = ft_atof(split[0]);
 	vec.y = ft_atof(split[1]);
@@ -77,6 +77,6 @@ t_vecf3		rt_atof3(char *line, float min, float max)
 	ft_free_tab((void **)(split));
 	if (vec.x < min || vec.x > max || vec.y < min || \
 		vec.y > max || vec.z < min || vec.z > max)
-		return ((t_vecf3){-1, -1, -1});
+		return ((t_vec3f){-1, -1, -1});
 	return (vec);
 }

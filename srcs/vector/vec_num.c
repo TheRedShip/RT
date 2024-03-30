@@ -1,30 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_struct.h                                     :+:      :+:    :+:   */
+/*   vec_num.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/30 14:12:44 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/30 14:12:44 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/31 00:29:33 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/31 00:29:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_STRUCT_H
-# define UTILS_STRUCT_H
+#include "minirt.h"
 
-typedef struct	s_veci3
+t_vec2f    vec2f_add_f(t_vec2f a, float b)
 {
-	int		x;
-	int		y;
-	int		z;
-}				t_veci3;
+	t_vec2f result;
 
-typedef struct	s_vecf3
+	result.x = a.x + b;
+	result.y = a.y + b;
+	return (result);
+}
+
+t_vec2f    vec2f_mul_f(t_vec2f a, float b)
 {
-	float	x;
-	float	y;
-	float	z;
-}				t_vecf3;
+	t_vec2f result;
 
-#endif
+	result.x = a.x * b;
+	result.y = a.y * b;
+	return (result);
+}
+
+t_vec2f    vec2f_div_f(t_vec2f a, float b)
+{
+	t_vec2f result;
+
+	result.x = a.x / b;
+	result.y = a.y / b;
+	return (result);
+}

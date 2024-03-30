@@ -14,8 +14,10 @@
 # define MINIRT_H
 
 # include <stdio.h>
+# include <sys/time.h>
+# include <math.h>
 
-# include "utils_struct.h"
+# include "vector.h"
 # include "parsing_struct.h"
 # include "scene_structures.h"
 # include "mlx.h"
@@ -23,6 +25,7 @@
 # include "objects.h"
 # include "parsing.h"
 # include "window.h"
+# include "render.h"
 
 # define WIDTH 800
 # define HEIGHT 600
