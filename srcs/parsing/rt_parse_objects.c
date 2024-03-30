@@ -28,7 +28,7 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 		if (i == 1)
 			sphere->origin = rt_atof3(split[i], -1000.0, 1000.0);
 		else if (i == 2)
-			sphere->diameter = rt_range_atof(split[i], 0.0, 1000.0);
+			sphere->diameter = ft_atof(split[i]);
 		else if (i == 3)
 			sphere->color = rt_atoi3(split[i], 0, 255);
 	}
@@ -78,9 +78,9 @@ int		rt_parse_cylinder(char *line, t_scene **scene)
 		else if (i == 2)
 			cylinder->orientation = rt_atof3(split[i], -1.0, 1.0);
 		else if (i == 3)
-			cylinder->diameter = rt_range_atof(split[i], 0.0, 1000.0);
+			cylinder->diameter = ft_atof(split[i]);
 		else if (i == 4)
-			cylinder->height = rt_range_atof(split[i], 0.0, 1000.0);
+			cylinder->height = ft_atof(split[i]);
 		else if (i == 5)
 			cylinder->color = rt_atoi3(split[i], 0, 255);
 	}

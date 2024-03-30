@@ -33,7 +33,7 @@ float		rt_range_atof(char *line, float min, float max)
 {
 	float		n;
 
-	n = ft_atof(line, 2);
+	n = ft_atof(line);
 	if (n < min || n > max)
 		return (-1.0);
 	return (1.0);
@@ -71,9 +71,9 @@ t_vecf3		rt_atof3(char *line, float min, float max)
 		ft_free_tab((void **)(split));
 		return ((t_vecf3){-1, -1, -1});
 	}
-	vec.x = ft_atof(split[0], 2);
-	vec.y = ft_atof(split[1], 2);
-	vec.z = ft_atof(split[2], 2);
+	vec.x = ft_atof(split[0]);
+	vec.y = ft_atof(split[1]);
+	vec.z = ft_atof(split[2]);
 	ft_free_tab((void **)(split));
 	if (vec.x < min || vec.x > max || vec.y < min || \
 		vec.y > max || vec.z < min || vec.z > max)

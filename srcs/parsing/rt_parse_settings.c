@@ -24,7 +24,7 @@ int		rt_parse_ambient(char *line, t_scene **scene)
 	while (split[++i])
 	{
 		if (i == 1)
-			(*scene)->ambient_light->ratio = ft_atof(split[i], 2);
+			(*scene)->ambient_light->ratio = ft_atof(split[i]);
 		else if (i == 2)
 			(*scene)->ambient_light->color = rt_atoi3(split[i], 0, 255);
 	}
@@ -48,7 +48,7 @@ int		rt_parse_camera(char *line, t_scene **scene)
 		else if (i == 2)
 			(*scene)->camera->direction = rt_atof3(split[i], -1, 1);
 		else if (i == 3)
-			(*scene)->camera->fov = rt_range_atoi(split[i], 0, 180);
+			(*scene)->camera->fov = ft_atoi(split[i]);
 	}
 	ft_free_tab((void **)(split));
 	return (1);
@@ -68,7 +68,7 @@ int		rt_parse_light(char *line, t_scene **scene)
 		if (i == 1)
 			(*scene)->lights->origin = rt_atof3(split[i], -1000, 1000);
 		else if (i == 2)
-			(*scene)->lights->ratio = rt_range_atof(split[i], 0, 1);
+			(*scene)->lights->ratio = ft_atof(split[i]);
 		else if (i == 3)
 			(*scene)->lights->color = rt_atoi3(split[i], 0, 255);
 	}
