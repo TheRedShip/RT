@@ -131,12 +131,17 @@ int	main(int argc, char **argv)
 	scene = init_scene();
 	if (scene == NULL)
 		exit(1);
-
 	rt_parse(argv[1], &scene);
 	printf("Parsing successful\n");
 	show_objects(scene);
 	
-	setup_mlx(scene, scene->mlx);
+	for (int i = 0; i < ft_min(WIDTH, HEIGHT); i++)
+	{
+		put_pixel(scene, i, i, 0x00FF0000);
+	}
+	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, \
+							scene->mlx->img.img, 0, 0);
 
+	setup_mlx(scene, scene->mlx);
 	return (0);
 }

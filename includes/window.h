@@ -16,5 +16,6 @@
 #include "minirt.h"
 
 void	create_window(t_scene **scene);
+void	put_pixel(t_scene *scene, int x, int y, int color);
 
 #endif
