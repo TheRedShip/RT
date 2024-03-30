@@ -14,6 +14,13 @@
 
 void		destroy_mlx(t_scene *scene)
 {
+	if(!scene->mlx->win)
+	{
+		mlx_destroy_display(scene->mlx->mlx);
+		free(scene->mlx->mlx);
+		free(scene->mlx);
+		return ;
+	}
 	mlx_clear_window(scene->mlx->mlx, scene->mlx->win);
 	mlx_destroy_image(scene->mlx->mlx, scene->mlx->img.img);
 	mlx_destroy_window(scene->mlx->mlx, scene->mlx->win);
@@ -130,6 +137,6 @@ int	main(int argc, char **argv)
 	show_objects(scene);
 	
 	setup_mlx(scene, scene->mlx);
-	
+
 	return (0);
 }
