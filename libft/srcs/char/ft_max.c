@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_max.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:46:41 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/30 15:00:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/30 16:07:29 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_max(int a, int b)
 {

@@ -6,18 +6,20 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 03:35:56 by rgramati          #+#    #+#             */
-/*   Updated: 2024/02/16 14:56:25 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/02/28 20:50:40 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_manage_strings(char *s1, char *s2, int buffered)
+static void	ft_manage_strings(char *s1, char *s2, char *c, int buffered)
 {
-	if (buffered & 0b01)
+	if (buffered & 0b001)
 		free(s1);
-	if (buffered & 0b10)
+	if (buffered & 0b010)
 		free(s2);
+	if (buffered & 0b100)
+		free(c);
 }
 
 char	*ft_strjoin(char *s1, char *s2, char *c, int tofree)
@@ -42,6 +44,6 @@ char	*ft_strjoin(char *s1, char *s2, char *c, int tofree)
 	if (c)
 		ft_strcat(ns, c);
 	ft_strcat(ns, s2);
-	ft_manage_strings(s1, s2, buffered);
+	ft_manage_strings(s1, s2, c, buffered);
 	return (ns);
 }

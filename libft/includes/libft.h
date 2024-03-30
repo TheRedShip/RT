@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/30 14:59:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/30 16:05:40 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define LIBFT_H
 
 /* INCLUDES ***************************************************************** */
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-/* ************************************************************************** */
 
-/* STRUCT ******************************************************************* */
+/* STRUCTS ****************************************************************** */
+
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
-/* ************************************************************************** */
 
 /* CHAR ********************************************************************* */
 
@@ -181,6 +181,12 @@ char	*ft_strlow(char *str);
 */
 char	*ft_strupp(char *str);
 
+void	ft_swap_strs(char **a, char **b);
+
+void	ft_sort_strs_tab(char **tab, int size);
+
+void	ft_sort_lowstrs_tab(char **tab, int size);
+
 /* ************************************************************************** */
 
 /* MEMORY ******************************************************************* */
@@ -195,10 +201,15 @@ void	ft_free_tab(void **tab);
 /* ************************************************************************** */
 
 /* PUT_FD ******************************************************************* */
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
+size_t	ft_putchar_fd(int fd, char c);
+size_t	ft_putstr_fd(int fd, char *str);
+size_t	ft_putnbr_hex_fd(int fd, unsigned long nb, int flags, int depth);
+size_t	ft_putnbr_fd(int fd, long nb);
+size_t	ft_putunbr_fd(int fd, unsigned long nb);
 void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
+
+int		ft_printf(const char *format, ...);
+int		ft_dprintf(int fd, const char *format, ...);
 /* ************************************************************************** */
 
 /* T_LIST ******************************************************************* */
@@ -215,7 +226,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 
 /* GNL TLST ***************************************************************** */
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
+#  define BUFFER_SIZE 1
 # endif
 
 typedef struct s_slist

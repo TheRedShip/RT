@@ -84,6 +84,8 @@ IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes -I $(MINILIB_DIR)
 
 RM          :=	rm -rf
 
+MAKEFLAGS   += --no-print-directory
+
 DIR_DUP     =	mkdir -p $(@D)
 
 # RULES ********************************************************************** #
@@ -96,7 +98,7 @@ $(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS)
 
 $(MLX):
 	@printf "$(BWHITE)  🔄 $(NAME):\t$(BWHITE)minilibx compiling...$(RESET)\n"
-	@make -j -C $(MINILIB_DIR)
+	@make --quiet -j -C $(MINILIB_DIR)
 
 $(LFT):
 	@make -j -C $(LFT_DIR)

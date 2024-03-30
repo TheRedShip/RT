@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:06:10 by rgramati          #+#    #+#             */
-/*   Updated: 2023/11/01 14:07:48 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:10:31 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	ft_putstr_fd(fd, s);
+	ft_putchar_fd(fd, '\n');
 }
