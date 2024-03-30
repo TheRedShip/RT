@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   window.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 19:09:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:09:30 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/30 14:19:39 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/30 14:19:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef WINDOW_H
+# define WINDOW_H
 
-# include <stdio.h>
+#include "minirt.h"
 
-# include "utils_struct.h"
-# include "parsing_struct.h"
-# include "scene_structures.h"
-# include "mlx.h"
-# include "libft.h"
-# include "objects.h"
-# include "parsing.h"
-# include "window.h"
-
-# define WIDTH 800
-# define HEIGHT 600
-
-int		rt_free_scene(t_scene *scene);
+void	create_window(t_scene **scene);
 
 #endif

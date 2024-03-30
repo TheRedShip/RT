@@ -7,6 +7,8 @@
 		"stdio.h": "c",
 		"parsing_struct.h": "c",
 		"fcntl.h": "c",
-		"objects.h": "c"
+		"objects.h": "c",
+		"mlx.h": "c",
+		"scene_structures.h": "c"
 	}
 }

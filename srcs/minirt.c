@@ -12,10 +12,22 @@
 
 #include "minirt.h"
 
-void		rt_free_scene(t_scene *scene)
+void		destroy_mlx(t_scene *scene)
+{
+	mlx_clear_window(scene->mlx->mlx, scene->mlx->win);
+	mlx_destroy_image(scene->mlx->mlx, scene->mlx->img.img);
+	mlx_destroy_window(scene->mlx->mlx, scene->mlx->win);
+	mlx_destroy_display(scene->mlx->mlx);
+	mlx_loop_end(scene->mlx->mlx);
+	free(scene->mlx->mlx);
+	free(scene->mlx);
+}
+
+int			rt_free_scene(t_scene *scene)
 {
 	t_objects	*tmp;
 
+	destroy_mlx(scene);
 	if (scene->ambient_light)
 		free(scene->ambient_light);
 	if (scene->camera)
@@ -35,7 +47,8 @@ void		rt_free_scene(t_scene *scene)
 		free(tmp);
 	}
 	free(scene);
-	exit(1);
+	exit(0);
+	return (0);
 }
 
 t_scene		*init_scene(void)
@@ -48,8 +61,10 @@ t_scene		*init_scene(void)
 	scene->ambient_light = ft_calloc(1, sizeof(t_ambient_light));
 	scene->camera = ft_calloc(1, sizeof(t_camera));
 	scene->lights = ft_calloc(1, sizeof(t_light));
+	scene->mlx = ft_calloc(1, sizeof(t_mlx));
+	create_window(&scene);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);
@@ -91,6 +106,12 @@ void	show_objects(t_scene *scene)
 	}
 }
 
+void	setup_mlx(t_scene *scene, t_mlx *mlx)
+{
+	mlx_hook(mlx->win, 17, 1L << 2, rt_free_scene, scene);
+	mlx_loop(mlx->mlx);
+}
+
 int	main(int argc, char **argv)
 {
 	t_scene		*scene;
@@ -103,9 +124,12 @@ int	main(int argc, char **argv)
 	scene = init_scene();
 	if (scene == NULL)
 		exit(1);
+
 	rt_parse(argv[1], &scene);
 	printf("Parsing successful\n");
 	show_objects(scene);
-	rt_free_scene(scene);
+	
+	setup_mlx(scene, scene->mlx);
+	
 	return (0);
 }

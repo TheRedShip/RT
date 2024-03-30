@@ -39,7 +39,12 @@ NAME        :=	miniRT
 
 LFT_DIR 	:=	./libft
 
+MINILIB_DIR := ./minilibx-linux
+
 LFT			:=	$(LFT_DIR)/libft.a
+
+MLX			:=	$(MINILIB_DIR)/libft.a
+
 
 SRCS_DIR	:=	srcs
 
@@ -56,8 +61,12 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 
+SRC_WINDOW :=	window/window.c						\
+
+
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
+				$(SRC_WINDOW)						\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
@@ -70,7 +79,7 @@ CC          :=	cc
 
 CFLAGS      :=	-g -Wall -Wextra -Werror
 
-IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes
+IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes -I $(MINILIB_DIR)
 
 
 RM          :=	rm -rf
@@ -81,9 +90,13 @@ DIR_DUP     =	mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(LFT) $(OBJS) $(HEADERS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -o $(NAME)
+$(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lminilibx-linux -lmlx_Linux -I./minilibx-linux -lXext -lX11 -lm -lz -o $(NAME)
 	@printf "$(LINE_CLR)  ⭐$(BWHITE) $(NAME):\t PROJECT READY !$(RESET)\n\n"
+
+$(MLX):
+	@printf "$(BWHITE)  🔄 $(NAME):\t$(BWHITE)minilibx compiling...$(RESET)\n"
+	@make -j -C $(MINILIB_DIR)
 
 $(LFT):
 	@make -j -C $(LFT_DIR)
@@ -109,6 +122,7 @@ dclean: clean
 	@$(RM) $(OBJS_DIR)
 
 fclean: dclean
+	@make --quiet clean -C ${MINILIB_DIR}
 	@printf "$(BWHITE)  🚫 $(NAME):\t$(BRED) binary deleted.$(RESET)\n"
 	@$(RM) $(NAME)
 	@printf "\n"

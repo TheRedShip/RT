@@ -67,12 +67,13 @@ typedef struct	s_objects
 	struct s_objects	*next;
 }				t_objects;
 
-typedef struct	s_scene
-{
-	t_ambient_light	*ambient_light;
-	t_camera		*camera;
-	t_light			*lights;
-	t_objects		*objects;
-}				t_scene;
+// typedef struct	s_mlx
+// {
+// 	void	*mlx;
+// 	void	*mlx_win;
+// 	t_data	*img;
+// }				t_mlx;
+
+
 
 #endif
