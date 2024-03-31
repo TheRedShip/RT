@@ -41,13 +41,14 @@ typedef struct	s_vec2i
 	int		y;
 }				t_vec2i;
 
-t_vec2f    vec2f_add_f(t_vec2f a, float b);
-t_vec2f    vec2f_mul_f(t_vec2f a, float b);
-t_vec2f    vec2f_div_f(t_vec2f a, float b);
+t_vec2f		vec2f_add_f(t_vec2f a, float b);
+t_vec2f		vec2f_mul_f(t_vec2f a, float b);
+t_vec2f		vec2f_div_f(t_vec2f a, float b);
 
-t_vec2f    vec2f_add_v(t_vec2f a, t_vec2f b);
-t_vec2f    vec2f_sub_v(t_vec2f a, t_vec2f b);
-t_vec2f    vec2f_mul_v(t_vec2f a, t_vec2f b);
-t_vec2f    vec2f_div_v(t_vec2f a, t_vec2f b);
+t_vec2f		vec2f_add_v(t_vec2f a, t_vec2f b);
+t_vec2f		vec2f_sub_v(t_vec2f a, t_vec2f b);
+t_vec2f		vec2f_mul_v(t_vec2f a, t_vec2f b);
+t_vec2f   	vec2f_div_v(t_vec2f a, t_vec2f b);
+float		vec3f_dot_v(t_vec3f a, t_vec3f b);
 
 #endif

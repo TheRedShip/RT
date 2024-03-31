@@ -47,3 +47,8 @@ t_vec2f	vec2f_div_v(t_vec2f a, t_vec2f b)
 	result.y = a.y / b.y;
 	return (result);
 }
+
+float	vec3f_dot_v(t_vec3f a, t_vec3f b)
+{
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
