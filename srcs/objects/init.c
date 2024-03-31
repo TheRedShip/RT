@@ -32,11 +32,20 @@ t_objects	*rt_add_objects(t_scene **scene, char *type)
 	if (!objects)
 		rt_free_scene(*scene);
 	if (ft_strncmp(type, "sp", 2) == 0)
+	{
+		objects->type = OBJ_SPHER;
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
+	}
 	else if (ft_strncmp(type, "pl", 2) == 0)
+	{
+		objects->type = OBJ_PLANE;
 		objects->plane = ft_calloc(1, sizeof(t_plane));
+	}
 	else if (ft_strncmp(type, "cy", 2) == 0)
+	{
+		objects->type = OBJ_CYLIN;
 		objects->cylinder = ft_calloc(1, sizeof(t_cylinder));;
+	}
 	return (objects);
 }
 
