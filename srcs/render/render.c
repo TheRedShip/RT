@@ -20,13 +20,13 @@ u_int64_t	get_time(void)
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
-int		render_sphere(t_vec2f uv, t_sphere *sphere)
+int		render_sphere(t_vec2f uv, t_scene *scene, t_sphere *sphere)
 {
 	// uv.y = 1.0f - uv.y;
 	t_vec3f	ray_origin;
 	t_vec3f	ray_direction;
 
-	ray_origin = (t_vec3f){0.0f, 0.0f, 2.0f};
+	ray_origin = scene->camera->origin;
 	ray_direction = (t_vec3f){uv.x, uv.y, -1.0f};
 
 	// sphere : (x - a)² + (y - b)² + (z - c)² - r² = 0
@@ -62,7 +62,7 @@ int		render_sphere(t_vec2f uv, t_sphere *sphere)
 	return (0xFF000000);
 }
 
-void	render_pixel(t_scene **scene, int x, int y)
+void	render_pixel(t_scene *scene, int x, int y)
 {
 	t_vec2f		uv;
 	t_objects	*objects;
@@ -71,11 +71,11 @@ void	render_pixel(t_scene **scene, int x, int y)
 	uv.x = uv.x * 2.0f - 1.0f;
 	uv.y = uv.y * 2.0f - 1.0f;
 
-	objects = (*scene)->objects;
+	objects = scene->objects;
 	while (objects)
 	{
 		if (objects->type == OBJ_SPHER)
-			put_pixel(*scene, x, y, render_sphere(uv, objects->sphere));
+			put_pixel(scene, x, y, render_sphere(uv, scene, objects->sphere));
 		objects = objects->next;
 	}
 }
@@ -85,19 +85,6 @@ int		rt_render_scene(t_scene *scene)
 	u_int64_t	start;
 	t_vec2i		pos;
 
-	//sphere test
-	static double	test = 0;
-	t_objects *sphere;
-	test += 0.03f;
-	sphere = scene->objects;
-	while (sphere)
-	{
-		if (sphere->type == OBJ_SPHER)
-			break;
-		sphere = sphere->next;
-	}
-	sphere->sphere->origin.x = sin(test) * 1.5;
-	//
 	start = get_time();
 	pos.y = 0;
 	while (pos.y < HEIGHT)
@@ -105,7 +92,7 @@ int		rt_render_scene(t_scene *scene)
 		pos.x = 0;
 		while (pos.x < WIDTH)
 		{
-			render_pixel(&scene, pos.x, pos.y);
+			render_pixel(scene, pos.x, pos.y);
 			pos.x++;
 		}
 		pos.y++;
