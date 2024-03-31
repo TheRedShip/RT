@@ -29,7 +29,7 @@ int		rt_verify_ambient(char *line)
 	{
 		if (i == 1 && rt_range_atof(split[i], 0.0, 1.0) == -1)
 			return (rt_return(split));
-		if (i == 2 && rt_atoi3(split[i], 0, 255).x == -1)
+		if (i == 2 && rt_atof3(split[i], 0, 255).x == -1)
 			return (rt_return(split));
 	}
 	ft_free_tab((void **)(split));
@@ -81,7 +81,7 @@ int		rt_verify_light(char *line)
 			return rt_return(split);
 		if (i == 2 && rt_range_atof(split[i], 0.0, 1.0) == -1)
 			return rt_return(split);
-		if (i == 3 && rt_atoi3(split[i], 0, 255).x == -1)
+		if (i == 3 && rt_atof3(split[i], 0, 255).x == -1)
 			return rt_return(split);
 	}
 	ft_free_tab((void **)(split));

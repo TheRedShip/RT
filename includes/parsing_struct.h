@@ -18,7 +18,7 @@
 typedef struct	s_ambient_light
 {
 	float		ratio;
-	t_vec3i		color;
+	t_vec3f		color;
 }				t_ambient_light;
 
 typedef struct	s_camera
@@ -32,21 +32,21 @@ typedef struct	s_light
 {
 	t_vec3f		origin;
 	float		ratio;
-	t_vec3i		color;
+	t_vec3f		color;
 }				t_light;
 
 typedef struct	s_sphere
 {
 	t_vec3f		origin;
 	float		diameter;
-	t_vec3i		color;
+	t_vec3f		color;
 }				t_sphere;
 
 typedef struct	s_plane
 {
 	t_vec3f		origin;
 	t_vec3f		normal;
-	t_vec3i		color;
+	t_vec3f		color;
 }				t_plane;
 
 typedef struct	s_cylinder
@@ -55,7 +55,7 @@ typedef struct	s_cylinder
 	t_vec3f		orientation;
 	float		diameter;
 	float		height;
-	t_vec3i		color;
+	t_vec3f		color;
 }				t_cylinder;
 
 typedef struct	s_objects

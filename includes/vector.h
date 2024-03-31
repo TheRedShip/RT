@@ -15,13 +15,6 @@
 
 # include "minirt.h"
 
-typedef struct	s_vec3i
-{
-	int		x;
-	int		y;
-	int		z;
-}				t_vec3i;
-
 typedef struct	s_vec3f
 {
 	float	x;
@@ -35,20 +28,16 @@ typedef struct	s_vec2f
 	float	y;
 }				t_vec2f;
 
-typedef struct	s_vec2i
-{
-	int		x;
-	int		y;
-}				t_vec2i;
+t_vec3f		vec3f_add_f(t_vec3f a, float b);
+t_vec3f		vec3f_mul_f(t_vec3f a, float b);
+t_vec3f		vec3f_div_f(t_vec3f a, float b);
 
-t_vec2f		vec2f_add_f(t_vec2f a, float b);
-t_vec2f		vec2f_mul_f(t_vec2f a, float b);
-t_vec2f		vec2f_div_f(t_vec2f a, float b);
-
-t_vec2f		vec2f_add_v(t_vec2f a, t_vec2f b);
-t_vec2f		vec2f_sub_v(t_vec2f a, t_vec2f b);
-t_vec2f		vec2f_mul_v(t_vec2f a, t_vec2f b);
-t_vec2f   	vec2f_div_v(t_vec2f a, t_vec2f b);
+t_vec3f		vec3f_add_v(t_vec3f a, t_vec3f b);
+t_vec3f		vec3f_sub_v(t_vec3f a, t_vec3f b);
+t_vec3f		vec3f_mul_v(t_vec3f a, t_vec3f b);
+t_vec3f   	vec3f_div_v(t_vec3f a, t_vec3f b);
 float		vec3f_dot_v(t_vec3f a, t_vec3f b);
+
+t_vec3f		normalize(t_vec3f vec);
 
 #endif

@@ -65,9 +65,11 @@ SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
 
 SRC_RENDER	:=	render/render.c						\
+				render/colors.c
 
-SRC_VECTOR	:=	vector/vec_num.c					\
-				vector/vec_vec.c
+SRC_VECTOR	:=	vector/vec_num2f.c					\
+				vector/vec_vec2f.c					\
+				vector/vec_utils.c
 
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\

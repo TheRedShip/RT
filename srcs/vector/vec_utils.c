@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.h                                           :+:      :+:    :+:   */
+/*   vec_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/31 00:00:55 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/31 00:00:55 by marvin           ###   ########.fr       */
+/*   Created: 2024/04/01 00:30:51 by marvin            #+#    #+#             */
+/*   Updated: 2024/04/01 00:30:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RENDER_H
-# define RENDER_H
+#include "minirt.h"
 
-# include "minirt.h"
+float	vec3f_dot_v(t_vec3f a, t_vec3f b)
+{
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
 
-int		rgb_to_hex(t_vec3f rgb);
-int		rt_render_scene(t_scene *scene);
+float	vec3f_len(t_vec3f vec)
+{
+	return (sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
+}
 
-#endif
+t_vec3f	normalize(t_vec3f vec)
+{
+	float	len;
+
+	len = vec3f_len(vec);
+	return (vec3f_div_f(vec, len));
+}

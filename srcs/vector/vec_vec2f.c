@@ -12,43 +12,43 @@
 
 #include "minirt.h"
 
-t_vec2f	vec2f_add_v(t_vec2f a, t_vec2f b)
+t_vec3f	vec3f_add_v(t_vec3f a, t_vec3f b)
 {
-	t_vec2f	result;
+	t_vec3f	result;
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
+	result.z = a.z + b.z;
 	return (result);
 }
 
-t_vec2f	vec2f_sub_v(t_vec2f a, t_vec2f b)
+t_vec3f	vec3f_sub_v(t_vec3f a, t_vec3f b)
 {
-	t_vec2f	result;
+	t_vec3f	result;
 
 	result.x = a.x - b.x;
 	result.y = a.y - b.y;
+	result.z = a.z - b.z;
+
 	return (result);
 }
 
-t_vec2f	vec2f_mul_v(t_vec2f a, t_vec2f b)
+t_vec3f	vec3f_mul_v(t_vec3f a, t_vec3f b)
 {
-	t_vec2f	result;
+	t_vec3f	result;
 
 	result.x = a.x * b.x;
 	result.y = a.y * b.y;
+	result.z = a.z * b.z;
 	return (result);
 }
 
-t_vec2f	vec2f_div_v(t_vec2f a, t_vec2f b)
+t_vec3f	vec3f_div_v(t_vec3f a, t_vec3f b)
 {
-	t_vec2f	result;
+	t_vec3f	result;
 
 	result.x = a.x / b.x;
 	result.y = a.y / b.y;
+	result.z = a.z / b.z;
 	return (result);
-}
-
-float	vec3f_dot_v(t_vec3f a, t_vec3f b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
