@@ -85,6 +85,19 @@ int		rt_render_scene(t_scene *scene)
 	u_int64_t	start;
 	t_vec2i		pos;
 
+	//sphere test
+	static double	test = 0;
+	t_objects *sphere;
+	test += 0.03f;
+	sphere = scene->objects;
+	while (sphere)
+	{
+		if (sphere->type == OBJ_SPHER)
+			break;
+		sphere = sphere->next;
+	}
+	sphere->sphere->origin.x = sin(test) * 1.5;
+	//
 	start = get_time();
 	pos.y = 0;
 	while (pos.y < HEIGHT)
