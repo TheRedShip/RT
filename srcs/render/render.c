@@ -22,7 +22,6 @@ u_int64_t	get_time(void)
 
 int		render_sphere(t_vec2f uv, t_scene *scene, t_sphere *sphere)
 {
-	// uv.y = 1.0f - uv.y;
 	t_vec3f	ray_origin;
 	t_vec3f	ray_direction;
 	t_vec3f light_direction;
@@ -30,21 +29,18 @@ int		render_sphere(t_vec2f uv, t_scene *scene, t_sphere *sphere)
 	ray_origin = scene->camera->origin;
 	ray_direction = (t_vec3f){uv.x, uv.y, -1.0f};
 
-	light_direction = scene->lights->origin;
-	light_direction = normalize(light_direction);
+	float	a = vec3f_dot_v(ray_direction, ray_direction);
+	float	b = (2*ray_origin.x*ray_direction.x - 2*ray_direction.x*sphere->origin.x) + 
+				(2*ray_origin.y*ray_direction.y - 2*ray_direction.y*sphere->origin.y) + 
+				(2*ray_origin.z*ray_direction.z - 2*ray_direction.z*sphere->origin.z);
+	float	c = (ray_origin.x*ray_origin.x - 2*ray_origin.x*sphere->origin.x + sphere->origin.x*sphere->origin.x) + 
+				(ray_origin.y*ray_origin.y - 2*ray_origin.y*sphere->origin.y + sphere->origin.y*sphere->origin.y) + 
+				(ray_origin.z*ray_origin.z - 2*ray_origin.z*sphere->origin.z + sphere->origin.z*sphere->origin.z) - 
+				(sphere->diameter / 2 * sphere->diameter / 2);
 
 	// float	a = vec3f_dot_v(ray_direction, ray_direction);
-	// float	b = (2*ray_origin.x*ray_direction.x - 2*ray_direction.x*sphere->origin.x) + 
-	// 			(2*ray_origin.y*ray_direction.y - 2*ray_direction.y*sphere->origin.y) + 
-	// 			(2*ray_origin.z*ray_direction.z - 2*ray_direction.z*sphere->origin.z);
-	// float	c = (ray_origin.x*ray_origin.x - 2*ray_origin.x*sphere->origin.x + sphere->origin.x*sphere->origin.x) + 
-	// 			(ray_origin.y*ray_origin.y - 2*ray_origin.y*sphere->origin.y + sphere->origin.y*sphere->origin.y) + 
-	// 			(ray_origin.z*ray_origin.z - 2*ray_origin.z*sphere->origin.z + sphere->origin.z*sphere->origin.z) - 
-	// 			(sphere->diameter / 2 * sphere->diameter / 2);
-
-	float	a = vec3f_dot_v(ray_direction, ray_direction);
-	float	b = 2.0f * vec3f_dot_v(ray_origin, ray_direction);
-	float	c = vec3f_dot_v(ray_origin, ray_origin) - (sphere->diameter / 2) * (sphere->diameter / 2);
+	// float	b = 2.0f * vec3f_dot_v(ray_origin, ray_direction);
+	// float	c = vec3f_dot_v(ray_origin, ray_origin) - (sphere->diameter / 2) * (sphere->diameter / 2);
 	
 	float	discriminant = b*b - 4.0f * a * c;
 	
@@ -63,8 +59,11 @@ int		render_sphere(t_vec2f uv, t_scene *scene, t_sphere *sphere)
 			t_vec3f normal = vec3f_sub_v(hitPosition, sphere->origin);
 			normal = normalize(normal);
 
-			float light = vec3f_dot_v(normal, vec3f_mul_f(light_direction, -1.0f));
+			light_direction = vec3f_sub_v(hitPosition, scene->lights->origin);
+			light_direction = normalize(light_direction);
 
+			float light = vec3f_dot_v(normal, vec3f_mul_f(light_direction, -1.0f));
+			
 			if (light < 0.0f)
 				light = 0.0f;
 			return (rgb_to_hex(vec3f_mul_f(sphere->color, light)));
@@ -78,6 +77,7 @@ void	render_pixel(t_scene *scene, int x, int y)
 	t_vec2f		uv;
 	t_objects	*objects;
 	float		aspect_ratio;
+	unsigned int	color;
 
 	aspect_ratio = (float)WIDTH / (float)HEIGHT;
 	uv = (t_vec2f){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
@@ -89,7 +89,10 @@ void	render_pixel(t_scene *scene, int x, int y)
 	while (objects)
 	{
 		if (objects->type == OBJ_SPHER)
-			put_pixel(scene, x, y, render_sphere(uv, scene, objects->sphere));
+		{
+			color = render_sphere(uv, scene, objects->sphere);
+			put_pixel(scene, x, y, color);
+		}
 		objects = objects->next;
 	}
 }
@@ -98,14 +101,11 @@ int		rt_render_scene(t_scene *scene)
 {
 	u_int64_t	start;
 	t_vec2f		pos;
+	static float t = 0;
 
-	//
-	static float	t = 0.0f;
-	t+=0.03;
-
-	scene->lights->origin.x += cos(t) * 1.5f;
-	scene->lights->origin.y += sin(t) * 1.5f;
-	//
+	t+=0.05;
+	scene->lights->origin.y = 4.0f * sin(t);
+	scene->lights->origin.x = 2.0f * cos(t);
 
 	start = get_time();
 	pos.y = 0;
