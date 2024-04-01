@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/30 16:08:33 by ycontre          ###   ########.fr        #
+#    Updated: 2024/04/01 18:04:12 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,30 +141,28 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@ar rcs $@ $^
-	@printf "$(LINE_CLR)  ⭐$(BWHITE) $(NAME):\t PROJECT READY !$(RESET)\n"
+	@printf "$(LINE_CLR)$(BWHITE) $(NAME): PROJECT READY !$(RESET)\n"
 
 $(OBJS_DIR)/%.o: %.c
 	@$(DIR_DUP)
 	if [ $(CMP) -eq '1' ]; then \
 		printf "\n"; \
 	fi;
-	@printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME):\t$(CMP)/$(FILE) \t$(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
+	@printf "$(LINE_CLR)$(WHITE) $(NAME): $(CMP)/$(FILE) $(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $^
 	@$(eval CMP=$(shell echo $$(($(CMP)+1))))
 	if [ $(CMP) -eq $(FILE) ]; then \
-		printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME):\t$(CMP)/$(FILE)\n$(LINE_CLR)$(BGREEN)  ✅ Compilation done !$(RESET)\n"; \
+		printf "$(LINE_CLR)$(WHITE) $(NAME): $(CMP)/$(FILE)\n$(LINE_CLR)$(BGREEN) Compilation done !$(RESET)\n"; \
 	fi \
 
 clean:
-	@printf "\n$(BWHITE)  🚫 $(NAME):\t$(BRED) .o files deleted.$(RESET)\n"
 	@$(RM) $(OBJS)
 
 dclean: clean
-	@printf "$(BWHITE)  🚫 $(NAME):\t$(BRED) objs dir deleted.$(RESET)\n"
 	@$(RM) $(OBJS_DIR)
 
 fclean: dclean
-	@printf "$(BWHITE)  🚫 $(NAME):\t$(BRED) binary deleted.$(RESET)\n"
+	@printf " $(BWHITE)$(NAME):$(BRED) cleaned.$(RESET)\n"
 	@$(RM) $(NAME)
 
 re:

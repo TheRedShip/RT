@@ -102,10 +102,10 @@ all: $(NAME)
 
 $(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lminilibx-linux -lmlx_Linux -I./minilibx-linux -lXext -lX11 -lm -lz -o $(NAME)
-	@printf "$(LINE_CLR)  ⭐$(BWHITE) $(NAME):\t PROJECT READY !$(RESET)\n\n"
+	@printf "$(LINE_CLR)$(BWHITE) $(NAME): PROJECT COMPILED !$(RESET)\n\n"
 
 $(MLX):
-	@printf "$(BWHITE)  🔄 $(NAME):\t$(BWHITE)minilibx compiling...$(RESET)\n"
+	@printf "$(BWHITE) $(NAME): $(BWHITE)minilibx compiling...$(RESET)\n"
 	@make --quiet -j -C $(MINILIB_DIR)
 
 $(LFT):
@@ -116,26 +116,23 @@ $(OBJS_DIR)/%.o: %.c
 	if [ $(CMP) -eq '1' ]; then \
 		printf "\n"; \
 	fi;
-	printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME):\t$(CMP)/$(FILE) \t$(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
+	printf "$(LINE_CLR)$(WHITE) $(NAME): $(CMP)/$(FILE) $(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $^
 	@$(eval CMP=$(shell echo $$(($(CMP)+1))))
 	if [ $(CMP) -gt $(FILE) ]; then \
-		printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME): $$(($(CMP)-1))/$(FILE)\n$(LINE_CLR)$(BGREEN)  ✅ Compilation done !$(RESET)\n"; \
+		printf "$(LINE_CLR)$(WHITE) $(NAME): $$(($(CMP)-1))/$(FILE)\n$(LINE_CLR)$(BGREEN) Compilation done !$(RESET)\n"; \
 	fi \
 
 clean:
-	@printf "\n$(BWHITE)  🚫 $(NAME):\t$(BRED) .o files deleted.$(RESET)\n"
 	@$(RM) $(OBJS)
 
 dclean: clean
-	@printf "$(BWHITE)  🚫 $(NAME):\t$(BRED) objs dir deleted.$(RESET)\n"
 	@$(RM) $(OBJS_DIR)
 
 fclean: dclean
 	@make --quiet clean -C ${MINILIB_DIR}
-	@printf "$(BWHITE)  🚫 $(NAME):\t$(BRED) binary deleted.$(RESET)\n"
+	@printf " $(BWHITE)$(NAME):$(BRED) cleaned.$(RESET)\n"
 	@$(RM) $(NAME)
-	@printf "\n"
 	@$(MAKE) -C $(LFT_DIR) fclean
 
 re:
