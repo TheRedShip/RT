@@ -44,32 +44,27 @@ int		render_sphere(t_vec2f uv, t_scene *scene, t_sphere *sphere)
 	
 	float	discriminant = b*b - 4.0f * a * c;
 	
-	if (discriminant >= 0.0f)
-	{
-		float t[2];
+	if (discriminant < 0.0f)
+		return (0xFF000000);
+	//	return (0xFF87ceeb);
 
-		t[0] = (-b - sqrtf(discriminant)) / (2.0f * a);
-		t[1] = (-b + sqrtf(discriminant)) / (2.0f * a);
+	float t = (-b - sqrtf(discriminant)) / (2.0f * a);
+	// float t = (-b + sqrtf(discriminant)) / (2.0f * a);
 
-		for (int i = 0; i < 2; i++)
-		{
-			t_vec3f hitPosition = {ray_origin.x + ray_direction.x * t[i], \
-									ray_origin.y + ray_direction.y * t[i], \
-									ray_origin.z + ray_direction.z * t[i]};
-			t_vec3f normal = vec3f_sub_v(hitPosition, sphere->origin);
-			normal = normalize(normal);
+	t_vec3f hitPosition = {ray_origin.x + ray_direction.x * t, \
+							ray_origin.y + ray_direction.y * t, \
+							ray_origin.z + ray_direction.z * t};
+	t_vec3f normal = vec3f_sub_v(hitPosition, sphere->origin);
+	normal = normalize(normal);
 
-			light_direction = vec3f_sub_v(hitPosition, scene->lights->origin);
-			light_direction = normalize(light_direction);
+	light_direction = vec3f_sub_v(hitPosition, scene->lights->origin);
+	light_direction = normalize(light_direction);
 
-			float light = vec3f_dot_v(normal, vec3f_mul_f(light_direction, -1.0f));
-			
-			if (light < 0.0f)
-				light = 0.0f;
-			return (rgb_to_hex(vec3f_mul_f(sphere->color, light)));
-		}
-	}
-	return (0xFF000000);
+	float light = vec3f_dot_v(normal, vec3f_mul_f(light_direction, -1.0f));
+	
+	if (light < 0.0f)
+		light = 0.0f;
+	return (rgb_to_hex(vec3f_mul_f(sphere->color, light)));
 }
 
 void	render_pixel(t_scene *scene, int x, int y)
@@ -101,11 +96,11 @@ int		rt_render_scene(t_scene *scene)
 {
 	u_int64_t	start;
 	t_vec2f		pos;
-	static float t = 0;
+	// static float t = 0;
 
-	t+=0.05;
-	scene->lights->origin.y = 4.0f * sin(t);
-	scene->lights->origin.x = 4.0f * cos(t);
+	// t+=0.05;
+	// scene->lights->origin.y = 4.0f * sin(t);
+	// scene->lights->origin.x = 4.0f * cos(t);
 
 	start = get_time();
 	pos.y = 0;
