@@ -105,7 +105,7 @@ int		rt_render_scene(t_scene *scene)
 
 	t+=0.05;
 	scene->lights->origin.y = 4.0f * sin(t);
-	scene->lights->origin.x = 2.0f * cos(t);
+	scene->lights->origin.x = 4.0f * cos(t);
 
 	start = get_time();
 	pos.y = 0;
