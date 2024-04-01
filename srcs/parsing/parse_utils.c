@@ -48,7 +48,7 @@ t_vec3f		rt_atof3(char *line, float min, float max)
 	if (ft_tab_len(split) != 3)
 	{
 		ft_free_tab((void **)(split));
-		return ((t_vec3f){-1, -1, -1});
+		return ((t_vec3f){-4242, -4242, -4242});
 	}
 	vec.x = ft_atof(split[0]);
 	vec.y = ft_atof(split[1]);
@@ -56,6 +56,6 @@ t_vec3f		rt_atof3(char *line, float min, float max)
 	ft_free_tab((void **)(split));
 	if (vec.x < min || vec.x > max || vec.y < min || \
 		vec.y > max || vec.z < min || vec.z > max)
-		return ((t_vec3f){-1, -1, -1});
+		return ((t_vec3f){-4242, -4242, -4242});
 	return (vec);
 }
