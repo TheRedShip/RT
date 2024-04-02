@@ -27,6 +27,8 @@ void		destroy_mlx(t_scene *scene)
 	mlx_destroy_display(scene->mlx->mlx);
 	mlx_loop_end(scene->mlx->mlx);
 	free(scene->mlx->mlx);
+	if (scene->mlx->acc_img)
+		ft_free_tab((void **)(scene->mlx->acc_img));
 	free(scene->mlx);
 }
 
@@ -69,6 +71,7 @@ t_scene		*init_scene(void)
 	scene->camera = ft_calloc(1, sizeof(t_camera));
 	scene->lights = ft_calloc(1, sizeof(t_light));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
+	scene->mlx->acc_img = init_acc_img(scene);
 	create_window(&scene);
 	scene->objects = NULL;
 	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx)
@@ -76,6 +79,8 @@ t_scene		*init_scene(void)
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);
 	}
+	scene->mlx->frame_index = 1;
+	scene->mlx->is_acc = 1;
 	return (scene);
 }
 

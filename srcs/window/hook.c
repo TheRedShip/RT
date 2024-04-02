@@ -28,6 +28,9 @@ int		key_hook(int keycode, t_scene *scene)
 		scene->camera->origin = vec3f_add_v(scene->camera->origin, (t_vec3f){0, -0.1f, 0});
 	else if (keycode == KEY_ESCH)
 		rt_free_scene(scene);
+	else if (keycode == KEY_ENTER)
+		scene->mlx->is_acc = !scene->mlx->is_acc;
+	scene->mlx->frame_index = 1;
 	return (0);
 }
 

@@ -12,6 +12,12 @@
 		"scene_structures.h": "c",
 		"vector.h": "c",
 		"window.h": "c",
-		"render.h": "c"
+		"render.h": "c",
+		"math.h": "c",
+		"algorithm": "c",
+		"limits": "c",
+		"random": "c",
+		"utility": "c",
+		"xutility": "c"
 	}
 }

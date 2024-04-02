@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:55:37 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 18:35:47 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:53:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_free_tab(void **tab)
 	tmp = tab;
 	if (!tab || !tmp)
 		return ;
-	while (*tmp)
+	while (tmp && *tmp)
 		free(*(tmp++));
 	free(tab);
 }

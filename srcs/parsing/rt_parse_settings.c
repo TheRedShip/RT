@@ -26,7 +26,7 @@ int		rt_parse_ambient(char *line, t_scene **scene)
 		if (i == 1)
 			(*scene)->ambient_light->ratio = ft_atof(split[i]);
 		else if (i == 2)
-			(*scene)->ambient_light->color = clamp(rt_atof3(split[i], 0, 255), 0.0f, 1.0f);
+			(*scene)->ambient_light->color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 	}
 	ft_free_tab((void **)(split));
 	return (1);
@@ -70,7 +70,7 @@ int		rt_parse_light(char *line, t_scene **scene)
 		else if (i == 2)
 			(*scene)->lights->ratio = ft_atof(split[i]);
 		else if (i == 3)
-			(*scene)->lights->color = clamp(rt_atof3(split[i], 0, 255), 0.0f, 1.0f);
+			(*scene)->lights->color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 	}
 	ft_free_tab((void **)(split));
 	return (1);

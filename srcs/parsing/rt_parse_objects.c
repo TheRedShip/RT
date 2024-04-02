@@ -30,7 +30,7 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 		else if (i == 2)
 			objects->sphere->diameter = ft_atof(split[i]);
 		else if (i == 3)
-			objects->color = clamp(rt_atof3(split[i], 0, 255), 0.0f, 1.0f);
+			objects->color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 	}
 	ft_free_tab((void **)(split));
 	return (1);
@@ -54,7 +54,7 @@ int		rt_parse_plane(char *line, t_scene **scene)
 		else if (i == 2)
 			objects->plane->normal = rt_atof3(split[i], -1.0, 1.0);
 		else if (i == 3)
-			objects->color = clamp(rt_atof3(split[i], 0, 255), 0.0f, 1.0f);
+			objects->color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 	}
 	ft_free_tab((void **)(split));
 	return (1);
@@ -82,7 +82,7 @@ int		rt_parse_cylinder(char *line, t_scene **scene)
 		else if (i == 4)
 			objects->cylinder->height = ft_atof(split[i]);
 		else if (i == 5)
-			objects->color = clamp(rt_atof3(split[i], 0, 255), 0.0f, 1.0f);
+			objects->color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 	}
 	ft_free_tab((void **)(split));
 	return (1);

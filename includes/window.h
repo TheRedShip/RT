@@ -22,9 +22,10 @@
 # define KEY_RIGHT 100
 # define KEY_SPACE 32
 # define KEY_SHIFT 65505
+# define KEY_ENTER 65293
 
 void	create_window(t_scene **scene);
-void	put_pixel(t_scene *scene, int x, int y, int color);
+void	put_pixel(t_data *data, int x, int y, int color);
 
 int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int button, int x, int y, t_scene *scene);

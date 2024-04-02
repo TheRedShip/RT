@@ -52,12 +52,19 @@ typedef struct	s_cylinder
 	float		height;
 }				t_cylinder;
 
+typedef struct	s_material
+{
+	float		roughness;
+	float		metallic;
+}				t_material;
+
 typedef struct	s_objects
 {
 	t_vec3f				origin;
 	t_vec3f				color;
-	t_sphere			*sphere;
 	t_plane				*plane;
+	t_sphere			*sphere;
+	t_material			material;
 	t_cylinder			*cylinder;
 	int					type;
 	struct s_objects	*next;

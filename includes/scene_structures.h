@@ -27,7 +27,10 @@ typedef struct	s_mlx
 {
 	void	*mlx;
 	void	*win;
+	int		is_acc;
+	int		frame_index;
 	t_data	img;
+	t_vec3f	**acc_img;
 }				t_mlx;
 
 typedef struct	s_scene
