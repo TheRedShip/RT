@@ -40,7 +40,10 @@ float calc_t_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 	float	discriminant = b*b - 4.0f * a * c;
 	if (discriminant < 0.0f)
 		return -1.0f;
-	return (-b - sqrtf(discriminant)) / (2.0f * a);
+	float t = (-b - sqrtf(discriminant)) / (2.0f * a);
+	if (t < 0.0f)
+		t = (-b + sqrtf(discriminant)) / (2.0f * a);
+	return (t);
 }
 
 float	calc_t_object(t_ray ray, t_objects *obj)
