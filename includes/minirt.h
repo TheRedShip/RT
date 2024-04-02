@@ -27,8 +27,8 @@
 # include "window.h"
 # include "render.h"
 
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1000
+# define HEIGHT 1000
 
 int		rt_free_scene(t_scene *scene);
 

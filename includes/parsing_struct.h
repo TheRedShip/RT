@@ -63,13 +63,5 @@ typedef struct	s_objects
 	struct s_objects	*next;
 }				t_objects;
 
-// typedef struct	s_mlx
-// {
-// 	void	*mlx;
-// 	void	*mlx_win;
-// 	t_data	*img;
-// }				t_mlx;
-
-
 
 #endif

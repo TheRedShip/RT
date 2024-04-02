@@ -38,7 +38,6 @@ float calc_t_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 	// float	c = vec3f_dot_v(ray.origin, ray.origin) - (sphere->diameter / 2) * (sphere->diameter / 2);
 	
 	float	discriminant = b*b - 4.0f * a * c;
-	
 	if (discriminant < 0.0f)
 		return -1.0f;
 	return (-b - sqrtf(discriminant)) / (2.0f * a);
@@ -101,7 +100,6 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 {
 	t_vec2f		uv;
 	float		aspect_ratio;
-	t_vec3f		color;
 	t_ray		ray;
 	t_hitInfo	hit_info;
 
@@ -115,20 +113,31 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	ray.origin = scene->camera->origin;
 	ray.direction = (t_vec3f){uv.x, uv.y, -1.0f};
 	
-	hit_info = trace_ray(scene, ray);
-	if (hit_info.distance < 0.0f)
-		return ((t_vec3f){0.0f, 0.0f, 0.0f});
+	float	light;
+	t_vec3f	color;
 
-	t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
-	light_direction = normalize(light_direction);
+	color = (t_vec3f){0.0f, 0.0f, 0.0f};
+	float multiplier = 1.0f;
+	for (int i = 0; i < 4; i++)
+	{
+		hit_info = trace_ray(scene, ray);
+		if (hit_info.distance < 0.0f)
+			break;
 
-	float light = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
-	if (light < 0.0f)
-		light = 0.0f;
-	
-	color = hit_info.obj->color; 
-	color = clamp(color, 0.0f, 1.0f);
-	color = vec3f_mul_f(vec3f_mul_f(color, 255.0f), light); //i know this makes no senses it's for later
+		t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
+		light_direction = normalize(light_direction);
+
+		light = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
+		if (light < 0.0f)
+			light = 0.0f;
+		
+		color = vec3f_add_v(color, vec3f_mul_f(vec3f_mul_f(hit_info.obj->color, light), multiplier));
+		multiplier *= 0.75f;
+
+		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
+		ray.direction = vec3f_sub_v(ray.direction, vec3f_mul_f(hit_info.normal, 2 * vec3f_dot_v(ray.direction, hit_info.normal)));
+		// r.d = r.d - 2.0f * dot(r.d, h.normal) * h.normal;
+	}
 	return (color);
 }
 
@@ -146,6 +155,8 @@ int		rt_render_scene(t_scene *scene)
 		while (pos.x < WIDTH)
 		{
 			color = per_pixel(scene, pos.x, pos.y);
+			color = clamp(color, 0.0f, 1.0f);
+			color = vec3f_mul_f(color, 255.0f);
 			put_pixel(scene, pos.x, pos.y, rgb_to_hex(color));
 			pos.x++;
 		}

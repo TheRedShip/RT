@@ -13,11 +13,20 @@
 #ifndef WINDOW_H
 # define WINDOW_H
 
-#include "minirt.h"
+# include "minirt.h"
+
+# define KEY_ESCH 65307
+# define KEY_FORW 119
+# define KEY_BACK 115
+# define KEY_LEFT 97
+# define KEY_RIGHT 100
+# define KEY_SPACE 32
+# define KEY_SHIFT 65505
 
 void	create_window(t_scene **scene);
 void	put_pixel(t_scene *scene, int x, int y, int color);
 
 int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int button, int x, int y, t_scene *scene);
+
 #endif

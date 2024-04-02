@@ -10,6 +10,8 @@
 		"objects.h": "c",
 		"mlx.h": "c",
 		"scene_structures.h": "c",
-		"vector.h": "c"
+		"vector.h": "c",
+		"window.h": "c",
+		"render.h": "c"
 	}
 }
