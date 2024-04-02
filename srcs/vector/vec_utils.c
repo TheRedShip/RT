@@ -29,3 +29,11 @@ t_vec3f	normalize(t_vec3f vec)
 	len = vec3f_len(vec);
 	return (vec3f_div_f(vec, len));
 }
+
+t_vec3f	clamp(t_vec3f vec, float min, float max)
+{
+	vec.x = fminf(fmaxf(vec.x, min), max);
+	vec.y = fminf(fmaxf(vec.y, min), max);
+	vec.z = fminf(fmaxf(vec.z, min), max);
+	return (vec);
+}
