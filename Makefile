@@ -67,8 +67,8 @@ SRC_WINDOW	:=	window/window.c						\
 SRC_RENDER	:=	render/render.c						\
 				render/colors.c
 
-SRC_VECTOR	:=	vector/vec_num2f.c					\
-				vector/vec_vec2f.c					\
+SRC_VECTOR	:=	vector/vec_num3f.c					\
+				vector/vec_vec3f.c					\
 				vector/vec_utils.c
 
 

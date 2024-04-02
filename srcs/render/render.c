@@ -126,9 +126,9 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	if (light < 0.0f)
 		light = 0.0f;
 	
-	color = hit_info.obj->color;
+	color = hit_info.obj->color; 
 	color = clamp(color, 0.0f, 1.0f);
-	color = vec3f_mul_f(vec3f_mul_f(color, 255.0f), light);
+	color = vec3f_mul_f(vec3f_mul_f(color, 255.0f), light); //i know this makes no senses it's for later
 	return (color);
 }
 
