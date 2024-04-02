@@ -18,6 +18,8 @@
 		"limits": "c",
 		"random": "c",
 		"utility": "c",
-		"xutility": "c"
+		"xutility": "c",
+		"xiosbase": "c",
+		"cmath": "c"
 	}
 }

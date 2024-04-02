@@ -121,8 +121,10 @@ void	show_objects(t_scene *scene)
 void	setup_mlx(t_scene *scene, t_mlx *mlx)
 {
 	mlx_hook(mlx->win, 17, 1L << 2, rt_free_scene, scene);
-	mlx_mouse_hook(mlx->win, mouse_hook, scene);
-	mlx_key_hook(mlx->win, key_hook, scene);
+	mlx_hook(mlx->win, 2, 1L << 0, key_hook, scene);
+	mlx_hook(mlx->win, 6, 1L << 6, mouse_hook_move, scene);
+	mlx_hook(mlx->win, 4, 1L << 2, mouse_hook_press, scene);
+	mlx_hook(mlx->win, 5, 1L << 3, mouse_hook_release, scene);
 	mlx_loop_hook(mlx->mlx, rt_render_scene, scene);
 	mlx_loop(mlx->mlx);
 }

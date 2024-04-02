@@ -17,17 +17,9 @@ float	vec3f_dot_v(t_vec3f a, t_vec3f b)
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-float	vec3f_len(t_vec3f vec)
+t_vec3f	normalize(t_vec3f v)
 {
-	return (sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
-}
-
-t_vec3f	normalize(t_vec3f vec)
-{
-	float	len;
-
-	len = vec3f_len(vec);
-	return (vec3f_div_f(vec, len));
+	return (vec3f_div_f(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z)));
 }
 
 t_vec3f	clamp(t_vec3f vec, float min, float max)
@@ -41,4 +33,14 @@ t_vec3f	clamp(t_vec3f vec, float min, float max)
 t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
 {
 	return (vec3f_sub_v(vec, vec3f_mul_f(normal, 2 * vec3f_dot_v(vec, normal))));
+}
+
+t_vec3f	cross(t_vec3f a, t_vec3f b)
+{
+	t_vec3f result;
+
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return (result);
 }

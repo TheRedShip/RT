@@ -33,6 +33,12 @@ typedef struct	s_mlx
 	t_vec3f	**acc_img;
 }				t_mlx;
 
+typedef struct	s_mouse
+{
+	t_vec2f pos;
+	int		is_pressed;
+}				t_mouse;
+
 typedef struct	s_scene
 {
 	t_ambient_light	*ambient_light;
@@ -40,6 +46,7 @@ typedef struct	s_scene
 	t_light			*lights;
 	t_objects		*objects;
 	t_mlx			*mlx;
+	t_mouse			mouse;
 }				t_scene;
 
 #endif

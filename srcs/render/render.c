@@ -111,14 +111,15 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	uv.x *= aspect_ratio;
 
 	ray.origin = scene->camera->origin;
-	ray.direction = (t_vec3f){uv.x, uv.y, -1.0f};
-	
+	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, -1.0f});
+
 	float	light;
 	t_vec3f	color;
+	float	multiplier;
 
 	color = (t_vec3f){0.0f, 0.0f, 0.0f};
-	float multiplier = 1.0f;
-	for (int i = 0; i < 5; i++)
+	multiplier = 1.0f;
+	for (int i = 0; i < (!scene->mouse.is_pressed * 5) + 1; i++)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
@@ -135,7 +136,7 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 			light = 0.0f;
 		
 		color = vec3f_add_v(color, vec3f_mul_f(vec3f_mul_f(hit_info.obj->color, light), multiplier));
-		multiplier *= 0.5f;
+		multiplier *= 0.5f; //scene->ambient_light->ratio
 
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
 		// r.d = reflect(r.d, h.normal);
