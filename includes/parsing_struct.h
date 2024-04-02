@@ -37,29 +37,25 @@ typedef struct	s_light
 
 typedef struct	s_sphere
 {
-	t_vec3f		origin;
 	float		diameter;
-	t_vec3f		color;
 }				t_sphere;
 
 typedef struct	s_plane
 {
-	t_vec3f		origin;
 	t_vec3f		normal;
-	t_vec3f		color;
 }				t_plane;
 
 typedef struct	s_cylinder
 {
-	t_vec3f		origin;
 	t_vec3f		orientation;
 	float		diameter;
 	float		height;
-	t_vec3f		color;
 }				t_cylinder;
 
 typedef struct	s_objects
 {
+	t_vec3f				origin;
+	t_vec3f				color;
 	t_sphere			*sphere;
 	t_plane				*plane;
 	t_cylinder			*cylinder;
