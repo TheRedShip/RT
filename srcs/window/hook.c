@@ -57,7 +57,8 @@ int		key_hook(int keycode, t_scene *scene)
 	else if (keycode == KEY_ENTER)
 		scene->mlx->is_acc = !scene->mlx->is_acc;
 	handle_direction(keycode, scene->camera);
-	scene->mlx->frame_index = 1;
+	if (keycode < 65000)
+		scene->mlx->frame_index = 1;
 	return (0);
 }
 
@@ -67,7 +68,6 @@ int		mouse_hook_move(int x, int y, t_scene *scene)
 	
 	if (scene->mouse.is_pressed)
 	{
-		mlx_mouse_hide(scene->mlx->mlx, scene->mlx->win);
 		mouse_delta.x = x - scene->mouse.pos.x;
 		mouse_delta.y = y - scene->mouse.pos.y;
 		scene->camera->direction.y += mouse_delta.x * 0.002f;

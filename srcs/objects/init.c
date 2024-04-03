@@ -16,9 +16,10 @@ t_material	init_material()
 {
 	t_material mat;
 
-	mat.roughness = 0.5f;
+	mat.roughness = 1.0f;
 	mat.metallic = 0.0;
 	mat.color = (t_vec3f){0.0f, 0.0f, 0.0f};
+	mat.emission_power = 0.0f;
 	return (mat);
 }
 

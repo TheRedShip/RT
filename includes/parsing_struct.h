@@ -57,6 +57,7 @@ typedef struct	s_material
 	float		roughness;
 	float		metallic;
 	t_vec3f		color;
+	float		emission_power;
 }				t_material;
 
 typedef struct	s_objects
