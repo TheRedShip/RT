@@ -132,18 +132,16 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
-		{
-			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
 			break;
-		}
-		// t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
-		// light_direction = normalize(light_direction);
 
-		// light = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
-		// if (light < 0.0f)
-		// 	light = 0.0f;
+		t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
+		light_direction = normalize(light_direction);
+
+		float diffuse_ratio = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
+		if (diffuse_ratio < 0.0f)
+			diffuse_ratio = 0.0f;
 		
-		// light = vec3f_add_v(light, vec3f_mul_v(hit_info.obj->material.color, contribution));
+		light = vec3f_add_v(light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
 		contribution = vec3f_mul_v(contribution, hit_info.obj->material.color);
 		light = vec3f_add_v(light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 
@@ -154,9 +152,9 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 		float roughness_y = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
 		float roughness_z = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
 		t_vec3f in_unit_sphere = normalize((t_vec3f){roughness_x, roughness_y, roughness_z});
-		// ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
-				// vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
-		ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
+		ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
+				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
+		// ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
 		// ray.direction = normalize(vec3f_add_v(hit_info.normal, vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
 		
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
