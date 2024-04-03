@@ -14,30 +14,15 @@
 
 t_vec3f    vec3f_add_f(t_vec3f a, float b)
 {
-	t_vec3f result;
-
-	result.x = a.x + b;
-	result.y = a.y + b;
-	result.z = a.z + b;
-	return (result);
+	return ((t_vec3f){a.x + b, a.y + b, a.z + b});
 }
 
 t_vec3f    vec3f_mul_f(t_vec3f a, float b)
 {
-	t_vec3f result;
-
-	result.x = a.x * b;
-	result.y = a.y * b;
-	result.z = a.z * b;
-	return (result);
+	return ((t_vec3f){a.x * b, a.y * b, a.z * b});
 }
 
 t_vec3f    vec3f_div_f(t_vec3f a, float b)
 {
-	t_vec3f result;
-
-	result.x = a.x / b;
-	result.y = a.y / b;
-	result.z = a.z / b;
-	return (result);
+	return ((t_vec3f){a.x / b, a.y / b, a.z / b});
 }

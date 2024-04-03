@@ -56,12 +56,12 @@ typedef struct	s_material
 {
 	float		roughness;
 	float		metallic;
+	t_vec3f		color;
 }				t_material;
 
 typedef struct	s_objects
 {
 	t_vec3f				origin;
-	t_vec3f				color;
 	t_plane				*plane;
 	t_sphere			*sphere;
 	t_material			material;

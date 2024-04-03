@@ -96,14 +96,14 @@ void	show_objects(t_scene *scene)
 			printf("Sphere\n");
 			printf("Origin: %f %f %f\n", objects->origin.x, objects->origin.y, objects->origin.z);
 			printf("Diameter: %f\n", objects->sphere->diameter);
-			printf("Color: %f %f %f\n", objects->color.x, objects->color.y, objects->color.z);	
+			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);	
 		}
 		else if (objects->plane)
 		{
 			printf("Plane\n");
 			printf("Origin: %f %f %f\n", objects->origin.x, objects->origin.y, objects->origin.z);
 			printf("Normal: %f %f %f\n", objects->plane->normal.x, objects->plane->normal.y, objects->plane->normal.z);
-			printf("Color: %f %f %f\n", objects->color.x, objects->color.y, objects->color.z);			
+			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);			
 		}
 		else if (objects->cylinder)
 		{
@@ -112,7 +112,7 @@ void	show_objects(t_scene *scene)
 			printf("Orientation: %f %f %f\n", objects->cylinder->orientation.x, objects->cylinder->orientation.y, objects->cylinder->orientation.z);
 			printf("Diameter: %f\n", objects->cylinder->diameter);
 			printf("Height: %f\n", objects->cylinder->height);
-			printf("Color: %f %f %f\n", objects->color.x, objects->color.y, objects->color.z);
+			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);
 		}
 		objects = objects->next;
 	}

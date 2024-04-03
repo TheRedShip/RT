@@ -20,6 +20,8 @@
 		"utility": "c",
 		"xutility": "c",
 		"xiosbase": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"cstdlib": "cpp",
+		"xlocale": "c"
 	}
 }

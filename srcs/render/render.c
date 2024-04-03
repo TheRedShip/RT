@@ -99,6 +99,13 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (hit_ray(ray, closest_obj, closest_dist));
 }
 
+static inline int fast_rand(void) {
+	static unsigned int g_seed = 42;
+
+    g_seed = (214013*g_seed+2531011);
+    return (g_seed>>16)&0x7FFF;
+}
+
 t_vec3f		per_pixel(t_scene *scene, int x, int y)
 {
 	t_vec2f		uv;
@@ -138,7 +145,7 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 		if (light < 0.0f)
 			light = 0.0f;
 		
-		color = vec3f_add_v(color, vec3f_mul_f(vec3f_mul_f(hit_info.obj->color, light), multiplier));
+		color = vec3f_add_v(color, vec3f_mul_f(vec3f_mul_f(hit_info.obj->material.color, light), multiplier));
 		multiplier *= 0.5f; //scene->ambient_light->ratio
 
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
@@ -149,10 +156,13 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 		float min = -0.5f;
 		float max = 0.5f;
 
-		float roughness_x = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
-		float roughness_y = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
-		float roughness_z = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
-
+		// float roughness_x = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
+		// float roughness_y = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
+		// float roughness_z = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
+		float roughness_x = min + (float)(fast_rand()) / (float)(32767) * (max - min);
+		float roughness_y = min + (float)(fast_rand()) / (float)(32767) * (max - min);
+		float roughness_z = min + (float)(fast_rand()) / (float)(32767) * (max - min);
+		
 		ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, \
 				vec3f_mul_f((t_vec3f){roughness_x, roughness_y, roughness_z}, hit_info.obj->material.roughness)));
 	}

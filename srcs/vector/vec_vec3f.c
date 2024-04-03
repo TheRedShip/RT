@@ -14,41 +14,20 @@
 
 t_vec3f	vec3f_add_v(t_vec3f a, t_vec3f b)
 {
-	t_vec3f	result;
-
-	result.x = a.x + b.x;
-	result.y = a.y + b.y;
-	result.z = a.z + b.z;
-	return (result);
+	return ((t_vec3f){a.x + b.x, a.y + b.y, a.z + b.z});
 }
 
 t_vec3f	vec3f_sub_v(t_vec3f a, t_vec3f b)
 {
-	t_vec3f	result;
-
-	result.x = a.x - b.x;
-	result.y = a.y - b.y;
-	result.z = a.z - b.z;
-
-	return (result);
+	return ((t_vec3f){a.x - b.x, a.y - b.y, a.z - b.z});
 }
 
 t_vec3f	vec3f_mul_v(t_vec3f a, t_vec3f b)
 {
-	t_vec3f	result;
-
-	result.x = a.x * b.x;
-	result.y = a.y * b.y;
-	result.z = a.z * b.z;
-	return (result);
+	return ((t_vec3f){a.x * b.x, a.y * b.y, a.z * b.z});
 }
 
 t_vec3f	vec3f_div_v(t_vec3f a, t_vec3f b)
 {
-	t_vec3f	result;
-
-	result.x = a.x / b.x;
-	result.y = a.y / b.y;
-	result.z = a.z / b.z;
-	return (result);
+	return ((t_vec3f){a.x / b.x, a.y / b.y, a.z / b.z});
 }

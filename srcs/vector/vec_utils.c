@@ -24,10 +24,9 @@ t_vec3f	normalize(t_vec3f v)
 
 t_vec3f	clamp(t_vec3f vec, float min, float max)
 {
-	vec.x = fminf(fmaxf(vec.x, min), max);
-	vec.y = fminf(fmaxf(vec.y, min), max);
-	vec.z = fminf(fmaxf(vec.z, min), max);
-	return (vec);
+	return ((t_vec3f){fminf(fmaxf(vec.x, min), max), \
+						fminf(fmaxf(vec.y, min), max), \
+						fminf(fmaxf(vec.z, min), max)});
 }
 
 t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
@@ -37,10 +36,7 @@ t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
 
 t_vec3f	cross(t_vec3f a, t_vec3f b)
 {
-	t_vec3f result;
-
-	result.x = a.y * b.z - a.z * b.y;
-	result.y = a.z * b.x - a.x * b.z;
-	result.z = a.x * b.y - a.y * b.x;
-	return (result);
+	return ((t_vec3f){a.y * b.z - a.z * b.y, \
+						a.z * b.x - a.x * b.z, \
+						a.x * b.y - a.y * b.x});
 }
