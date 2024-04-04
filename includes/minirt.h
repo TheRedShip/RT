@@ -13,9 +13,15 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# define WIDTH 1000
+# define HEIGHT 1000
+
+# define THREADS 8
+
 # include <stdio.h>
 # include <sys/time.h>
 # include <math.h>
+# include <pthread.h>
 
 # include "vector.h"
 # include "parsing_struct.h"
@@ -27,8 +33,6 @@
 # include "window.h"
 # include "render.h"
 
-# define WIDTH 1000
-# define HEIGHT 1000
 
 t_vec3f	**init_acc_img(t_scene *scene);
 int		rt_free_scene(t_scene *scene);

@@ -49,4 +49,11 @@ typedef struct	s_scene
 	t_mouse			mouse;
 }				t_scene;
 
+typedef struct s_threads
+{
+	int			id;
+	pthread_t	thread;
+	t_scene		*scene;
+}				t_threads;
+
 #endif

@@ -152,9 +152,9 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 		float roughness_y = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
 		float roughness_z = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
 		t_vec3f in_unit_sphere = normalize((t_vec3f){roughness_x, roughness_y, roughness_z});
-		ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
-				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
-		// ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
+		// ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
+		// 		vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
+		ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
 		// ray.direction = normalize(vec3f_add_v(hit_info.normal, vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
 		
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
@@ -163,20 +163,16 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	return (light);
 }
 
-int		rt_render_scene(t_scene *scene)
+void	*draw(void *thread_ptr)
 {
-	u_int64_t	start;
 	t_vec2f		pos;
 	t_vec3f		color;
-	
-	if (scene->mlx->frame_index == 1)
-	{
-		ft_free_tab((void **)(scene->mlx->acc_img));
-		scene->mlx->acc_img = init_acc_img(scene);
-	}
+	t_scene		*scene;
+	t_threads	*thread;
 
-	start = get_time();
-	pos.y = 0;
+	thread = (t_threads *)thread_ptr;
+	scene = thread->scene;
+	pos.y = thread->id;
 	while (pos.y < HEIGHT)
 	{
 		pos.x = 0;
@@ -193,8 +189,31 @@ int		rt_render_scene(t_scene *scene)
 			put_pixel(&scene->mlx->img, pos.x, pos.y, rgb_to_hex(color_acc));
 			pos.x++;
 		}
-		pos.y++;
+		pos.y += THREADS;
 	}
+	return (NULL);
+}
+
+int		rt_render_scene(t_scene *scene)
+{
+	u_int64_t		start;
+	t_threads		threads[THREADS];
+
+	if (scene->mlx->frame_index == 1)
+	{
+		ft_free_tab((void **)(scene->mlx->acc_img));
+		scene->mlx->acc_img = init_acc_img(scene);
+	}
+
+	start = get_time();
+	for(int i = 0; i < THREADS; i++)
+	{
+		threads[i].id = i;
+		threads[i].scene = scene;
+		pthread_create(&(threads[i].thread), NULL, draw, (threads + i));
+	}
+	for(int i = 0; i < THREADS; i++)
+		pthread_join(threads[i].thread, NULL);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
 	printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
 	if (scene->mlx->is_acc)
