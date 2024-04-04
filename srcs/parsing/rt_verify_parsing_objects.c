@@ -18,7 +18,7 @@ int		rt_verify_sphere(char *line)
 	char		**split;
 
 	split = ft_split(line, '\t');
-	if (!split || ft_tab_len(split) != 5)
+	if (!split || ft_tab_len(split) != 6)
 		return rt_return(split);
 	i = -1;
 	while (split[++i])
@@ -30,6 +30,8 @@ int		rt_verify_sphere(char *line)
 		if (i == 3 && rt_atof3(split[i], 0, 255).x == -4242)
 			return rt_return(split);
 		if (i == 4 && rt_range_atof(split[i], 0, 1000) == -1)
+			return rt_return(split);
+		if (i == 5 && rt_range_atof(split[i], 0, 1) == -1)
 			return rt_return(split);
 	}
 	ft_free_tab((void **)(split));

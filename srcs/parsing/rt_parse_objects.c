@@ -32,7 +32,9 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 		else if (i == 3)
 			objects->material.color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
 		else if (i == 4)
-			objects->material.emission_power = ft_atof(split[i]);;
+			objects->material.emission_power = ft_atof(split[i]);
+		else if (i == 5)
+			objects->material.roughness = ft_atof(split[i]);
 	}
 	ft_free_tab((void **)(split));
 	return (1);

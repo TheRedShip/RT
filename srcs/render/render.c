@@ -105,7 +105,7 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
-t_vec3f		per_pixel(t_scene *scene, int x, int y)
+t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 {
 	t_vec2f		uv;
 	float		aspect_ratio;
@@ -128,7 +128,7 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 	light = vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio);
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
 	int	bounces = 5;
-	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 1)) + 1; i++)
+	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
@@ -148,13 +148,13 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y)
 		float min = -1.0f;
 		float max = 1.0f;
 
-		float roughness_x = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
-		float roughness_y = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
-		float roughness_z = min + (float)(rand()) / (float)(RAND_MAX) * (max - min);
+		float roughness_x = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
+		float roughness_y = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
+		float roughness_z = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
 		t_vec3f in_unit_sphere = normalize((t_vec3f){roughness_x, roughness_y, roughness_z});
-		// ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
-		// 		vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
-		ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
+		ray.direction = normalize(reflect(ray.direction, vec3f_add_v(hit_info.normal, 
+				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness))));
+		// ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
 		// ray.direction = normalize(vec3f_add_v(hit_info.normal, vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
 		
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
@@ -178,7 +178,7 @@ void	*draw(void *thread_ptr)
 		pos.x = 0;
 		while (pos.x < WIDTH)
 		{
-			color = per_pixel(scene, pos.x, pos.y);
+			color = per_pixel(scene, pos.x, pos.y, thread);
 
 			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
 				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], color);
