@@ -38,4 +38,5 @@ t_vec3f	**init_acc_img(t_scene *scene);
 int		rt_free_scene(t_scene *scene);
 
 int	ft_random(int i);
+
 #endif

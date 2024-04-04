@@ -152,8 +152,8 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 		float roughness_y = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
 		float roughness_z = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
 		t_vec3f in_unit_sphere = normalize((t_vec3f){roughness_x, roughness_y, roughness_z});
-		ray.direction = normalize(reflect(ray.direction, vec3f_add_v(hit_info.normal, 
-				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness))));
+		ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
+				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
 		// ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
 		// ray.direction = normalize(vec3f_add_v(hit_info.normal, vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
 		
