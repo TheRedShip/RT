@@ -129,16 +129,6 @@ void	setup_mlx(t_scene *scene, t_mlx *mlx)
 	mlx_loop(mlx->mlx);
 }
 
-int	ft_random(int i)
-{
-	static int seeds[THREADS] = {0};
-
-	if (seeds[i] == 0)
-		seeds[i] = rand();
-	 seeds[i] = seeds[i] * 1103515245 + 12345;
-	return ((unsigned int)(seeds[i]) % 2147483647);
-}
-
 int	main(int argc, char **argv)
 {
 	t_scene		*scene;

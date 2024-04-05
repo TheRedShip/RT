@@ -65,7 +65,7 @@ SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
 
 SRC_RENDER	:=	render/render.c						\
-				render/colors.c						\
+				render/utils.c						\
 				render/image.c						\
 				render/matrix.c
 

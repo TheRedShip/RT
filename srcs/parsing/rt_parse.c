@@ -52,7 +52,7 @@ int		rt_verify_parsing(char *line, t_scene **scene)
 		return (rt_parse_cylinder(line, scene));
 	else
 	{
-		if (line[0] != '\r')
+		if (line[0] != '\r' && line[0] != '#')
 			return (0);
 	}
 	return (1);
