@@ -120,14 +120,14 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 	uv.x *= aspect_ratio;
 
 	ray.origin = scene->camera->origin;
-	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, -1.0f});
+	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 
 	t_vec3f	light;
 	t_vec3f contribution;
 
 	light = vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio);
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	int	bounces = 5;
+	int	bounces = 10;
 	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);

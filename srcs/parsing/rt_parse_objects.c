@@ -12,6 +12,20 @@
 
 #include "minirt.h"
 
+int		rt_parse_material(char *str, t_material *material)
+{
+	char		**split;
+
+	split = ft_split(str, ',');
+	if (!split)
+		return (-1);
+	material->emission_power = ft_atof(split[0]);
+	material->roughness = ft_atof(split[1]);
+	ft_free_tab((void **)(split));
+	return (1);
+}
+
+
 int		rt_parse_sphere(char *line, t_scene **scene)
 {
 	int			i;
@@ -31,10 +45,8 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 			objects->sphere->diameter = ft_atof(split[i]);
 		else if (i == 3)
 			objects->material.color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
-		else if (i == 4)
-			objects->material.emission_power = ft_atof(split[i]);
-		else if (i == 5)
-			objects->material.roughness = ft_atof(split[i]);
+		else if (i == 4 && rt_parse_material(split[i], &(objects->material)) == -1)
+			return (rt_return(split));
 	}
 	ft_free_tab((void **)(split));
 	return (1);
@@ -59,6 +71,8 @@ int		rt_parse_plane(char *line, t_scene **scene)
 			objects->plane->normal = rt_atof3(split[i], -1.0, 1.0);
 		else if (i == 3)
 			objects->material.color = vec3f_div_f(rt_atof3(split[i], 0.0f, 255.0f), 255.0f);
+		else if (i == 4 && rt_parse_material(split[i], &(objects->material)) == -1)
+			return (rt_return(split));
 	}
 	ft_free_tab((void **)(split));
 	return (1);

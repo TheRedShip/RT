@@ -12,19 +12,6 @@
 
 #include "minirt.h"
 
-void	handle_direction(int keycode, t_camera *camera)
-{
-	if (keycode == CAM_RIGHT)
-		camera->direction.y += 0.1f;
-	else if (keycode == CAM_LEFT)
-		camera->direction.y -= 0.1f;
-	else if (keycode == CAM_UP)
-		camera->direction.x += 0.1f;
-	else if (keycode == CAM_DOWN)
-		camera->direction.x -= 0.1f;
-
-}
-
 void moveCamera(t_camera *camera, t_vec3f movement)
 {
 	t_vec3f	rotatedMovement;
@@ -56,7 +43,6 @@ int		key_hook(int keycode, t_scene *scene)
 		rt_free_scene(scene);
 	else if (keycode == KEY_ENTER)
 		scene->mlx->is_acc = !scene->mlx->is_acc;
-	handle_direction(keycode, scene->camera);
 	if (keycode < 65000)
 		scene->mlx->frame_index = 1;
 	return (0);
@@ -96,6 +82,7 @@ int		mouse_hook_release(int button, int x, int y, t_scene *scene)
 	(void)y;
 	if (button == 3)
 	{
+		scene->mlx->frame_index = 1;
 		scene->mouse.is_pressed = 0;
 	}
 	return (0);
