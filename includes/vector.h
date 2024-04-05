@@ -43,6 +43,9 @@ t_vec3f		clamp(t_vec3f vec, float min, float max);
 t_vec3f		reflect(t_vec3f vec, t_vec3f normal);
 t_vec3f		cross(t_vec3f a, t_vec3f b);
 
+float		ft_random(int thread_id, int min, int max);
+t_vec3f		lerp(t_vec3f a, t_vec3f b, float t);
+
 void		apply_rotationMatrixX(float angle, float (*matrix)[3]);
 void		apply_rotationMatrixY(float angle, float (*matrix)[3]);
 void		multiplyMatrixVector(float (*matrix)[3], t_vec3f vector, t_vec3f *result);

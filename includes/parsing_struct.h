@@ -54,9 +54,10 @@ typedef struct	s_cylinder
 
 typedef struct	s_material
 {
-	float		roughness;
-	float		metallic;
 	t_vec3f		color;
+	float		metallic;
+	float		roughness;
+	float		specular_probs;
 	float		emission_power;
 }				t_material;
 

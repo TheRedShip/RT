@@ -21,6 +21,7 @@ int		rt_parse_material(char *str, t_material *material)
 		return (-1);
 	material->emission_power = ft_atof(split[0]);
 	material->roughness = ft_atof(split[1]);
+	material->specular_probs = ft_atof(split[2]);
 	ft_free_tab((void **)(split));
 	return (1);
 }

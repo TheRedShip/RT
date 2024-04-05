@@ -12,12 +12,22 @@
 
 #include "minirt.h"
 
-int	rgb_to_hex(t_vec3f rgb)
+int		rgb_to_hex(t_vec3f rgb)
 {
 	return(0xFF << 24 | (int)rgb.x << 16 |  (int)rgb.y << 8 | (int)rgb.z);
 }
 
-int	ft_random(int i)
+t_vec3f	lerp(t_vec3f a, t_vec3f b, float t)
+{
+	return (vec3f_add_v(vec3f_mul_f(a, t), vec3f_mul_f(b, 1.0f-t)));
+}
+
+float	ft_random(int thread_id, int min, int max)
+{
+	return min + (float)(ft_rand(thread_id)) / (float)(2147483647) * (max - min);
+}
+
+int		ft_rand(int i)
 {
 	static int seeds[THREADS] = {0};
 

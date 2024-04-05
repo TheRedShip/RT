@@ -125,14 +125,32 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 	t_vec3f	light;
 	t_vec3f contribution;
 
-	light = vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio);
+	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	int	bounces = 10;
+	int	bounces = 5;
 	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
+		{
+			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
 			break;
+		}
+
+		t_vec3f in_unit_sphere = (t_vec3f){ft_random(thread->id, -1.0f, 1.0f), \
+										ft_random(thread->id, -1.0f, 1.0f), \
+										ft_random(thread->id, -1.0f, 1.0f)};
+		in_unit_sphere = normalize(in_unit_sphere);
+		if (vec3f_dot_v(in_unit_sphere, hit_info.normal) < 0.0)
+			in_unit_sphere = vec3f_mul_f(in_unit_sphere, -1.0f);
+		
+		t_vec3f	diffuse_dir = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
+		t_vec3f	specular_dir = reflect(ray.direction, hit_info.normal);
+		int specular = 1;
+		if (hit_info.obj->material.specular_probs > ft_random(thread->id, 0.0f, 1.0f))
+			specular = 0;
+		ray.direction = lerp(diffuse_dir, specular_dir, hit_info.obj->material.roughness * specular);
+		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
 
 		t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
 		light_direction = normalize(light_direction);
@@ -142,25 +160,9 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 			diffuse_ratio = 0.0f;
 		
 		light = vec3f_add_v(light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
-
-		contribution = vec3f_mul_v(contribution, hit_info.obj->material.color);
-		light = vec3f_add_v(light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
-
-		float min = -1.0f;
-		float max = 1.0f;
-
-		float roughness_x = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
-		float roughness_y = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
-		float roughness_z = min + (float)(ft_random(thread->id)) / (float)(2147483647) * (max - min);
-		t_vec3f in_unit_sphere = normalize((t_vec3f){roughness_x, roughness_y, roughness_z});
-		if (vec3f_dot_v(in_unit_sphere, hit_info.normal) < 0.0)
-			in_unit_sphere = vec3f_mul_f(in_unit_sphere, -1.0f);
-		ray.direction = reflect(ray.direction, vec3f_add_v(hit_info.normal, 
-				vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
-		// ray.direction = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
-		// ray.direction = normalize(vec3f_add_v(hit_info.normal, vec3f_mul_f(in_unit_sphere, hit_info.obj->material.roughness)));
-		
-		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
+		light = vec3f_add_v(light, \
+							vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
+		contribution = vec3f_mul_v(contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, specular));
 	}
 	light = vec3f_mul_v(light, contribution);
 	return (light);
