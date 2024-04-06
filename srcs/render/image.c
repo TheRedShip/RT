@@ -33,10 +33,9 @@ t_vec3f		**init_acc_img(t_scene *scene)
 
 t_vec2f		get_uv(int x, int y)
 {
-	float		aspect_ratio;
-	t_vec2f		uv;
+	static float	aspect_ratio = (float)WIDTH / (float)HEIGHT;
+	t_vec2f			uv;
 
-	aspect_ratio = (float)WIDTH / (float)HEIGHT;
 	uv = (t_vec2f){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
 	uv.x = uv.x * 2.0f - 1.0f;
 	uv.y = uv.y * 2.0f - 1.0f;

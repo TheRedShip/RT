@@ -15,13 +15,9 @@
 void moveCamera(t_camera *camera, t_vec3f movement)
 {
 	t_vec3f	rotatedMovement;
-	float	rotationMatrixY[3][3];
-	float	rotationMatrixX[3][3];
 
-	apply_rotationMatrixY(camera->direction.y, rotationMatrixY);
-	apply_rotationMatrixX(camera->direction.x, rotationMatrixX);
-	multiplyMatrixVector(rotationMatrixX, movement, &rotatedMovement);
-	multiplyMatrixVector(rotationMatrixY, rotatedMovement, &rotatedMovement);
+	multiplyMatrixVector(camera->rotationMatrixX, movement, &rotatedMovement);
+	multiplyMatrixVector(camera->rotationMatrixY, rotatedMovement, &rotatedMovement);
     camera->origin = vec3f_add_v(camera->origin, rotatedMovement);
 }
 
@@ -71,6 +67,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 	(void)y;
 	if (button == 3)
 	{
+		scene->mlx->frame_index = 1;
 		scene->mouse.is_pressed = 1;
 	}
 	return (0);

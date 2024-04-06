@@ -23,9 +23,11 @@ typedef struct	s_ambient_light
 
 typedef struct	s_camera
 {
+	float		fov;
 	t_vec3f		origin;
 	t_vec3f		direction;
-	float		fov;
+	float		rotationMatrixX[3][3];
+	float		rotationMatrixY[3][3];
 }				t_camera;
 
 typedef struct	s_light

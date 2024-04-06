@@ -45,9 +45,9 @@ t_hitInfo	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 		hit_info.distance = -1.0f;
 		return (hit_info);
 	}
-	hit_info.distance = (-b - sqrtf(discriminant)) / (2.0f * a);
+	hit_info.distance = (-b - sqrt(discriminant)) / (2.0f * a);
 	if (hit_info.distance < 0.0f)
-		hit_info.distance = (-b + sqrtf(discriminant)) / (2.0f * a);
+		hit_info.distance = (-b + sqrt(discriminant)) / (2.0f * a);
 	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
 	hit_info.normal = normalize(vec3f_sub_v(hit_info.position, obj->origin));
 	return (hit_info);
@@ -109,12 +109,11 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
 	t_ray		ray;
 	t_hitInfo	hit_info;
+	t_vec3f		light;
+	t_vec3f 	contribution;
 
 	ray.origin = scene->camera->origin;
 	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
-
-	t_vec3f	light;
-	t_vec3f contribution;
 
 	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
@@ -166,7 +165,7 @@ void	*draw(void *thread_ptr)
 {
 	t_vec2f		uv;
 	t_vec2f		pos;
-	t_vec3f		color;
+	t_vec3f		color_acc;
 	t_scene		*scene;
 	t_threads	*thread;
 
@@ -179,12 +178,10 @@ void	*draw(void *thread_ptr)
 		while (pos.x < WIDTH)
 		{
 			uv = get_uv(pos.x, pos.y);
-			color = per_pixel(scene, uv, thread);
-
 			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
-				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], color);
+				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], per_pixel(scene, uv, thread));
 
-			t_vec3f color_acc = vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);
+			color_acc = vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);
 			color_acc = clamp(color_acc, 0.0f, 1.0f);
 			put_pixel(&scene->mlx->img, pos.x, pos.y, rgb_to_hex(color_acc));
 			pos.x++;
@@ -204,6 +201,9 @@ int		rt_render_scene(t_scene *scene)
 		ft_free_tab((void **)(scene->mlx->acc_img));
 		scene->mlx->acc_img = init_acc_img(scene);
 	}
+
+	apply_rotationMatrixX(scene->camera->direction.x, scene->camera->rotationMatrixX);
+    apply_rotationMatrixY(scene->camera->direction.y, scene->camera->rotationMatrixY);
 
 	start = get_time();
 	for(int i = 0; i < THREADS; i++)

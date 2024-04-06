@@ -33,10 +33,3 @@ t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
 {
 	return (vec3f_sub_v(vec, vec3f_mul_f(normal, 2 * vec3f_dot_v(vec, normal))));
 }
-
-t_vec3f	cross(t_vec3f a, t_vec3f b)
-{
-	return ((t_vec3f){a.y * b.z - a.z * b.y, \
-						a.z * b.x - a.x * b.z, \
-						a.x * b.y - a.y * b.x});
-}
