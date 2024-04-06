@@ -43,7 +43,7 @@ t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
 	double	refraction_ratio;
 	t_vec3f	unit_direction;
 	
-	ir = 1.5f;
+	ir = 1.7f;
 	if (vec3f_dot_v(ray.direction, hit_info.normal) > 0.0f)
 	{
 		hit_info.normal = vec3f_mul_f(hit_info.normal, -1.0f);
