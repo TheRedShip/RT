@@ -32,9 +32,9 @@ typedef struct	s_camera
 
 typedef struct	s_light
 {
-	t_vec3f		origin;
 	float		ratio;
 	t_vec3f		color;
+	t_vec3f		origin;
 }				t_light;
 
 typedef struct	s_sphere
@@ -49,15 +49,15 @@ typedef struct	s_plane
 
 typedef struct	s_cylinder
 {
-	t_vec3f		orientation;
-	float		diameter;
 	float		height;
+	float		diameter;
+	t_vec3f		orientation;
 }				t_cylinder;
 
 typedef struct	s_material
 {
+	int			type;
 	t_vec3f		color;
-	float		metallic;
 	float		roughness;
 	float		specular_probs;
 	float		emission_power;

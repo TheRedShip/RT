@@ -60,6 +60,7 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 
 SRC_OBJECTS :=	objects/init.c						\
+				objects/hit_func.c					\
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
@@ -67,7 +68,8 @@ SRC_WINDOW	:=	window/window.c						\
 SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
 				render/image.c						\
-				render/matrix.c
+				render/matrix.c						\
+				render/scatter.c
 
 SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_vec3f.c					\

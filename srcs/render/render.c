@@ -20,68 +20,6 @@ u_int64_t	get_time(void)
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
-t_hitInfo	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
-{
-	float		a;
-	float		b;
-	float		c;
-	t_hitInfo	hit_info;
-	float		discriminant;
-	a = vec3f_dot_v(ray.direction, ray.direction);
-	b = (2*ray.origin.x*ray.direction.x - 2*ray.direction.x*obj->origin.x) + 
-				(2*ray.origin.y*ray.direction.y - 2*ray.direction.y*obj->origin.y) + 
-				(2*ray.origin.z*ray.direction.z - 2*ray.direction.z*obj->origin.z);
-	c = (ray.origin.x*ray.origin.x - 2*ray.origin.x*obj->origin.x + obj->origin.x*obj->origin.x) + 
-				(ray.origin.y*ray.origin.y - 2*ray.origin.y*obj->origin.y + obj->origin.y*obj->origin.y) + 
-				(ray.origin.z*ray.origin.z - 2*ray.origin.z*obj->origin.z + obj->origin.z*obj->origin.z) - 
-				(sphere->diameter / 2 * sphere->diameter / 2);
-	//a = vec3f_dot_v(ray.direction, ray.direction);
-	//b = 2.0f * vec3f_dot_v(ray.origin, ray.direction);
-	//c = vec3f_dot_v(ray.origin, ray.origin) - (sphere->diameter / 2) * (sphere->diameter / 2);
-	
-	discriminant = b*b - 4.0f * a * c;
-	if (discriminant < 0.0f)
-	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
-	}
-	hit_info.distance = (-b - sqrt(discriminant)) / (2.0f * a);
-	if (hit_info.distance < 0.0f)
-		hit_info.distance = (-b + sqrt(discriminant)) / (2.0f * a);
-	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
-	hit_info.normal = normalize(vec3f_sub_v(hit_info.position, obj->origin));
-	return (hit_info);
-}
-
-t_hitInfo		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
-{
-	t_hitInfo	hit_info;
-	float		denom;
-
-	denom = vec3f_dot_v(plane->normal, ray.direction);
-	if (denom == 0)
-	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
-	} 
-	hit_info.distance = vec3f_dot_v(vec3f_sub_v(obj->origin, ray.origin), plane->normal) / denom;
-	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
-	hit_info.normal = plane->normal;
-	return (hit_info);
-}
-
-t_hitInfo		hit_objects(t_ray ray, t_objects *obj)
-{
-	t_hitInfo	hit_info;
-
-	if (obj->type == OBJ_SPHER)
-		return (hit_sphere(ray, obj, obj->sphere));
-	else if (obj->type == OBJ_PLANE)
-		return (hit_plane(ray, obj, obj->plane));
-	hit_info.distance = -1.0f;
-	return (hit_info);
-}
-
 t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 {
 	t_hitInfo	temp_hit;
@@ -105,12 +43,29 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
+void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
+{
+	t_vec3f	light_direction;
+	float	diffuse_ratio;
+
+	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
+	light_direction = normalize(light_direction);
+	diffuse_ratio = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
+	if (diffuse_ratio < 0.0f)
+		diffuse_ratio = 0.0f;
+	*light = vec3f_add_v(*light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
+	*light = vec3f_add_v(*light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
+	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
+}
+
+
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
 	t_ray		ray;
 	t_hitInfo	hit_info;
 	t_vec3f		light;
 	t_vec3f 	contribution;
+	int			is_specular;
 
 	ray.origin = scene->camera->origin;
 	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
@@ -127,33 +82,9 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 			break;
 		}
 
-		t_vec3f in_unit_sphere = (t_vec3f){ft_random(thread->id, -1.0f, 1.0f), \
-										ft_random(thread->id, -1.0f, 1.0f), \
-										ft_random(thread->id, -1.0f, 1.0f)};
-		in_unit_sphere = normalize(in_unit_sphere);
-		if (vec3f_dot_v(in_unit_sphere, hit_info.normal) < 0.0)
-			in_unit_sphere = vec3f_mul_f(in_unit_sphere, -1.0f);
-		
-		t_vec3f	diffuse_dir = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
-		t_vec3f	specular_dir = reflect(ray.direction, hit_info.normal);
-		int specular = 1;
-		if (hit_info.obj->material.specular_probs > 0.0f && \
-			hit_info.obj->material.specular_probs > ft_random(thread->id, 0.0f, 1.0f))
-			specular = 0;
-		ray.direction = lerp(diffuse_dir, specular_dir, hit_info.obj->material.roughness * specular);
-		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
+		ray = new_ray(hit_info, ray, thread, &is_specular);
+		calcul_light(hit_info, scene, &light, &contribution, is_specular);
 
-		t_vec3f	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
-		light_direction = normalize(light_direction);
-
-		float diffuse_ratio = vec3f_dot_v(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
-		if (diffuse_ratio < 0.0f)
-			diffuse_ratio = 0.0f;
-		
-		light = vec3f_add_v(light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
-		light = vec3f_add_v(light, \
-							vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
-		contribution = vec3f_mul_v(contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, specular));
 		if (hit_info.obj->material.emission_power > 0.0f)
 			break;
 	}

@@ -22,10 +22,10 @@ int		rt_parse_material(char *str, t_material *material)
 	material->emission_power = ft_atof(split[0]);
 	material->roughness = ft_atof(split[1]);
 	material->specular_probs = ft_atof(split[2]);
+	material->type = ft_atoi(split[3]);
 	ft_free_tab((void **)(split));
 	return (1);
 }
-
 
 int		rt_parse_sphere(char *line, t_scene **scene)
 {
