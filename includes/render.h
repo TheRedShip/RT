@@ -29,8 +29,11 @@ typedef struct	s_ray
 	t_vec3f	direction;
 }	t_ray;
 
-int			rgb_to_hex(t_vec3f rgb);
 int			rt_render_scene(t_scene *scene);
+
+int			rgb_to_hex(t_vec3f rgb);
+
+t_vec2f		get_uv(int x, int y);
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev);
 
 #endif

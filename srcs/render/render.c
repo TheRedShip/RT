@@ -105,19 +105,10 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
-t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
+t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
-	t_vec2f		uv;
-	float		aspect_ratio;
 	t_ray		ray;
 	t_hitInfo	hit_info;
-
-	aspect_ratio = (float)WIDTH / (float)HEIGHT;
-	uv = (t_vec2f){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
-	uv.x = uv.x * 2.0f - 1.0f;
-	uv.y = uv.y * 2.0f - 1.0f;
-	uv.y = -uv.y;
-	uv.x *= aspect_ratio;
 
 	ray.origin = scene->camera->origin;
 	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
@@ -173,6 +164,7 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 
 void	*draw(void *thread_ptr)
 {
+	t_vec2f		uv;
 	t_vec2f		pos;
 	t_vec3f		color;
 	t_scene		*scene;
@@ -186,7 +178,8 @@ void	*draw(void *thread_ptr)
 		pos.x = 0;
 		while (pos.x < WIDTH)
 		{
-			color = per_pixel(scene, pos.x, pos.y, thread);
+			uv = get_uv(pos.x, pos.y);
+			color = per_pixel(scene, uv, thread);
 
 			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
 				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], color);
