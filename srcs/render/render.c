@@ -147,7 +147,8 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 		t_vec3f	diffuse_dir = normalize(vec3f_add_v(hit_info.normal, in_unit_sphere));
 		t_vec3f	specular_dir = reflect(ray.direction, hit_info.normal);
 		int specular = 1;
-		if (hit_info.obj->material.specular_probs > ft_random(thread->id, 0.0f, 1.0f))
+		if (hit_info.obj->material.specular_probs > 0.0f && \
+			hit_info.obj->material.specular_probs > ft_random(thread->id, 0.0f, 1.0f))
 			specular = 0;
 		ray.direction = lerp(diffuse_dir, specular_dir, hit_info.obj->material.roughness * specular);
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
@@ -163,6 +164,8 @@ t_vec3f		per_pixel(t_scene *scene, int x, int y, t_threads *thread)
 		light = vec3f_add_v(light, \
 							vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 		contribution = vec3f_mul_v(contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, specular));
+		if (hit_info.obj->material.emission_power > 0.0f)
+			break;
 	}
 	light = vec3f_mul_v(light, contribution);
 	return (light);
@@ -190,7 +193,6 @@ void	*draw(void *thread_ptr)
 
 			t_vec3f color_acc = vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);
 			color_acc = clamp(color_acc, 0.0f, 1.0f);
-			color_acc = vec3f_mul_f(color_acc, 255.0f);
 			put_pixel(&scene->mlx->img, pos.x, pos.y, rgb_to_hex(color_acc));
 			pos.x++;
 		}

@@ -14,6 +14,10 @@
 
 int		rgb_to_hex(t_vec3f rgb)
 {
+	rgb.x = sqrtf(rgb.x);
+	rgb.y = sqrtf(rgb.y);
+	rgb.z = sqrtf(rgb.z);
+	rgb = vec3f_mul_f(rgb, 255.0f);
 	return(0xFF << 24 | (int)rgb.x << 16 |  (int)rgb.y << 8 | (int)rgb.z);
 }
 
