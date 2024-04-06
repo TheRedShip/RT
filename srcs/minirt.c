@@ -114,6 +114,14 @@ void	show_objects(t_scene *scene)
 			printf("Height: %f\n", objects->cylinder->height);
 			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);
 		}
+		else if (objects->quad)
+		{
+			printf("Quad\n");
+			printf("Up corner: %f %f %f\n", objects->quad->up_corner.x, objects->quad->up_corner.y, objects->quad->up_corner.z);
+			printf("Right corner: %f %f %f\n", objects->quad->right_corner.x, objects->quad->right_corner.y, objects->quad->right_corner.z);
+			printf("Size: %f\n", objects->quad->size);
+			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);
+		}
 		objects = objects->next;
 	}
 }

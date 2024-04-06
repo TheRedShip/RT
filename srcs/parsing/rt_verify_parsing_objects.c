@@ -17,15 +17,11 @@ int		rt_verify_material(char *str)
 	char		**split;
 
 	split = ft_split(str, ',');
-	if (!split || ft_tab_len(split) != 4)
+	if (!split || ft_tab_len(split) != 2)
 		return (rt_return(split));
-	if (rt_range_atof(split[0], 0.0, 1000.0) == -1)
+	if (rt_range_atof(split[0], 0.0, 1.0) == -1)
 		return (rt_return(split));
 	if (rt_range_atof(split[1], 0.0, 1.0) == -1)
-		return (rt_return(split));
-	if (rt_range_atof(split[2], 0.0, 1.0) == -1)
-		return (rt_return(split));
-	if (rt_range_atoi(split[2], 0.0, 2.0) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
@@ -100,6 +96,34 @@ int		rt_verify_cylinder(char *line)
 		if (i == 4 && rt_range_atof(split[i], 0.0, 1000.0) == -1)
 			return rt_return(split);
 		if (i == 5 && rt_atof3(split[i], 0, 255).x == -4242)
+			return rt_return(split);
+	}
+	ft_free_tab((void **)(split));
+	return (1);
+}
+
+int		rt_verify_quad(char *line)
+{
+	int			i;
+	char		**split;
+
+	split = ft_split(line, '\t');
+	if (!split || ft_tab_len(split) != 7)
+		return rt_return(split);
+	i = -1;
+	while (split[++i])
+	{
+		if (i == 1 && rt_atof3(split[i], -1000.0, 1000.0).x == -4242)
+			return rt_return(split);
+		if (i == 2 && rt_atof3(split[i], -1000.0, 1000.0).x == -4242)
+			return rt_return(split);
+		if (i == 3 && rt_atof3(split[i], -1000.0, 1000.0).x == -4242)
+			return rt_return(split);
+		if (i == 4 && rt_range_atof(split[i], 0, 100.0) == -1)
+			return rt_return(split);
+		if (i == 5 && rt_atof3(split[i], 0, 255).x == -4242)
+			return rt_return(split);
+		if (i == 6 && rt_verify_material(split[i]) == 0)
 			return rt_return(split);
 	}
 	ft_free_tab((void **)(split));

@@ -30,6 +30,10 @@ int			rt_verify_light(char *line);
 int			rt_verify_sphere(char *line);
 int			rt_verify_plane(char *line);
 int			rt_verify_cylinder(char *line);
+int			rt_verify_quad(char *line);
+
+int			rt_verify_lightsphere(char *line);
+int			rt_verify_glasssphere(char *line);
 
 int			rt_parse_ambient(char *line, t_scene **scene);
 int			rt_parse_camera(char *line, t_scene **scene);
@@ -37,5 +41,9 @@ int			rt_parse_light(char *line, t_scene **scene);
 int			rt_parse_sphere(char *line, t_scene **scene);
 int			rt_parse_plane(char *line, t_scene **scene);
 int			rt_parse_cylinder(char *line, t_scene **scene);
+int			rt_parse_quad(char *line, t_scene **scene);
+
+int			rt_parse_lightsphere(char *line, t_scene **scene);
+int			rt_parse_glasssphere(char *line, t_scene **scene);
 
 #endif

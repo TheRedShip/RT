@@ -16,11 +16,12 @@ t_material	init_material()
 {
 	t_material mat;
 
-	mat.type = 0;
+	mat.type = MAT_LAMBERT;
 	mat.color = (t_vec3f){0.0f, 0.0f, 0.0f};
 	mat.roughness = 1.0f;
 	mat.specular_probs = 0.0f;
 	mat.emission_power = 0.0f;
+	mat.refraction_index = 1.0f;
 	return (mat);
 }
 
@@ -42,7 +43,7 @@ void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
 t_objects	*rt_add_objects(t_scene **scene, char *type)
 {
 	t_objects *objects;
-	static	char *type_list_str[4] = {"sp", "pl", "cy", NULL};
+	static	char *type_list_str[5] = {"sp", "pl", "cy", "qd", NULL};
 	int	i;
 
 	objects = ft_calloc(1, sizeof(t_objects));
@@ -62,7 +63,9 @@ t_objects	*rt_add_objects(t_scene **scene, char *type)
 	else if (i == 1)
 		objects->plane = ft_calloc(1, sizeof(t_plane));
 	else if (i == 2)
-		objects->cylinder = ft_calloc(1, sizeof(t_cylinder));;
+		objects->cylinder = ft_calloc(1, sizeof(t_cylinder));
+	else if (i == 3)
+		objects->quad = ft_calloc(1, sizeof(t_quad));
 	return (objects);
 }
 
