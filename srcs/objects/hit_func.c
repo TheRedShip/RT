@@ -65,33 +65,29 @@ t_hitInfo		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 t_hitInfo		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 {
 	float		denom;
+	float		beta;
+	float		alpha;
 	t_hitInfo	hit_info;
-	(void)obj;
+	t_vec3f		planar_hitpt_vector;
+
 	denom = vec3f_dot(quad->normal, ray.direction);
+	hit_info.distance = -1.0f;
 	if (fabs(denom) < 1e-8)
-	{
-		hit_info.distance = -1.0f;
 		return (hit_info);
-	}
 	hit_info.distance = (quad->d - vec3f_dot(ray.origin, quad->normal)) / denom;
 	if (hit_info.distance < 0.0f)
-	{
-		hit_info.distance = -1.0f;
 		return (hit_info);
-	}
 	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
+	//hit_info.normal = vec3f_mul_f(quad->normal, -ft_sign(denom));
 	hit_info.normal = quad->normal;
-
-	t_vec3f	planar_hitpt_vector = vec3f_sub_v(hit_info.position, obj->origin);
-	float alpha = vec3f_dot(quad->w, vec3f_cross(planar_hitpt_vector, quad->right_corner));
-	float beta = vec3f_dot(quad->w, vec3f_cross(quad->up_corner, planar_hitpt_vector));
-
-	if ((alpha < 0) || (1 < alpha) || (beta < 0) || (1 < beta))
+	planar_hitpt_vector = vec3f_sub_v(hit_info.position, obj->origin);
+	alpha = vec3f_dot(quad->w, vec3f_cross(planar_hitpt_vector, normalize(quad->right_corner)));
+	beta = vec3f_dot(quad->w, vec3f_cross(normalize(quad->up_corner), planar_hitpt_vector));
+	if (alpha < 0 || beta < 0 || alpha > vec3f_length(quad->up_corner) || beta > vec3f_length(quad->right_corner))
 	{
 		hit_info.distance = -1.0f;
-		return (hit_info);
+		return hit_info;
 	}
-	
 	return (hit_info);
 }
 

@@ -50,7 +50,8 @@ typedef struct	s_plane
 typedef struct	s_quad
 {
 	float		d;
-	float		size;
+	float		witdh;
+	float		height;
 	t_vec3f		w;
 	t_vec3f		normal;
 	t_vec3f		up_corner;

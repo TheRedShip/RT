@@ -56,6 +56,10 @@ int		rt_verify_parsing(char *line, t_scene **scene)
 		return (rt_parse_glasssphere(line, scene));
 	else if (ft_strncmp(line, "qd\t", 3) == 0 && rt_verify_quad(line))
 		return (rt_parse_quad(line, scene));
+	else if (ft_strncmp(line, "cu\t", 3) == 0 && rt_verify_cube(line))
+		return (rt_parse_cube(line, scene));
+	else if (ft_strncmp(line, "gc\t", 3) == 0 && rt_verify_glasscube(line))
+		return (rt_parse_glasscube(line, scene));
 	else
 	{
 		if (line[0] != '\r' && line[0] != '#')

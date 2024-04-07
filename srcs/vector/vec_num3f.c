@@ -13,6 +13,11 @@
 #include "minirt.h"
 
 
+float		vec3f_length(t_vec3f a)
+{
+	return (sqrt(a.x * a.x + a.y * a.y + a.z * a.z));
+}
+
 t_vec3f		vec3f_cross(t_vec3f a, t_vec3f b)
 {
 	return ((t_vec3f){a.y * b.z - a.z * b.y,

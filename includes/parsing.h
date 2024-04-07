@@ -31,9 +31,11 @@ int			rt_verify_sphere(char *line);
 int			rt_verify_plane(char *line);
 int			rt_verify_cylinder(char *line);
 int			rt_verify_quad(char *line);
-
 int			rt_verify_lightsphere(char *line);
 int			rt_verify_glasssphere(char *line);
+int			rt_verify_cube(char *line);
+int			rt_verify_glasscube(char *line);
+int			rt_verify_material(char *str);
 
 int			rt_parse_ambient(char *line, t_scene **scene);
 int			rt_parse_camera(char *line, t_scene **scene);
@@ -42,8 +44,10 @@ int			rt_parse_sphere(char *line, t_scene **scene);
 int			rt_parse_plane(char *line, t_scene **scene);
 int			rt_parse_cylinder(char *line, t_scene **scene);
 int			rt_parse_quad(char *line, t_scene **scene);
-
 int			rt_parse_lightsphere(char *line, t_scene **scene);
 int			rt_parse_glasssphere(char *line, t_scene **scene);
+int			rt_parse_cube(char *line, t_scene **scene);
+int			rt_parse_glasscube(char *line, t_scene **scene);
+int			rt_parse_material(char *str, t_material *material);
 
 #endif

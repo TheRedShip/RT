@@ -36,8 +36,9 @@ t_vec3f		vec3f_add_v(t_vec3f a, t_vec3f b);
 t_vec3f		vec3f_sub_v(t_vec3f a, t_vec3f b);
 t_vec3f		vec3f_mul_v(t_vec3f a, t_vec3f b);
 t_vec3f   	vec3f_div_v(t_vec3f a, t_vec3f b);
-float		vec3f_dot(t_vec3f a, t_vec3f b);
 
+float		vec3f_dot(t_vec3f a, t_vec3f b);
+float		vec3f_length(t_vec3f a);
 t_vec3f		normalize(t_vec3f vec);
 t_vec3f		clamp(t_vec3f vec, float min, float max);
 t_vec3f		reflect(t_vec3f vec, t_vec3f normal);

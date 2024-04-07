@@ -14,7 +14,6 @@
 
 int		rt_verify_ambient(char *line)
 {
-	int			i;
 	char		**split;
 	static int	has_seen = 0;
 
@@ -24,21 +23,16 @@ int		rt_verify_ambient(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 3)
 		return rt_return(split);
-	i = -1;
-	while (split[++i])
-	{
-		if (i == 1 && rt_range_atof(split[i], 0.0, 1.0) == -1)
-			return (rt_return(split));
-		if (i == 2 && rt_atof3(split[i], 0, 255).x == -4242)
-			return (rt_return(split));
-	}
+	if (rt_range_atof(split[1], 0.0, 1.0) == -1)
+		return (rt_return(split));
+	if (rt_atof3(split[2], 0, 255).x == -4242)
+		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
 }
 
 int		rt_verify_camera(char *line)
 {
-	int			i;
 	char		**split;
 	static int	has_seen = 0;
 
@@ -48,23 +42,18 @@ int		rt_verify_camera(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 4)
 		return rt_return(split);
-	i = -1;
-	while (split[++i])
-	{
-		if (i == 1 && rt_atof3(split[i], -1000.0, 1000.00).x == -4242)
-			return rt_return(split);
-		if (i == 2 && rt_atof3(split[i], -1.0, 1.0).x == -4242)
-			return rt_return(split);
-		if (i == 3 && rt_range_atoi(split[i], 0, 180) == -1)
-			return rt_return(split);
-	}
+	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
+		return rt_return(split);
+	if (rt_atof3(split[2], -1.0, 1.0).x == -4242)
+		return rt_return(split);
+	if (rt_range_atoi(split[3], 0, 180) == -1)
+		return rt_return(split);
 	ft_free_tab((void **)(split));
 	return (1);
 }
 
 int		rt_verify_light(char *line)
 {
-	int			i;
 	char		**split;
 	static int	has_seen = 0;
 
@@ -74,16 +63,12 @@ int		rt_verify_light(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 4)
 		return rt_return(split);
-	i = -1;
-	while (split[++i])
-	{
-		if (i == 1 && rt_atof3(split[i], -1000.0, 1000.00).x == -4242)
-			return rt_return(split);
-		if (i == 2 && rt_range_atof(split[i], 0.0, 1.0) == -1)
-			return rt_return(split);
-		if (i == 3 && rt_atof3(split[i], 0, 255).x == -4242)
-			return rt_return(split);
-	}
+	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
+		return rt_return(split);
+	if (rt_range_atof(split[2], 0.0, 1.0) == -1)
+		return rt_return(split);
+	if (rt_atof3(split[3], 0, 255).x == -4242)
+		return rt_return(split);
 	ft_free_tab((void **)(split));
 	return (1);
 }
