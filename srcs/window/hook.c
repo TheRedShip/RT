@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:12:28 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/30 23:12:28 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:04:38 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int		key_hook(int keycode, t_scene *scene)
 		rt_free_scene(scene);
 	else if (keycode == KEY_ENTER)
 		scene->mlx->is_acc = !scene->mlx->is_acc;
-	if (keycode < 65000)
+	else if (keycode == 107)
+		scene->mlx->antialiasing = !scene->mlx->antialiasing;
+	if (keycode < 65000 && keycode != 107)
 		scene->mlx->frame_index = 1;
 	return (0);
 }
@@ -71,7 +73,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		scene->mouse.is_pressed = 1;
 	}
 	else if (button == 1)
-		printf("color: %X\n", *(unsigned int *)(scene->mlx->img.addr + (y * scene->mlx->img.line_length + x * (scene->mlx->img.bits_per_pixel / 8))));
+		printf("(%d, %d) color: %X\n",x, y, *(unsigned int *)(scene->mlx->img.addr + (y * scene->mlx->img.line_length + x * (scene->mlx->img.bits_per_pixel / 8))));
 	return (0);
 }
 

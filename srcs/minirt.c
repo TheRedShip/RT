@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:09:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 00:12:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_scene		*init_scene(void)
 		rt_free_scene(scene);
 	}
 	scene->mlx->frame_index = 1;
+	scene->mlx->antialiasing = 1;
 	scene->mlx->is_acc = 1;
 	return (scene);
 }

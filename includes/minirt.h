@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:09:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:03:06 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define HEIGHT 1000
 
 # define THREADS 16
+# define AA 3
 
 # include <stdio.h>
 # include <sys/time.h>
@@ -37,5 +38,6 @@ t_vec3f	**init_acc_img(t_scene *scene);
 int		rt_free_scene(t_scene *scene);
 
 int	ft_rand(int i);
+
 
 #endif

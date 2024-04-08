@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/30 14:14:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 00:08:10 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_mlx
 	void	*win;
 	int		is_acc;
 	int		frame_index;
+	int		antialiasing;
 	t_data	img;
 	t_vec3f	**acc_img;
 }				t_mlx;

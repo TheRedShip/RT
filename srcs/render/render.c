@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 00:00:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/31 00:00:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:01:54 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,62 @@ void	*draw(void *thread_ptr)
 	return (NULL);
 }
 
+unsigned int	get_pixel(t_data *img, int x, int y)
+{
+	return(*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
+}
+
+unsigned int	avg_pixels(unsigned int orig, unsigned int new)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = (((orig & 0xFF0000) >> 16) + ((new & 0xFF0000) >> 16)) / 2;
+	g = (((orig & 0xFF00) >> 8) + ((new & 0xFF00) >> 8)) / 2;
+	b = (((orig & 0xFF)) + ((new & 0xFF))) / 2;
+	//printf("%X , %X = %X%X%X\n",orig, new, r, g ,b);
+	return(0xFF << 24 | r << 16 | g << 8 | b);
+}
+
+void	apply_antialiasing_filter(t_scene *scene)
+{
+	unsigned int avg;
+	int img_pos[2];
+	img_pos[0] = 0;
+	img_pos[1] = 0;
+	int i;
+	
+	while(img_pos[0] < HEIGHT - (AA - 1))
+	{
+		img_pos[1] = 1;	
+		while(img_pos[1] < WIDTH - (AA - 1))
+		{
+			avg = 0;
+			i = 0;
+			while(i < AA * AA)
+			{	
+				if(i)
+					avg = avg_pixels(avg, get_pixel(&scene->mlx->img,\
+					img_pos[0] + (i % AA), img_pos[1] + (i / AA)));
+				else
+					avg = get_pixel(&scene->mlx->img, img_pos[0] + (i % AA),\
+					img_pos[1] + (i / AA));
+				i++;
+			}
+			i = 0;
+			while(i < AA * AA)
+			{
+				put_pixel(&scene->mlx->img, img_pos[0] + (i % AA), img_pos[1]\
+				+ (i / AA), avg);
+				i++;
+			}
+			img_pos[1]++;
+		}
+		img_pos[0]++;
+	}
+}
+
 int		rt_render_scene(t_scene *scene)
 {
 	u_int64_t		start;
@@ -158,6 +214,8 @@ int		rt_render_scene(t_scene *scene)
 	}
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
+	if(scene->mlx->antialiasing)
+		apply_antialiasing_filter(scene);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
 	printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
 	if (scene->mlx->is_acc)
