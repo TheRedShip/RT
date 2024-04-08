@@ -37,6 +37,6 @@ int		ft_rand(int i)
 
 	if (seeds[i] == 0)
 		seeds[i] = rand();
-	 seeds[i] = seeds[i] * 1103515245 + 12345;
+	seeds[i] = seeds[i] * 1103515245 + 12345;
 	return ((unsigned int)(seeds[i]) % 2147483647);
 }

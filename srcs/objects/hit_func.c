@@ -27,10 +27,14 @@ t_hitInfo	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 				(ray.origin.y*ray.origin.y - 2*ray.origin.y*obj->origin.y + obj->origin.y*obj->origin.y) + 
 				(ray.origin.z*ray.origin.z - 2*ray.origin.z*obj->origin.z + obj->origin.z*obj->origin.z) - 
 				(sphere->diameter / 2 * sphere->diameter / 2);
+	
+
 	//a = vec3f_dot(ray.direction, ray.direction);
 	//b = 2.0f * vec3f_dot(ray.origin, ray.direction);
 	//c = vec3f_dot(ray.origin, ray.origin) - (sphere->diameter / 2) * (sphere->diameter / 2);
 	
+	a = vec3f_dot(ray.direction, ray.direction);
+
 	discriminant = b*b - 4.0f * a * c;
 	if (discriminant < 0.0f)
 	{

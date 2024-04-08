@@ -45,14 +45,26 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 
 void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
 {
-	t_vec3f	light_direction;
-	float	diffuse_ratio;
+	t_vec3f		light_direction;
+	float		diffuse_ratio;
 
 	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
 	light_direction = normalize(light_direction);
 	diffuse_ratio = vec3f_dot(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
 	if (diffuse_ratio < 0.0f)
 		diffuse_ratio = 0.0f;
+	//debug shadow
+	if (scene->lights->ratio > 0.0f)
+	{
+		t_hitInfo	shadow_hit_info;
+		t_ray		ray;
+		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
+		ray.direction = vec3f_mul_f(light_direction, -1.0f);
+		shadow_hit_info = trace_ray(scene, ray);
+		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < vec3f_length(vec3f_sub_v(scene->lights->origin, hit_info.position)))
+			diffuse_ratio = 0.0f;
+	}
+	//end debug shadow
 	*light = vec3f_add_v(*light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
 	*light = vec3f_add_v(*light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
@@ -78,7 +90,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
 		{
-			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
+			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
 			break;
 		}
 
@@ -131,6 +143,7 @@ int		rt_render_scene(t_scene *scene)
 	{
 		ft_free_tab((void **)(scene->mlx->acc_img));
 		scene->mlx->acc_img = init_acc_img(scene);
+		ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
 	apply_rotationMatrixX(scene->camera->direction.x, scene->camera->rotationMatrixX);

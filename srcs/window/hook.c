@@ -70,6 +70,8 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		scene->mlx->frame_index = 1;
 		scene->mouse.is_pressed = 1;
 	}
+	else if (button == 1)
+		printf("color: %X\n", *(unsigned int *)(scene->mlx->img.addr + (y * scene->mlx->img.line_length + x * (scene->mlx->img.bits_per_pixel / 8))));
 	return (0);
 }
 
