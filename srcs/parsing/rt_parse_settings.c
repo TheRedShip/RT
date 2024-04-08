@@ -49,6 +49,7 @@ int		rt_parse_light(char *line, t_scene **scene)
 	(*scene)->lights->origin = rt_atof3(split[1], -1000, 1000);
 	(*scene)->lights->ratio = ft_atof(split[2]);
 	(*scene)->lights->color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
+	(*scene)->lights->hard = ft_atoi(split[4]);
 	ft_free_tab((void **)(split));
 	return (1);
 }

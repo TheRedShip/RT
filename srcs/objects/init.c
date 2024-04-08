@@ -42,9 +42,9 @@ void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
 
 t_objects	*rt_add_objects(t_scene **scene, char *type)
 {
-	t_objects *objects;
-	static	char *type_list_str[5] = {"sp", "pl", "cy", "qd", NULL};
 	int	i;
+	t_objects *objects;
+	static	char *type_list_str[7] = {"sp", "pl", "cy", "qd", "el", "po", NULL};
 
 	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
@@ -58,14 +58,18 @@ t_objects	*rt_add_objects(t_scene **scene, char *type)
 	objects->type = i;
 	objects->material = init_material();
 	rt_set_objects_to_scene(*scene, objects);
-	if (i == 0)
+	if (i == OBJ_SPHER)
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
-	else if (i == 1)
+	else if (i == OBJ_PLANE)
 		objects->plane = ft_calloc(1, sizeof(t_plane));
-	else if (i == 2)
+	else if (i == OBJ_CYLIN)
 		objects->cylinder = ft_calloc(1, sizeof(t_cylinder));
-	else if (i == 3)
+	else if (i == OBJ_QUADS)
 		objects->quad = ft_calloc(1, sizeof(t_quad));
+	else if (i == OBJ_ELLIP)
+		objects->ellipse = ft_calloc(1, sizeof(t_ellipse));
+	else if (i == OBJ_PORTAL)
+		objects->portal = ft_calloc(1, sizeof(t_portal));
 	return (objects);
 }
 

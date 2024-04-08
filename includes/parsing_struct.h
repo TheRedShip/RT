@@ -15,6 +15,8 @@
 
 # include "minirt.h"
 
+typedef struct	s_objects	t_objects;
+
 typedef struct	s_ambient_light
 {
 	float		ratio;
@@ -32,6 +34,7 @@ typedef struct	s_camera
 
 typedef struct	s_light
 {
+	int			hard;
 	float		ratio;
 	t_vec3f		color;
 	t_vec3f		origin;
@@ -65,6 +68,19 @@ typedef struct	s_cylinder
 	t_vec3f		orientation;
 }				t_cylinder;
 
+typedef struct	s_ellipse
+{
+	float		a;
+	float		b;
+	float		c;
+}				t_ellipse;
+
+typedef struct	s_portal
+{
+	t_objects	*support;
+	t_objects	*linked_portal;
+}				t_portal;
+
 typedef struct	s_material
 {
 	int			type;
@@ -82,6 +98,8 @@ typedef struct	s_objects
 	t_quad				*quad;
 	t_plane				*plane;
 	t_sphere			*sphere;
+	t_portal			*portal;
+	t_ellipse			*ellipse;
 	t_cylinder			*cylinder;
 	t_material			material;
 	struct s_objects	*next;
