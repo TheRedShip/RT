@@ -52,6 +52,8 @@ int		rt_verify_parsing(char *line, t_scene **scene)
 		return (rt_parse_cylinder(line, scene));
 	else if (ft_strncmp(line, "ls\t", 3) == 0 && rt_verify_lightsphere(line))
 		return (rt_parse_lightsphere(line, scene));
+	else if (ft_strncmp(line, "lq\t", 3) == 0 && rt_verify_lightquad(line))
+		return (rt_parse_lightquad(line, scene));
 	else if (ft_strncmp(line, "gs\t", 3) == 0 && rt_verify_glasssphere(line))
 		return (rt_parse_glasssphere(line, scene));
 	else if (ft_strncmp(line, "qd\t", 3) == 0 && rt_verify_quad(line))

@@ -54,11 +54,14 @@ OBJS_DIR	:=	.objs
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/parse_utils.c				\
 				parsing/rt_parse_objects.c			\
+				parsing/rt_parse_objects2.c			\
 				parsing/rt_parse_settings.c			\
 				parsing/rt_parse_others.c			\
 				parsing/rt_verify_parsing_others.c	\
 				parsing/rt_verify_parsing_objects.c	\
+				parsing/rt_verify_parsing_objects2.c\
 				parsing/rt_verify_parsing_settings.c\
+
 
 
 SRC_OBJECTS :=	objects/init.c						\
