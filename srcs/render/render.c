@@ -53,8 +53,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 	diffuse_ratio = vec3f_dot(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
 	if (diffuse_ratio < 0.0f)
 		diffuse_ratio = 0.0f;
-	//debug shadow
-	if (scene->lights->ratio > 0.0f)
+	if (scene->lights->hard == 1 && scene->lights->ratio > 0.0f)
 	{
 		t_hitInfo	shadow_hit_info;
 		t_ray		ray;
@@ -64,7 +63,6 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < vec3f_length(vec3f_sub_v(scene->lights->origin, hit_info.position)))
 			diffuse_ratio = 0.0f;
 	}
-	//end debug shadow
 	*light = vec3f_add_v(*light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
 	*light = vec3f_add_v(*light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
