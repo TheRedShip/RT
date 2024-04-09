@@ -77,7 +77,9 @@ typedef struct	s_ellipse
 
 typedef struct	s_portal
 {
-	t_objects	*support;
+	t_quad		quad;
+	int			portal_id;
+	int			linked__id;
 	t_objects	*linked_portal;
 }				t_portal;
 

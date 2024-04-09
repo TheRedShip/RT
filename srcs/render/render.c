@@ -82,7 +82,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 
 	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	int	bounces = 5;
+	int	bounces = 20;
 	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);
@@ -92,6 +92,17 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 			break;
 		}
 
+		if (hit_info.obj->material.type == MAT_PORTAL)
+		{
+			ray.origin = vec3f_add_v(ray.origin, (t_vec3f){0,35,0});
+			ray.direction = ray.direction;
+			hit_info = trace_ray(thread->scene, ray);
+			if (hit_info.distance < 0.0f)
+			{
+				light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
+				break;
+			}
+		}
 		ray = new_ray(hit_info, ray, thread, &is_specular);
 		calcul_light(hit_info, scene, &light, &contribution, is_specular);
 
@@ -118,7 +129,11 @@ void	*draw(void *thread_ptr)
 		pos.x = 0;
 		while (pos.x < WIDTH)
 		{
-			uv = get_uv(pos.x, pos.y);
+			if (scene->mlx->antialiasing)
+				uv = get_uv(pos.x + (float)(ft_random(thread->id, -1, 1)), pos.y + (float)(ft_random(thread->id, -1, 1)));
+			else
+				uv = get_uv(pos.x, pos.y);
+			
 			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
 				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], per_pixel(scene, uv, thread));
 
@@ -130,62 +145,6 @@ void	*draw(void *thread_ptr)
 		pos.y += THREADS;
 	}
 	return (NULL);
-}
-
-unsigned int	get_pixel(t_data *img, int x, int y)
-{
-	return(*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
-}
-
-unsigned int	avg_pixels(unsigned int orig, unsigned int new)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	r = (((orig & 0xFF0000) >> 16) + ((new & 0xFF0000) >> 16)) / 2;
-	g = (((orig & 0xFF00) >> 8) + ((new & 0xFF00) >> 8)) / 2;
-	b = (((orig & 0xFF)) + ((new & 0xFF))) / 2;
-	//printf("%X , %X = %X%X%X\n",orig, new, r, g ,b);
-	return(0xFF << 24 | r << 16 | g << 8 | b);
-}
-
-void	apply_antialiasing_filter(t_scene *scene)
-{
-	unsigned int avg;
-	int img_pos[2];
-	img_pos[0] = 0;
-	img_pos[1] = 0;
-	int i;
-	
-	while(img_pos[0] < HEIGHT - (AA - 1))
-	{
-		img_pos[1] = 1;	
-		while(img_pos[1] < WIDTH - (AA - 1))
-		{
-			avg = 0;
-			i = 0;
-			while(i < AA * AA)
-			{	
-				if(i)
-					avg = avg_pixels(avg, get_pixel(&scene->mlx->img,\
-					img_pos[0] + (i % AA), img_pos[1] + (i / AA)));
-				else
-					avg = get_pixel(&scene->mlx->img, img_pos[0] + (i % AA),\
-					img_pos[1] + (i / AA));
-				i++;
-			}
-			i = 0;
-			while(i < AA * AA)
-			{
-				put_pixel(&scene->mlx->img, img_pos[0] + (i % AA), img_pos[1]\
-				+ (i / AA), avg);
-				i++;
-			}
-			img_pos[1]++;
-		}
-		img_pos[0]++;
-	}
 }
 
 int		rt_render_scene(t_scene *scene)
@@ -212,8 +171,6 @@ int		rt_render_scene(t_scene *scene)
 	}
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
-	if(scene->mlx->antialiasing)
-		apply_antialiasing_filter(scene);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
 	printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
 	if (scene->mlx->is_acc)

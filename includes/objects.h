@@ -27,8 +27,9 @@ typedef enum e_obj_type
 
 typedef enum e_mat_type
 {
-	MAT_LAMBERT = 0,
-	MAT_DIELECTRIC = 1
+	MAT_LAMBERT    = 0,
+	MAT_DIELECTRIC = 1,
+	MAT_PORTAL     = 2
 }	t_mat_type;
 
 typedef struct	s_hitInfo	t_hitInfo;

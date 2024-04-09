@@ -55,6 +55,18 @@ t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
 	return (ray);
 }
 
+t_ray		portal_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)
+{
+	t_hitInfo	portal_hit_info;
+	t_ray		portal_ray;
+
+	(void) hit_info;
+	portal_ray.origin = vec3f_add_v(ray.origin, (t_vec3f){0,35,0});
+	portal_ray.direction = ray.direction;
+	portal_hit_info = trace_ray(thread->scene, portal_ray);
+	return (new_ray(portal_hit_info, portal_ray, thread, is_specular));
+}
+
 t_ray		new_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)
 {
 	*is_specular = 1;

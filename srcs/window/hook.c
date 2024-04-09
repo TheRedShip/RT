@@ -38,10 +38,16 @@ int		key_hook(int keycode, t_scene *scene)
 	else if (keycode == KEY_ESCH)
 		rt_free_scene(scene);
 	else if (keycode == KEY_ENTER)
+	{
+		printf("miniRT : accumulating %d\n", scene->mlx->is_acc);
 		scene->mlx->is_acc = !scene->mlx->is_acc;
-	else if (keycode == 107)
+	}
+	else if (keycode == KEY_ALIA)
+	{
+		printf("miniRT : antialiasing %d\n", scene->mlx->antialiasing);
 		scene->mlx->antialiasing = !scene->mlx->antialiasing;
-	if (keycode < 65000 && keycode != 107)
+	}
+	if (keycode < 65000)
 		scene->mlx->frame_index = 1;
 	return (0);
 }

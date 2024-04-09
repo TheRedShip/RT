@@ -22,6 +22,7 @@
 		"xiosbase": "c",
 		"cmath": "c",
 		"cstdlib": "cpp",
-		"xlocale": "c"
+		"xlocale": "c",
+		"pthread.h": "c"
 	}
 }
