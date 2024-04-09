@@ -40,6 +40,8 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	}
 	if (closest_hit.distance == -1.0f)
 		return (closest_hit);
+	if (closest_hit.obj->type == OBJ_PORTAL)
+		ray = portal_ray(scene, &closest_hit, ray);
 	return (closest_hit);
 }
 
@@ -68,7 +70,6 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
 }
 
-
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
 	t_ray		ray;
@@ -82,7 +83,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 
 	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	int	bounces = 20;
+	int	bounces = 5;
 	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);
@@ -91,21 +92,8 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
 			break;
 		}
-
-		if (hit_info.obj->material.type == MAT_PORTAL)
-		{
-			ray.origin = vec3f_add_v(ray.origin, (t_vec3f){0,35,0});
-			ray.direction = ray.direction;
-			hit_info = trace_ray(thread->scene, ray);
-			if (hit_info.distance < 0.0f)
-			{
-				light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
-				break;
-			}
-		}
 		ray = new_ray(hit_info, ray, thread, &is_specular);
 		calcul_light(hit_info, scene, &light, &contribution, is_specular);
-
 		if (hit_info.obj->material.emission_power > 0.0f)
 			break;
 	}

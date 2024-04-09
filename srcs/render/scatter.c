@@ -55,16 +55,20 @@ t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
 	return (ray);
 }
 
-t_ray		portal_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)
+t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
 {
-	t_hitInfo	portal_hit_info;
-	t_ray		portal_ray;
+    t_vec3f portal_offset;
 
-	(void) hit_info;
-	portal_ray.origin = vec3f_add_v(ray.origin, (t_vec3f){0,35,0});
-	portal_ray.direction = ray.direction;
-	portal_hit_info = trace_ray(thread->scene, portal_ray);
-	return (new_ray(portal_hit_info, portal_ray, thread, is_specular));
+    if (hit_info->obj->portal->linked_portal == NULL)
+        return ray;
+
+    portal_offset = vec3f_sub_v(hit_info->obj->portal->linked_portal->origin, hit_info->obj->origin);
+
+	ray.origin = vec3f_add_v(hit_info->position, portal_offset); // a modif
+	ray.origin = vec3f_add_v(ray.origin, vec3f_mul_f(hit_info->normal, 0.0001f));
+	ray.direction = reflect(ray.direction, hit_info->obj->portal->linked_portal->portal->quad.normal);
+    *hit_info = trace_ray(scene, ray);
+    return ray;
 }
 
 t_ray		new_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)

@@ -114,15 +114,13 @@ int		rt_parse_portal(char *line, t_scene **scene)
 	portal = rt_add_objects(scene, "po");
 	portal->portal->portal_id = ft_atoi(split[3]);
 	portal->portal->linked_id = ft_atoi(split[4]);
-	portal->material.type = MAT_PORTAL;
 	portal->portal->quad.normal = rt_atof3(split[2], -1.0, 1.0);
 	portal->origin = rt_atof3(split[1], -1000.0, 1000.0);
-	portal->origin = vec3f_add_v(portal->origin, vec3f_mul_f(portal->portal->quad.normal,0.1));
+	portal->origin = vec3f_add_v(portal->origin, vec3f_mul_f(portal->portal->quad.normal,0.0001f));
 	calculate_up_right(portal->portal->quad.normal, &portal->portal->quad.up_corner, &portal->portal->quad.right_corner);
 	scale_quad(&portal->portal->quad.up_corner, &portal->portal->quad.right_corner, &portal->origin, 2.5, 5.5);
 	portal->portal->quad.d = vec3f_dot(portal->portal->quad.normal, portal->origin);
 	portal->portal->quad.w = vec3f_div_f(portal->portal->quad.normal, vec3f_dot(portal->portal->quad.normal,portal->portal->quad.normal));
-	portal->material.type = MAT_PORTAL;
 	ft_free_tab((void **)(split));
 	return (1);
 }

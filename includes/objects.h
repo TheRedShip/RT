@@ -17,19 +17,18 @@
 
 typedef enum e_obj_type
 {
-	OBJ_SPHER = 0,
-	OBJ_PLANE = 1,
-	OBJ_CYLIN = 2,
-	OBJ_QUADS = 3,
-	OBJ_ELLIP = 4,
-	OBJ_PORTAL = 5
+	OBJ_SPHER 		= 0,
+	OBJ_PLANE 		= 1,
+	OBJ_CYLIN 		= 2,
+	OBJ_QUADS 		= 3,
+	OBJ_ELLIP 		= 4,
+	OBJ_PORTAL		= 5
 }	t_obj_type;
 
 typedef enum e_mat_type
 {
-	MAT_LAMBERT    = 0,
-	MAT_DIELECTRIC = 1,
-	MAT_PORTAL     = 2
+	MAT_LAMBERT    	= 0,
+	MAT_DIELECTRIC 	= 1
 }	t_mat_type;
 
 typedef struct	s_hitInfo	t_hitInfo;
