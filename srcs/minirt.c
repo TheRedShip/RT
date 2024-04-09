@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/09 00:12:45 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/09 19:39:57 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,31 @@ void	setup_mlx(t_scene *scene, t_mlx *mlx)
 	mlx_loop(mlx->mlx);
 }
 
+void	link_portals(t_scene *scene)
+{
+	t_objects *obj;
+	t_objects *tmp;
+	t_objects *start;
+
+	obj = scene->objects;
+	start = obj;
+	while(obj)
+	{
+		if(obj->type == OBJ_PORTAL)
+		{
+			tmp = start;
+			while(tmp && !obj->portal->linked_portal)
+			{
+				if(tmp->type == OBJ_PORTAL
+				&& obj->portal->linked_id == tmp->portal->portal_id)
+					obj->portal->linked_portal = tmp;
+				tmp = tmp->next;
+			}
+		}
+		obj = obj->next;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_scene		*scene;
@@ -150,6 +175,7 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		exit(1);
 	rt_parse(argv[1], &scene);
+	link_portals(scene);
 	printf("Parsing successful\n");
 	show_objects(scene);
 	

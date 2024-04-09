@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_parse_object2.c                                 :+:      :+:    :+:   */
+/*   rt_parse_objects2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 00:29:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/08 00:29:38 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:42:02 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		rt_parse_portal(char *line, t_scene **scene)
 
 	portal = rt_add_objects(scene, "po");
 	portal->portal->portal_id = ft_atoi(split[3]);
-	portal->portal->linked__id = ft_atoi(split[4]);
+	portal->portal->linked_id = ft_atoi(split[4]);
 	portal->material.type = MAT_PORTAL;
 	portal->portal->quad.normal = rt_atof3(split[2], -1.0, 1.0);
 	portal->origin = rt_atof3(split[1], -1000.0, 1000.0);

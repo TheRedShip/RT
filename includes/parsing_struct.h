@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:53:06 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/29 16:53:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:41:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct	s_portal
 {
 	t_quad		quad;
 	int			portal_id;
-	int			linked__id;
+	int			linked_id;
 	t_objects	*linked_portal;
 }				t_portal;
 
