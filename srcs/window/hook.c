@@ -12,29 +12,29 @@
 
 #include "minirt.h"
 
-void moveCamera(t_camera *camera, t_vec3f movement)
+void moveCamera(t_scene *scene, t_vec3f movement)
 {
-	t_vec3f	rotatedMovement;
+	t_vec3f		rotatedMovement;
 
-	multiplyMatrixVector(camera->rotationMatrixX, movement, &rotatedMovement);
-	multiplyMatrixVector(camera->rotationMatrixY, rotatedMovement, &rotatedMovement);
-    camera->origin = vec3f_add_v(camera->origin, rotatedMovement);
+	multiplyMatrixVector(scene->camera->rotationMatrixX, movement, &rotatedMovement);
+	multiplyMatrixVector(scene->camera->rotationMatrixY, rotatedMovement, &rotatedMovement);
+    scene->camera->origin = vec3f_add_v(scene->camera->origin, rotatedMovement);
 }
 
 int		key_hook(int keycode, t_scene *scene)
 {
 	if (keycode == KEY_FORW)
-		moveCamera(scene->camera, (t_vec3f){0, 0, -0.15f});
+		moveCamera(scene, (t_vec3f){0, 0, -0.15f});
 	else if (keycode == KEY_BACK)
-		moveCamera(scene->camera, (t_vec3f){0, 0, 0.15f});
+		moveCamera(scene, (t_vec3f){0, 0, 0.15f});
 	else if (keycode == KEY_LEFT)
-		moveCamera(scene->camera, (t_vec3f){-0.15f, 0, 0});
+		moveCamera(scene, (t_vec3f){-0.15f, 0, 0});
 	else if (keycode == KEY_RIGHT)
-		moveCamera(scene->camera, (t_vec3f){0.15f, 0, 0});
+		moveCamera(scene, (t_vec3f){0.15f, 0, 0});
 	else if (keycode == KEY_UPE)
-		moveCamera(scene->camera, (t_vec3f){0, 0.15f, 0});
+		moveCamera(scene, (t_vec3f){0, 0.15f, 0});
 	else if (keycode == KEY_DOWNA)
-		moveCamera(scene->camera, (t_vec3f){0, -0.15f, 0});
+		moveCamera(scene, (t_vec3f){0, -0.15f, 0});
 	else if (keycode == KEY_ESCH)
 		rt_free_scene(scene);
 	else if (keycode == KEY_ENTER)

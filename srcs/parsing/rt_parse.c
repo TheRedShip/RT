@@ -68,7 +68,7 @@ int		rt_verify_parsing(char *line, t_scene **scene)
 		return (rt_parse_portal(line, scene));
 	else
 	{
-		if (line[0] != '\r' && line[0] != '#')
+		if ((line[0] != '\r' && line[0] != '\n') && line[0] != '#')
 			return (0);
 	}
 	return (1);
