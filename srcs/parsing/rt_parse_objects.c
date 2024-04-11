@@ -21,6 +21,8 @@ int		rt_parse_material(char *str, t_material *material)
 		return (-1);
 	material->roughness = ft_atof(split[0]);
 	material->specular_probs = ft_atof(split[1]);
+	if (ft_tab_len(split) == 3 && ft_atoi(split[2]) == 1)
+		material->checkered = 1;
 	ft_free_tab((void **)(split));
 	return (1);
 }

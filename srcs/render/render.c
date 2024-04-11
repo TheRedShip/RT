@@ -45,6 +45,19 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
+void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
+{
+	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
+	if (hit_info.obj->material.checkered == 1)
+	{
+		int xInteger = floor(0.25 * (hit_info.position.x + 0.001));
+		int yInteger = floor(0.25 * (hit_info.position.y + 0.001));
+		int zInteger = floor(0.25 * (hit_info.position.z + 0.001));
+		if ((xInteger + yInteger + zInteger) % 2 == 0)
+			*contribution = vec3f_mul_f(*contribution, 0.1);
+	}
+}
+
 void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
 {
 	t_vec3f		light_direction;
@@ -67,7 +80,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 	}
 	*light = vec3f_add_v(*light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
 	*light = vec3f_add_v(*light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
-	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
+	calcul_color(contribution, hit_info, is_specular);
 }
 
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
@@ -91,6 +104,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
 			break;
 		}
+		hit_info.uv = uv;
 		ray = new_ray(hit_info, ray, thread, &is_specular);
 		calcul_light(hit_info, scene, &light, &contribution, is_specular);
 		if (hit_info.obj->material.emission_power > 0.0f)
@@ -159,7 +173,8 @@ int		rt_render_scene(t_scene *scene)
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
-	printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
+	(void) start;
+	// printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
 	if (scene->mlx->is_acc)
 		scene->mlx->frame_index++;
 	else

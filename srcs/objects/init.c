@@ -16,8 +16,9 @@ t_material	init_material()
 {
 	t_material mat;
 
-	mat.type = MAT_LAMBERT;
 	mat.color = (t_vec3f){0.0f, 0.0f, 0.0f};
+	mat.type = MAT_LAMBERT;
+	mat.checkered = 0;
 	mat.roughness = 1.0f;
 	mat.specular_probs = 0.0f;
 	mat.emission_power = 0.0f;

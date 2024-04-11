@@ -88,6 +88,7 @@ typedef struct	s_material
 {
 	int			type;
 	t_vec3f		color;
+	int			checkered;
 	float		roughness;
 	float		specular_probs;
 	float		emission_power;

@@ -79,7 +79,15 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		scene->mouse.is_pressed = 1;
 	}
 	else if (button == 1)
-		printf("(%d, %d) color: %X\n",x, y, *(unsigned int *)(scene->mlx->img.addr + (y * scene->mlx->img.line_length + x * (scene->mlx->img.bits_per_pixel / 8))));
+	{
+		t_vec2f uv = get_uv(x, y);
+		t_ray	ray;
+		ray.origin = scene->camera->origin;
+		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
+
+		t_hitInfo hit_info = trace_ray(scene, ray);
+		printf("%f %f %f\n", hit_info.position.x, hit_info.position.y, hit_info.position.z);
+	}
 	return (0);
 }
 
