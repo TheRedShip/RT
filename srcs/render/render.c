@@ -49,12 +49,13 @@ void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
 {
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
 	if (hit_info.obj->material.checkered == 1)
-	{
-		int xInteger = floor(0.25 * (hit_info.position.x + 0.001));
-		int yInteger = floor(0.25 * (hit_info.position.y + 0.001));
-		int zInteger = floor(0.25 * (hit_info.position.z + 0.001));
-		if ((xInteger + yInteger + zInteger) % 2 == 0)
+		if (((int)(floor(0.25 * (hit_info.position.x + 0.001)) + \
+		floor(0.25 * (hit_info.position.y + 0.001)) + \
+		floor(0.25 * (hit_info.position.z + 0.001)))) % 2 == 0)
 			*contribution = vec3f_mul_f(*contribution, 0.1);
+	if (hit_info.obj->material.texture.exist == 1)
+	{
+		printf("%d\n", hit_info.obj->type);
 	}
 }
 

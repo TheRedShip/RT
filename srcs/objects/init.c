@@ -20,6 +20,7 @@ t_material	init_material()
 	mat.type = MAT_LAMBERT;
 	mat.checkered = 0;
 	mat.roughness = 1.0f;
+	mat.texture.exist = 0;
 	mat.specular_probs = 0.0f;
 	mat.emission_power = 0.0f;
 	mat.refraction_index = 1.0f;

@@ -84,10 +84,20 @@ typedef struct	s_portal
 	t_objects	*linked_portal;
 }				t_portal;
 
+typedef struct	s_texture
+{
+	int			exist;
+	char		*path;
+	t_vec3f		*data;
+	int			width;
+	int			height;
+}				t_texture;
+
 typedef struct	s_material
 {
 	int			type;
 	t_vec3f		color;
+	t_texture	texture;
 	int			checkered;
 	float		roughness;
 	float		specular_probs;
