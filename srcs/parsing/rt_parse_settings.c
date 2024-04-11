@@ -35,6 +35,7 @@ int		rt_parse_camera(char *line, t_scene **scene)
 	(*scene)->camera->origin = rt_atof3(split[1], -1000, 1000);
 	(*scene)->camera->direction = rt_atof3(split[2], -1, 1);
 	(*scene)->camera->fov = ft_atoi(split[3]);
+	(*scene)->camera->bounce = ft_atoi(split[4]);
 	ft_free_tab((void **)(split));
 	return (1);
 }

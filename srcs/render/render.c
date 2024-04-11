@@ -83,8 +83,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 
 	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	int	bounces = 5;
-	for (int i = 0; i < (!scene->mouse.is_pressed * (bounces - 2)) + 2; i++)
+	for (int i = 0; i < (!scene->mouse.is_pressed * (scene->camera->bounce - 2)) + 2; i++)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
