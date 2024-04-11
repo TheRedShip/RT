@@ -35,6 +35,7 @@ typedef struct	s_hitInfo	t_hitInfo;
 typedef struct	s_ray		t_ray;
 
 t_material	init_material();
+t_texture	init_texture(t_scene *scene, char *path);
 t_hitInfo	hit_objects(t_ray ray, t_objects *obj);
 
 t_objects	*rt_add_objects(t_scene **scene, char *type);

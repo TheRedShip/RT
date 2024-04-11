@@ -103,7 +103,7 @@ int			rt_parse_cube(char *line, t_scene **scene)
 		objects[j]->quad->d = vec3f_dot(objects[j]->quad->normal, objects[j]->origin);
 		objects[j]->quad->w = vec3f_div_f(objects[j]->quad->normal, vec3f_dot(objects[j]->quad->normal,objects[j]->quad->normal));
 		objects[j]->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
-		if (rt_parse_material(split[6], &(objects[j]->material)) == -1)
+		if (rt_parse_material(*scene, split[6], &(objects[j]->material)) == -1)
 				return (rt_return(split));
 		j++;
 	}

@@ -49,7 +49,7 @@ int		rt_parse_ellipse(char *line, t_scene **scene)
 	objects->ellipse->b = radius.y;
 	objects->ellipse->c = radius.z;
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(split[4], &(objects->material)) == -1)
+	if (rt_parse_material(*scene, split[4], &(objects->material)) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
@@ -108,7 +108,7 @@ int		rt_parse_portal(char *line, t_scene **scene)
 	support->quad->d = vec3f_dot(support->quad->normal, support->origin);
 	support->quad->w = vec3f_div_f(support->quad->normal, vec3f_dot(support->quad->normal,support->quad->normal));
 	support->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material("1.0,0.0", &(support->material)) == -1)
+	if (rt_parse_material(*scene, "1.0,0.0", &(support->material)) == -1)
 		return (rt_return(split));
 
 	portal = rt_add_objects(scene, "po");

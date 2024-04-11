@@ -12,6 +12,25 @@
 
 #include "minirt.h"
 
+t_texture	init_texture(t_scene *scene, char *path)
+{
+	t_texture	texture;
+
+	texture.exist = 1;
+	texture.path = path;
+	if (texture.path[ft_strlen(texture.path) - 2] == '\r')
+		texture.path[ft_strlen(texture.path) - 2] = '\0';
+	if (texture.path[ft_strlen(texture.path) - 1] == '\n')
+		texture.path[ft_strlen(texture.path) - 1] = '\0';
+	texture.data = mlx_xpm_file_to_image(scene->mlx->mlx, texture.path, &texture.width, &texture.height);
+	if (texture.data == NULL)
+	{
+		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), path);
+		rt_free_scene(scene);
+	}
+	return (texture);
+}
+
 t_material	init_material()
 {
 	t_material mat;

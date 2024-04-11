@@ -88,7 +88,7 @@ typedef struct	s_texture
 {
 	int			exist;
 	char		*path;
-	t_vec3f		*data;
+	void		*data;
 	int			width;
 	int			height;
 }				t_texture;

@@ -52,8 +52,8 @@ int			rt_parse_lightquad(char *line, t_scene **scene);
 int			rt_parse_glasssphere(char *line, t_scene **scene);
 int			rt_parse_cube(char *line, t_scene **scene);
 int			rt_parse_glasscube(char *line, t_scene **scene);
-int			rt_parse_material(char *str, t_material *material);
 int			rt_parse_ellipse(char *line, t_scene **scene);
 int			rt_parse_portal(char *line, t_scene **scene);
+int			rt_parse_material(t_scene *scene, char *str, t_material *material);
 
 #endif

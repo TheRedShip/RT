@@ -45,8 +45,26 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
+t_vec3f	get_texture_color(t_hitInfo hit_info)
+{
+	t_vec3f		color;
+	t_vec2f		uv;
+	t_vec3f		outward_normal;
+
+	color = (t_vec3f){0.0f, 0.5f, 0.0f};
+	if (hit_info.obj->type == OBJ_SPHER)
+	{
+		outward_normal = vec3f_div_f(vec3f_sub_v(hit_info.position, hit_info.obj->origin), (hit_info.obj->sphere->diameter / 2));
+		uv.x = acos(-outward_normal.y) / (2 * M_PI);
+		uv.y = (atan2(-outward_normal.z, outward_normal.x) + M_PI) / M_PI;
+		printf("uv.x = %f, uv.y = %f\n", uv.x, uv.y);
+	}
+	return (color);
+}
+
 void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
 {
+
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
 	if (hit_info.obj->material.checkered == 1)
 		if (((int)(floor(0.25 * (hit_info.position.x + 0.001)) + \
@@ -54,9 +72,7 @@ void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
 		floor(0.25 * (hit_info.position.z + 0.001)))) % 2 == 0)
 			*contribution = vec3f_mul_f(*contribution, 0.1);
 	if (hit_info.obj->material.texture.exist == 1)
-	{
-		printf("%d\n", hit_info.obj->type);
-	}
+		*contribution = vec3f_mul_v(*contribution, get_texture_color(hit_info));
 }
 
 void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
