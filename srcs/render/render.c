@@ -71,8 +71,7 @@ t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 	else if (hit_info.obj->type == OBJ_QUADS)
 	{
 		uv.x = hit_info.position.x - floor(hit_info.position.x);
-		uv.y = hit_info.position.z - floor(hit_info.position.z);
-		printf("uv.x: %f, uv.y: %f\n", uv.x, uv.y);
+		uv.y = hit_info.position.y - floor(hit_info.position.y);
 		color_hex = get_pixel(&hit_info.obj->material.texture.data, uv.x * (hit_info.obj->material.texture.width - 1), uv.y * (hit_info.obj->material.texture.height - 1));
 		color = hex_to_rgb(color_hex);
 	}
