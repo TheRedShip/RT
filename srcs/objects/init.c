@@ -22,12 +22,13 @@ t_texture	init_texture(t_scene *scene, char *path)
 		texture.path[ft_strlen(texture.path) - 2] = '\0';
 	if (texture.path[ft_strlen(texture.path) - 1] == '\n')
 		texture.path[ft_strlen(texture.path) - 1] = '\0';
-	texture.data = mlx_xpm_file_to_image(scene->mlx->mlx, texture.path, &texture.width, &texture.height);
-	if (texture.data == NULL)
+	texture.data.img = mlx_xpm_file_to_image(scene->mlx->mlx, texture.path, &texture.width, &texture.height);
+	if (texture.data.img == NULL)
 	{
 		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), path);
 		rt_free_scene(scene);
 	}
+	texture.data.addr = mlx_get_data_addr(texture.data.img, &texture.data.bits_per_pixel, &texture.data.line_length, &texture.data.endian);
 	return (texture);
 }
 

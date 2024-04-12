@@ -17,7 +17,6 @@
 # define HEIGHT 1000
 
 # define THREADS 16
-# define AA 3
 
 # include <stdio.h>
 # include <sys/time.h>
@@ -25,7 +24,6 @@
 # include <pthread.h>
 
 # include "vector.h"
-# include "parsing_struct.h"
 # include "scene_structures.h"
 # include "mlx.h"
 # include "libft.h"

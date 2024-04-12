@@ -21,6 +21,17 @@ int		rgb_to_hex(t_vec3f rgb)
 	return(0xFF << 24 | (int)rgb.x << 16 |  (int)rgb.y << 8 | (int)rgb.z);
 }
 
+t_vec3f	hex_to_rgb(int hex)
+{
+	t_vec3f	rgb;
+
+	rgb.x = (hex >> 16) & 0xFF;
+	rgb.y = (hex >> 8) & 0xFF;
+	rgb.z = hex & 0xFF;
+	rgb = vec3f_div_f(rgb, 255.0f);
+	return (rgb);
+}
+
 t_vec3f	lerp(t_vec3f a, t_vec3f b, float t)
 {
 	return (vec3f_add_v(vec3f_mul_f(a, t), vec3f_mul_f(b, 1.0f-t)));
