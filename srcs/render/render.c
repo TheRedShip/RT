@@ -223,7 +223,8 @@ int		rt_render_scene(t_scene *scene)
 		pthread_join(threads[i].thread, NULL);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
 	(void) start;
-	// printf("Rendering scene : %lu ms %d\n", get_time() - start, scene->mlx->frame_index);
+	printf("Rendering scene : %lu ms %d            \r", get_time() - start, scene->mlx->frame_index);
+	fflush(stdout);
 	if (scene->mlx->is_acc)
 		scene->mlx->frame_index++;
 	else
