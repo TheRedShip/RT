@@ -4,15 +4,15 @@ C	25,0,115			0,-1,-1			70			30
 L	0,0,0						0.0					255,255,255		0
 
 ls	0,0,0						200							255,255,255		2
-sp	0,0,0						1000						255,255,255		1.0,0,0,assets/skybox_stars.xpm
+sp	0,0,0						1000						255,255,255		1.0,0,0,assets/solar_system/skybox_stars.xpm
 
-sp	-6,0,111					0.69						255,255,255		1.0,0,0,assets/mercury.xpm
-sp	-4,0,114					1.728						255,255,255		1.0,0,0,assets/venus.xpm
-sp	0,0,120						1.818						255,255,255		1.0,0,0,assets/earth.xpm
-sp	2,0,120						0.5							255,255,255		1.0,0,0,assets/moon.xpm
-sp	5,0,125						0.964						255,255,255		1.0,0,0,assets/mars.xpm
-sp	15,0,140					20.2						255,255,255		1.0,0,0,assets/jupiter.xpm
-sp	50,0,146					17.09						255,255,255		1.0,0,0,assets/saturn.xpm
+sp	-6,0,111					0.69						255,255,255		1.0,0,0,assets/solar_system/mercury.xpm
+sp	-4,0,114					1.728						255,255,255		1.0,0,0,assets/solar_system/venus.xpm
+sp	0,0,120						1.818						255,255,255		1.0,0,0,assets/solar_system/earth.xpm
+sp	2,0,120						0.5							255,255,255		1.0,0,0,assets/solar_system/moon.xpm
+sp	5,0,125						0.964						255,255,255		1.0,0,0,assets/solar_system/mars.xpm
+sp	15,0,140					20.2						255,255,255		1.0,0,0,assets/solar_system/jupiter.xpm
+sp	50,0,146					17.09						255,255,255		1.0,0,0,assets/solar_system/saturn.xpm
 
 sp	50,0,110					10.0						0,0,0			1.0,0,0
 gs	50,0,110					30.0						255,255,255		1.5
