@@ -8,7 +8,7 @@ sp	0,0,0						1000					255,255,255		1.0,0,0,assets/skybox_stars.xpm
 
 sp	-30,0,55					5						255,255,255		1.0,0,0,assets/mercury.xpm
 sp	-20,0,70					10						255,255,255		1.0,0,0,assets/venus.xpm
-sp	0,0,100						20						255,255,255		1.0,0,0,assets/earthmap.xpm
-sp	20,0,100					3						255,255,255		1.0,0,0,assets/moonmap.xpm
+sp	0,0,100						20						255,255,255		1.0,0,0,assets/earth.xpm
+sp	20,0,100					3						255,255,255		1.0,0,0,assets/moon.xpm
 sp	25,0,125					10						255,255,255		1.0,0,0,assets/mars.xpm
 sp	75,0,200					75						255,255,255		1.0,0,0,assets/jupiter.xpm
