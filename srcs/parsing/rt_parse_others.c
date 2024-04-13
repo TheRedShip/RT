@@ -62,7 +62,8 @@ void		setup_quad(t_objects *objects[6], char **split, int j)
 	}
 	else if (j == 2)
 	{
-		objects[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(split[2])};
+		objects[j]->origin = vec3f_add_v(objects[j]->origin, (t_vec3f){0, 0, -ft_atof(split[2])});
+		objects[j]->quad->up_corner = (t_vec3f){0, 0, ft_atof(split[2])};
 		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(split[3]), 0};
 	}
 	else if (j == 3)
