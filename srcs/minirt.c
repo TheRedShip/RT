@@ -85,47 +85,6 @@ t_scene		*init_scene(void)
 	return (scene);
 }
 
-void	show_objects(t_scene *scene)
-{
-	t_objects	*objects;
-
-	objects = scene->objects;
-	while (objects)
-	{
-		if (objects->sphere)
-		{
-			printf("Sphere\n");
-			printf("Origin: %f %f %f\n", objects->origin.x, objects->origin.y, objects->origin.z);
-			printf("Diameter: %f\n", objects->sphere->diameter);
-			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);	
-		}
-		else if (objects->plane)
-		{
-			printf("Plane\n");
-			printf("Origin: %f %f %f\n", objects->origin.x, objects->origin.y, objects->origin.z);
-			printf("Normal: %f %f %f\n", objects->plane->normal.x, objects->plane->normal.y, objects->plane->normal.z);
-			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);			
-		}
-		else if (objects->cylinder)
-		{
-			printf("Cylinder\n");
-			printf("Origin: %f %f %f\n", objects->origin.x, objects->origin.y, objects->origin.z);
-			printf("Orientation: %f %f %f\n", objects->cylinder->orientation.x, objects->cylinder->orientation.y, objects->cylinder->orientation.z);
-			printf("Diameter: %f\n", objects->cylinder->diameter);
-			printf("Height: %f\n", objects->cylinder->height);
-			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);
-		}
-		else if (objects->quad)
-		{
-			printf("Quad\n");
-			printf("Up corner: %f %f %f\n", objects->quad->up_corner.x, objects->quad->up_corner.y, objects->quad->up_corner.z);
-			printf("Right corner: %f %f %f\n", objects->quad->right_corner.x, objects->quad->right_corner.y, objects->quad->right_corner.z);
-			printf("Color: %f %f %f\n", objects->material.color.x, objects->material.color.y, objects->material.color.z);
-		}
-		objects = objects->next;
-	}
-}
-
 void	setup_mlx(t_scene *scene, t_mlx *mlx)
 {
 	mlx_hook(mlx->win, 17, 1L << 2, rt_free_scene, scene);
@@ -177,8 +136,6 @@ int	main(int argc, char **argv)
 	rt_parse(argv[1], &scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
-	show_objects(scene);
-	
 	setup_mlx(scene, scene->mlx);
 	return (0);
 }
