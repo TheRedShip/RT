@@ -17,7 +17,7 @@ int	rt_verify_lightsphere(char *line)
 	char		**split;
 
 	split = ft_split(line, '\t');
-	if (!split || (ft_tab_len(split) != 5 && ft_tab_len(split) != 6))
+	if (!split || ft_tab_len(split) != 5)
 		return (rt_return(split));
 	if (rt_atof3(split[1], -10000.0, 10000.0).x == -4242)
 		return (rt_return(split));

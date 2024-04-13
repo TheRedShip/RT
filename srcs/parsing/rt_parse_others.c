@@ -25,8 +25,6 @@ int			rt_parse_lightsphere(char *line, t_scene **scene)
 	objects->sphere->diameter = ft_atof(split[2]);
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	objects->material.emission_power = ft_atof(split[4]);
-	if (ft_tab_len(split) == 6)
-		objects->material.texture = init_texture(*scene, split[5]);
 	ft_free_tab((void **)(split));
 	return (1);
 }
