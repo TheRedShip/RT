@@ -74,7 +74,8 @@ SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
 				render/image.c						\
 				render/matrix.c						\
-				render/scatter.c
+				render/scatter.c					\
+				render/light.c
 
 SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_vec3f.c					\

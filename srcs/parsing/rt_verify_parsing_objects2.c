@@ -21,13 +21,13 @@ int	rt_verify_lightquad(char *line)
 		return rt_return(split);
 	if (rt_atof3(split[1], -10000.0, 10000.0).x == -4242)
 		return rt_return(split);
-	if (rt_atof3(split[2], -1000.0, 1000.0).x == -4242)
+	if (rt_atof3(split[2], -1000.0, 10000.0).x == -4242)
 		return rt_return(split);
-	if (rt_atof3(split[3], -1000.0, 1000.0).x == -4242)
+	if (rt_atof3(split[3], -1000.0, 10000.0).x == -4242)
 		return rt_return(split);
 	if (rt_atof3(split[4], 0, 255).x == -4242)
 		return rt_return(split);
-	if (rt_range_atof(split[5], 0.0, 1000.0) == -1)
+	if (rt_range_atof(split[5], 0.0, 10000.0) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
@@ -42,7 +42,7 @@ int	rt_verify_ellipse(char *line)
 		return rt_return(split);
 	if (rt_atof3(split[1], -10000.0, 10000.0).x == -4242)
 		return rt_return(split);
-	if (rt_atof3(split[2], 0.0, 1000.0).x == -4242)
+	if (rt_atof3(split[2], 0.0, 10000.0).x == -4242)
 		return rt_return(split);
 	if (rt_atof3(split[3], 0, 255).x == -4242)
 		return rt_return(split);

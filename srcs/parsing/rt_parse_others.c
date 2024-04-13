@@ -21,7 +21,7 @@ int			rt_parse_lightsphere(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "sp");
-	objects->origin = rt_atof3(split[1], -1000.0, 1000.0);
+	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
 	objects->sphere->diameter = ft_atof(split[2]);
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	objects->material.emission_power = ft_atof(split[4]);
@@ -39,7 +39,7 @@ int			rt_parse_glasssphere(char *line, t_scene **scene)
 		return (0);
 	objects = rt_add_objects(scene, "sp");
 	objects->material.type = MAT_DIELECTRIC;
-	objects->origin = rt_atof3(split[1], -1000.0, 1000.0);
+	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
 	objects->sphere->diameter = ft_atof(split[2]);
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	objects->material.refraction_index = ft_atof(split[4]);
@@ -49,7 +49,7 @@ int			rt_parse_glasssphere(char *line, t_scene **scene)
 
 void		setup_quad(t_objects *objects[6], char **split, int j)
 {
-	objects[j]->origin = rt_atof3(split[1], -1000.0, 1000.0);
+	objects[j]->origin = rt_atof3(split[1], -1000.0, 10000.0);
 	if (j == 0)
 	{
 		objects[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(split[2])};
@@ -62,8 +62,8 @@ void		setup_quad(t_objects *objects[6], char **split, int j)
 	}
 	else if (j == 2)
 	{
-		objects[j]->quad->up_corner = (t_vec3f){0, ft_atof(split[3]), 0};
-		objects[j]->quad->right_corner = (t_vec3f){0, 0, -ft_atof(split[2])};
+		objects[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(split[2])};
+		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(split[3]), 0};
 	}
 	else if (j == 3)
 	{
@@ -73,9 +73,9 @@ void		setup_quad(t_objects *objects[6], char **split, int j)
 	}
 	else if (j == 4)
 	{
-		objects[j]->origin = vec3f_add_v(objects[j]->origin, (t_vec3f){0, 0, -ft_atof(split[2])});
-		objects[j]->quad->up_corner = (t_vec3f){0, ft_atof(split[3]), 0};
-		objects[j]->quad->right_corner = (t_vec3f){ft_atof(split[2]), 0, 0};
+		objects[j]->origin = vec3f_add_v(objects[j]->origin, (t_vec3f){ft_atof(split[2]), 0, -ft_atof(split[2])});
+		objects[j]->quad->up_corner = (t_vec3f){-ft_atof(split[2]), 0, 0};
+		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(split[3]), 0};
 	}
 	else if (j == 5)
 	{

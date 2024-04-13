@@ -120,8 +120,8 @@ t_hitInfo		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	if (hit_info.distance < 0.0f)
 		return (hit_info);
 	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
-	// hit_info.normal = vec3f_mul_f(quad->normal, -ft_sign(denom));
-	hit_info.normal = quad->normal;
+	hit_info.normal = vec3f_mul_f(quad->normal, -ft_sign(denom));
+	//hit_info.normal = quad->normal;
 	planar_hitpt_vector = vec3f_sub_v(hit_info.position, obj->origin);
 	alpha = vec3f_dot(quad->w, vec3f_cross(planar_hitpt_vector, normalize(quad->right_corner)));
 	beta = vec3f_dot(quad->w, vec3f_cross(normalize(quad->up_corner), planar_hitpt_vector));

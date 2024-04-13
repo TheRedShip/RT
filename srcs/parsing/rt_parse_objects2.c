@@ -21,9 +21,9 @@ int		rt_parse_lightquad(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "qd");
-	objects->origin = rt_atof3(split[1], -1000.0, 1000.0);
-	objects->quad->right_corner = rt_atof3(split[2], -1000.0, 1000.0);
-	objects->quad->up_corner = rt_atof3(split[3], -1000.0, 1000.0);
+	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
+	objects->quad->right_corner = rt_atof3(split[2], -1000.0, 10000.0);
+	objects->quad->up_corner = rt_atof3(split[3], -1000.0, 10000.0);
 	objects->material.color = vec3f_div_f(rt_atof3(split[4], 0.0f, 255.0f), 255.0f);
 	objects->material.emission_power = ft_atof(split[5]);
 	objects->quad->normal = normalize(vec3f_cross(objects->quad->up_corner, objects->quad->right_corner));
@@ -43,8 +43,8 @@ int		rt_parse_ellipse(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "el");
-	objects->origin = rt_atof3(split[1], -1000.0, 1000.0);
-	radius = rt_atof3(split[2], 0.0, 1000.0);
+	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
+	radius = rt_atof3(split[2], 0.0, 10000.0);
 	objects->ellipse->a = radius.x;
 	objects->ellipse->b = radius.y;
 	objects->ellipse->c = radius.z;
@@ -101,7 +101,7 @@ int		rt_parse_portal(char *line, t_scene **scene)
 		return (0);
 	
 	support = rt_add_objects(scene, "qd");
-	support->origin = rt_atof3(split[1], -1000.0, 1000.0);
+	support->origin = rt_atof3(split[1], -1000.0, 10000.0);
 	support->quad->normal = rt_atof3(split[2], -1.0, 1.0);
 	calculate_up_right(support->quad->normal, &support->quad->up_corner, &support->quad->right_corner);
 	scale_quad(&support->quad->up_corner, &support->quad->right_corner, &support->origin, 3, 6);
@@ -115,7 +115,7 @@ int		rt_parse_portal(char *line, t_scene **scene)
 	portal->portal->portal_id = ft_atoi(split[3]);
 	portal->portal->linked_id = ft_atoi(split[4]);
 	portal->portal->quad.normal = rt_atof3(split[2], -1.0, 1.0);
-	portal->origin = rt_atof3(split[1], -1000.0, 1000.0);
+	portal->origin = rt_atof3(split[1], -1000.0, 10000.0);
 	portal->origin = vec3f_add_v(portal->origin, vec3f_mul_f(portal->portal->quad.normal,0.0001f));
 	calculate_up_right(portal->portal->quad.normal, &portal->portal->quad.up_corner, &portal->portal->quad.right_corner);
 	scale_quad(&portal->portal->quad.up_corner, &portal->portal->quad.right_corner, &portal->origin, 2.5, 5.5);

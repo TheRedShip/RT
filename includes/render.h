@@ -30,11 +30,13 @@ typedef struct	s_ray
 	t_vec3f	direction;
 }	t_ray;
 
+void		calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular);
 int			rt_render_scene(t_scene *scene);
 
 int			rgb_to_hex(t_vec3f rgb);
 t_vec3f		hex_to_rgb(int hex);
 t_vec2f		get_uv(int x, int y);
+u_int64_t	get_time(void);
 
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev);
 t_hitInfo	trace_ray(t_scene *scene, t_ray ray);

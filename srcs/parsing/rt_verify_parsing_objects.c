@@ -77,9 +77,9 @@ int		rt_verify_cylinder(char *line)
 		return rt_return(split);
 	if (rt_atof3(split[2], -1.0, 1.0).x == -4242)
 		return rt_return(split);
-	if (rt_range_atof(split[3], 0.0, 1000.0) == -1)
+	if (rt_range_atof(split[3], 0.0, 10000.0) == -1)
 		return rt_return(split);
-	if (rt_range_atof(split[4], 0.0, 1000.0) == -1)
+	if (rt_range_atof(split[4], 0.0, 10000.0) == -1)
 		return rt_return(split);
 	if (rt_atof3(split[5], 0, 255).x == -4242)
 		return rt_return(split);
@@ -96,9 +96,9 @@ int		rt_verify_quad(char *line)
 		return rt_return(split);
 	if (rt_atof3(split[1], -10000.0, 10000.0).x == -4242)
 		return rt_return(split);
-	if (rt_atof3(split[2], -1000.0, 1000.0).x == -4242)
+	if (rt_atof3(split[2], -1000.0, 10000.0).x == -4242)
 		return rt_return(split);
-	if (rt_atof3(split[3], -1000.0, 1000.0).x == -4242)
+	if (rt_atof3(split[3], -1000.0, 10000.0).x == -4242)
 		return rt_return(split);
 	if (rt_atof3(split[4], 0, 255).x == -4242)
 		return rt_return(split);
