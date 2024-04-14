@@ -1,55 +1,116 @@
 A	1.0												135,200,235
-C	7,10,14			0.1,0.25,-1			70			30
+C	8,11,10			-0.1,0.6,-1			70			3
 
-L	0,4.5,0						1.0					255,255,255		0
+# L	0,4.5,0							1.0				255,255,255		0
 
-#ls	0,10,10						2.0					255,255,255		5
+# ls	14,15,2.5					2.0				255,255,255		2
+lq	14,21,0			7,0,0		0,0,7				255,255,255		2
 
-po	14,10.5,0		0,0,1		0	1				255,100,20
+ls	11.75,8.25,3.75					0.75			140,240,255		3
+ls	12.75,8.25,2.75					0.75			140,240,255		3
+ls	11.75,8.25,1.75					0.75			140,240,255		3
+ls	10.75,8.25,2.75					0.75			140,240,255		3
+ls	11.75,9.25,2.75					0.75			140,240,255		3
+cu	10.5,7,4			2.5	2.5		0,0,0			255,255,255		1.0,0.0,0,assets/portal_map/cube_blue.xpm
 
-qd	0,0,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,0,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,0,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,0,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,7,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,7,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,7,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,7,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,14,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,14,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,14,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,14,0			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
+ls	24.75,8.25,4.75					0.75			140,240,255		3
+ls	25.75,8.25,3.75					0.75			140,240,255		3
+ls	24.75,8.25,2.75					0.75			140,240,255		3
+ls	23.75,8.25,3.75					0.75			140,240,255		3
+ls	24.75,9.25,3.75					0.75			140,240,255		3
+cu	23.5,7,5			2.5	2.5		0,0,0			255,255,255		1.0,0.0,0,assets/portal_map/cube.xpm
 
-qd	0,0,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,0,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,0,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,0,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,7,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,7,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,7,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,7,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,14,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	7,14,21			0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	21,14,21		0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	14,14,21		0,7,0		7,0,0				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
+el	8.75,10.5,0			0.15,3,0.4					200,200,200		1.0,0.0
+el	12.25,10.5,0		0.15,3,0.4					200,200,200		1.0,0.0
+lq	8.75,8.0,0			0,0,0.5		0.0,5.5,0.0		140,240,255		2
+lq	12.25,8.0,0			0,0,0.5		0.0,5.5,0.0		140,240,255		2
 
-qd	0,0,0			0,7,0		0,0,7				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,0,7			0,7,0		0,0,7				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,0,14			0,7,0		0,0,7				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
-qd	0,0,21			0,7,0		0,0,7				255,255,255		0.8,0,0,assets/portal_map/wall.xpm
+po	10.5,10.5,0.1		0,0,1		0	1			255,100,20
+po	25,10.5,0.1			0,0,1		1	0			20,100,255
 
-qd	0,0,0			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	7,0,0			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	14,0,0			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	21,0,0			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	0,0,7			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	7,0,7			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	14,0,7			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	21,0,7			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	0,0,14			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	7,0,14			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	14,0,14			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
-qd	21,0,14			0,0,7		7,0,0				255,255,255		0.8,0,0,assets/portal_map/floor.xpm
+qd	7,7,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/platform.xpm
+qd	21,7,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/platform.xpm
+
+
+qd	0,0,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,0,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,0,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,0,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,7,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,7,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,7,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,14,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,14,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,14,0			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+
+qd	0,0,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,0,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,0,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,0,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,7,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,7,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,7,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	7,14,21			0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	21,14,21		0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	14,14,21		0,7,0		7,0,0				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+
+qd	0,0,0			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,0,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,0,14			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,0,21			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,0			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,14			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,7,21			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,0			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,14			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	0,14,21			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+
+
+qd	28,0,0			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,0,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,0,14			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,0,21			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,7,0			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,7,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,7,14			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,7,21			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,14,0			0,7,0		0,0,7				255,255,255		0.5,0.1,0,assets/portal_map/wall.xpm
+qd	28,14,7			0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,14,14		0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+qd	28,14,21		0,7,0		0,0,7				255,255,255		1.0,0,0,assets/portal_map/wall.xpm
+
+
+qd	0,0,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,0,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,0,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,0,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	0,0,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,0,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,0,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,0,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	0,0,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,0,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,0,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,0,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+
+qd	0,21,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,21,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,21,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,21,0			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	0,21,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,21,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,21,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,21,7			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	0,21,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	7,21,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	14,21,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
+qd	21,21,14			0,0,7		7,0,0				255,255,255		1.0,0,0,assets/portal_map/floor.xpm
 
 
 
