@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/09 19:39:57 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/14 18:14:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int			rt_free_scene(t_scene *scene)
 {
 	t_objects	*tmp;
 
-	destroy_mlx(scene);
 	if (scene->ambient_light)
 		free(scene->ambient_light);
 	if (scene->camera)
@@ -53,8 +52,11 @@ int			rt_free_scene(t_scene *scene)
 			free(tmp->plane);
 		else if (tmp->cylinder)
 			free(tmp->cylinder);
+		if(tmp->material.texture.exist)
+			mlx_destroy_image(scene->mlx->mlx, tmp->material.texture.data.img);
 		free(tmp);
 	}
+	destroy_mlx(scene);
 	free(scene);
 	exit(0);
 	return (0);
