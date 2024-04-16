@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/03/28 19:05:58 by marvin           ###   ########.fr        #
+#    Updated: 2024/04/16 20:46:06 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,23 @@ SRCS_DIR	:=	srcs
 
 OBJS_DIR	:=	.objs
 
+ASSETS_DIR	:=	assets
+
+SRC_ASSETS_DIR := assets_src 
+
+SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
+				solar_system/mercury.jpg			\
+				solar_system/skybox_stars.jpg		\
+				solar_system/mars.jpg				\
+				solar_system/moon.jpg				\
+				solar_system/jupiter.jpg			\
+				solar_system/earth.jpg				\
+				solar_system/venus.jpg				\
+				portal_map/cube_blue.jpg			\
+				portal_map/platform.jpg				\
+				portal_map/wall.jpg					\
+				portal_map/floor.jpg				\
+				portal_map/cube.jpg					\
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/parse_utils.c				\
@@ -89,7 +106,10 @@ ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
 
+
 OBJS		:=	$(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
+
+ASSETS		:=	$(addprefix $(ASSETS_DIR)/, $(SRC_ASSETS_NAME:%.jpg=%.xpm))
 
 HEADERS		:=	includes/minirt.h
 
@@ -110,28 +130,33 @@ DIR_DUP     =	mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS)
+$(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS) $(ASSETS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lminilibx-linux -lmlx_Linux -I./minilibx-linux -lXext -lX11 -lm -lz -o $(NAME)
 	@printf "$(LINE_CLR)$(BWHITE) $(NAME): PROJECT COMPILED !$(RESET)\n\n"
 
 $(MLX):
 	@printf "$(BWHITE) $(NAME): $(BWHITE)minilibx compiling...$(RESET)\n"
-	@make --quiet -j -C $(MINILIB_DIR)
+	@make --quiet -j -C $(MINILIB_DIR) >/dev/null 2>/dev/null
 
 $(LFT):
 	@make -j -C $(LFT_DIR)
 
 $(OBJS_DIR)/%.o: %.c
 	@$(DIR_DUP)
-	if [ $(CMP) -eq '1' ]; then \
+	@if [ $(CMP) -eq '1' ]; then \
 		printf "\n"; \
 	fi;
-	printf "$(LINE_CLR)$(WHITE) $(NAME): $(CMP)/$(FILE) $(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
+	@printf "$(LINE_CLR)$(WHITE) $(NAME): $(CMP)/$(FILE) $(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $^
 	@$(eval CMP=$(shell echo $$(($(CMP)+1))))
-	if [ $(CMP) -gt $(FILE) ]; then \
+	@if [ $(CMP) -gt $(FILE) ]; then \
 		printf "$(LINE_CLR)$(WHITE) $(NAME): $$(($(CMP)-1))/$(FILE)\n$(LINE_CLR)$(BGREEN) Compilation done !$(RESET)\n"; \
 	fi \
+
+
+$(ASSETS_DIR)/%.xpm: assets_src/%.jpg
+	@mkdir -p $(dir $@)
+	@convert $< $@ & 
 
 clean:
 	@$(RM) $(OBJS)
@@ -144,6 +169,8 @@ fclean: dclean
 	@printf " $(BWHITE)$(NAME):$(BRED) cleaned.$(RESET)\n"
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LFT_DIR) fclean
+	@killall convert 2>/dev/null > /dev/null|| true && \
+	sleep 0.5 && rm -rf $(ASSETS_DIR)&
 
 re:
 	@$(MAKE) fclean
@@ -152,4 +179,3 @@ re:
 # **************************************************************************** #
 
 .PHONY: all clean fclean dclean re
-.SILENT:
