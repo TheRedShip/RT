@@ -51,6 +51,8 @@ typedef struct	s_mlx
 	int		antialiasing;
 	t_data	img;
 	t_vec3f	**acc_img;
+	t_vec3f	**final_img;
+	t_vec3f	**postpro_img;
 }				t_mlx;
 
 typedef struct	s_mouse

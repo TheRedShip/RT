@@ -99,9 +99,11 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_utils.c
 
 
+SRC_POSTPRO :=	postprocess/bloom.c					\
+
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
-				$(SRC_VECTOR)						\
+				$(SRC_VECTOR) $(SRC_POSTPRO)		\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

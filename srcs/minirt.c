@@ -29,6 +29,10 @@ void		destroy_mlx(t_scene *scene)
 	free(scene->mlx->mlx);
 	if (scene->mlx->acc_img)
 		ft_free_tab((void **)(scene->mlx->acc_img));
+	if (scene->mlx->final_img)
+		ft_free_tab((void **)(scene->mlx->final_img));
+	if (scene->mlx->postpro_img)
+		ft_free_tab((void **)(scene->mlx->postpro_img));
 	free(scene->mlx);
 }
 
@@ -36,6 +40,7 @@ int			rt_free_scene(t_scene *scene)
 {
 	t_objects	*tmp;
 
+	destroy_mlx(scene);
 	if (scene->ambient_light)
 		free(scene->ambient_light);
 	if (scene->camera)
@@ -46,17 +51,14 @@ int			rt_free_scene(t_scene *scene)
 	{
 		tmp = scene->objects;
 		scene->objects = scene->objects->next;
-		if (tmp->sphere)
-			free(tmp->sphere);
-		else if (tmp->plane)
-			free(tmp->plane);
-		else if (tmp->cylinder)
-			free(tmp->cylinder);
-		if(tmp->material.texture.exist)
-			mlx_destroy_image(scene->mlx->mlx, tmp->material.texture.data.img);
+		free(tmp->sphere);
+		free(tmp->plane);
+		free(tmp->cylinder);
+		free(tmp->ellipse);
+		free(tmp->quad);	
+		free(tmp->portal);
 		free(tmp);
 	}
-	destroy_mlx(scene);
 	free(scene);
 	exit(0);
 	return (0);
@@ -73,7 +75,9 @@ t_scene		*init_scene(void)
 	scene->camera = ft_calloc(1, sizeof(t_camera));
 	scene->lights = ft_calloc(1, sizeof(t_light));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
-	scene->mlx->acc_img = init_acc_img(scene);
+	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
+	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
+	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	create_window(&scene);
 	scene->objects = NULL;
 	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx)

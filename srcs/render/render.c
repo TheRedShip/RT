@@ -72,7 +72,6 @@ void	*draw(void *thread_ptr)
 {
 	t_vec2f		uv;
 	t_vec2f		pos;
-	t_vec3f		color_acc;
 	t_scene		*scene;
 	t_threads	*thread;
 
@@ -91,15 +90,33 @@ void	*draw(void *thread_ptr)
 			
 			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
 				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], per_pixel(scene, uv, thread));
-
-			color_acc = vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);
-			color_acc = clamp(color_acc, 0.0f, 1.0f);
-			put_pixel(&scene->mlx->img, pos.x, pos.y, rgb_to_hex(color_acc));
+			scene->mlx->final_img[(int)pos.y][(int)pos.x] = \
+				vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);;
 			pos.x++;
 		}
 		pos.y += THREADS;
 	}
 	return (NULL);
+}
+
+void	rt_render_image(t_vec3f **image, t_data *img)
+{
+	t_vec3f	color;
+	t_vec2f	pos;
+
+	pos.y = 0;
+	while (pos.y < HEIGHT)
+	{
+		pos.x = 0;
+		while (pos.x < WIDTH)
+		{
+			color = image[(int)pos.y][(int)pos.x];
+			color = clamp(color, 0.0f, 1.0f);
+			put_pixel(img, pos.x, pos.y, rgb_to_hex(color));
+			pos.x++;
+		}
+		pos.y++;
+	}
 }
 
 int		rt_render_scene(t_scene *scene)
@@ -110,7 +127,7 @@ int		rt_render_scene(t_scene *scene)
 	if (scene->mlx->frame_index == 1)
 	{
 		ft_free_tab((void **)(scene->mlx->acc_img));
-		scene->mlx->acc_img = init_acc_img(scene);
+		scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 		ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
@@ -126,8 +143,8 @@ int		rt_render_scene(t_scene *scene)
 	}
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
+	rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
-	(void) start;
 	printf("Rendering scene : %lu ms %d            \r", get_time() - start, scene->mlx->frame_index);
 	fflush(stdout);
 	if (scene->mlx->is_acc)

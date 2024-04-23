@@ -12,18 +12,18 @@
 
 #include "minirt.h"
 
-t_vec3f		**init_acc_img(t_scene *scene)
+t_vec3f		**init_img(t_scene *scene, int width, int height)
 {
 	t_vec3f	**acc_img;
 	int		i;
 
-	acc_img = ft_calloc(HEIGHT + 1, sizeof(t_vec3f *));
+	acc_img = ft_calloc(height + 1, sizeof(t_vec3f *));
 	if (!acc_img)
 		rt_free_scene(scene);
 	i = 0;
-	while (i < HEIGHT)
+	while (i < height)
 	{
-		acc_img[i] = ft_calloc(WIDTH + 1, sizeof(t_vec3f));
+		acc_img[i] = ft_calloc(width + 1, sizeof(t_vec3f));
 		if (!acc_img[i])
 			rt_free_scene(scene);
 		i++;

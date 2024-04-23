@@ -25,6 +25,7 @@
 
 # include "vector.h"
 # include "scene_structures.h"
+# include "postprocess.h"
 # include "mlx.h"
 # include "libft.h"
 # include "objects.h"
@@ -32,7 +33,7 @@
 # include "window.h"
 # include "render.h"
 
-t_vec3f	**init_acc_img(t_scene *scene);
+t_vec3f	**init_img(t_scene *scene, int width, int height);
 int		rt_free_scene(t_scene *scene);
 
 int	ft_rand(int i);
