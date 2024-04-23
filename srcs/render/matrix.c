@@ -58,17 +58,11 @@ void	multiplyMatrixVector(float (*matrix)[3], t_vec3f vector, t_vec3f *result)
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev)
 {
 	t_vec3f		result;
-	float		tmp;
 
-	prev.z = -1;
-	tmp = 2 * tan((scene->camera->fov * 0.5 * M_PI) / 180);
-	if (WIDTH < HEIGHT)
-		prev.z = HEIGHT / tmp;
-	else
-		prev.z = WIDTH / tmp;
-	prev = normalize(prev);
-
+	prev.x *= tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
+	prev.y *= tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
 	multiplyMatrixVector(scene->camera->rotationMatrixX, prev, &result);
 	multiplyMatrixVector(scene->camera->rotationMatrixY, result, &result);
+	result = normalize(result);
 	return (result);
 }
