@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:36:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/24 20:03:56 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/04/24 20:42:54 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void calcul_treshold(t_vec3f ***result, t_vec3f **image, float treshold)
 		pos[0] = 0;
 		while (pos[0] < WIDTH)
 		{
-			if (image[pos[1]][pos[0]].x > treshold || image[pos[1]][pos[0]].y > treshold || image[pos[1]][pos[0]].z > treshold)
+			if (image[pos[1]][pos[0]].x >= treshold || image[pos[1]][pos[0]].y >= treshold || image[pos[1]][pos[0]].z >= treshold)
 				(*result)[pos[1]][pos[0]] = image[pos[1]][pos[0]]; 
 			else
 				(*result)[pos[1]][pos[0]] = (t_vec3f){0.0f, 0.0f, 0.0f};
@@ -111,28 +111,25 @@ t_vec3f **up_sample_2x(t_vec3f **image, t_vec2f resolution)
 
 t_vec3f **boxBlur(t_vec3f **image, t_vec2f resolution) {
     int i, j, k, l;
-    int kernelSize = 3; // Taille du noyau de flou
+    int kernelSize = 5;
     int kernelMid = kernelSize / 2;
-    float kernelValue = 1.0 / (float)(kernelSize * kernelSize); // Normalisation du noyau
+    // float kernelValue = 1.0 / (float)(kernelSize * kernelSize);
+    float kernelValue = 1.0 / (float)(kernelSize * 5);
 
 	t_vec3f **blurredImage = init_img(NULL, resolution.x, resolution.y);
-    // Parcourir chaque pixel de l'image
     for (i = 0; i < resolution.y; ++i) {
         for (j = 0; j < resolution.x; ++j) {
             t_vec3f sum = (t_vec3f){0, 0, 0};
-            // Parcourir le voisinage de chaque pixel
             for (k = -kernelMid; k <= kernelMid; ++k) {
                 for (l = -kernelMid; l <= kernelMid; ++l) {
                     int row = i + k;
                     int col = j + l;
-                    // Vérifier les limites de l'image
-                    if (row >= 0 && row < resolution.y && col >= 0 && col < resolution.x) {
-                        // Ajouter la valeur du pixel pondérée par la valeur du noyau
+                    if (row >= 0 && row < resolution.y && col >= 0 && col < resolution.x)
+					{
                         sum = vec3f_add_v(sum, vec3f_mul_f(image[row][col], kernelValue));
                     }
                 }
             }
-            // Assigner la somme floutée au pixel correspondant de l'image floutée
             blurredImage[i][j] = sum;
         }
     }
@@ -194,7 +191,7 @@ t_vec3f **down_sample(t_vec3f **image)
 {
 	t_vec2f resolution;
 	int 	i;
-	int		time = 13;
+	int		time = 3;
 
 	resolution = (t_vec2f){WIDTH / 2, HEIGHT / 2};
 	i = 0;
@@ -222,7 +219,7 @@ t_vec3f	**bloom(t_scene *scene, t_vec3f **image)
 {
 	if (scene->mlx->is_bloom == 1)
 	{
-		calcul_treshold(&scene->mlx->postpro_img, image, 1.0f);
+		calcul_treshold(&scene->mlx->postpro_img, image, 2.0f);
 		scene->mlx->postpro_img = down_sample(scene->mlx->postpro_img);
 		return (add_img(scene->mlx->postpro_img, image));
 		// return (scene->mlx->postpro_img);

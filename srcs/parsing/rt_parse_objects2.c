@@ -108,7 +108,7 @@ int		rt_parse_portal(char *line, t_scene **scene)
 	support->quad->d = vec3f_dot(support->quad->normal, support->origin);
 	support->quad->w = vec3f_div_f(support->quad->normal, vec3f_dot(support->quad->normal,support->quad->normal));
 	support->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
-	support->material.emission_power = 1.0;
+	support->material.emission_power = 1.5;
 	// if (rt_parse_material(*scene, "1.0,0.0", &(support->material)) == -1)
 	// 	return (rt_return(split));
 
