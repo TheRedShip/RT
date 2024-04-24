@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bloom.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:36:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/24 20:42:54 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/04/25 00:17:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,35 @@ t_vec3f **up_sample_2x(t_vec3f **image, t_vec2f resolution)
 	}
 
 	dup_img(image, tmp, (t_vec2f){resolution.x * 2, resolution.y * 2});
-	free(tmp);
+	ft_free_tab((void **)tmp);
 
 	return (image);
 }
 
-t_vec3f **boxBlur(t_vec3f **image, t_vec2f resolution) {
+float gaussianWeight(float x, float sigma) {
+    return exp(-(x * x) / (2 * sigma * sigma)) / (sqrt(2 * M_PI) * sigma);
+}
+
+t_vec3f **gaussianBlur(t_vec3f **image, t_vec2f resolution, int blur_size) {
     int i, j, k, l;
-    int kernelSize = 5;
-    int kernelMid = kernelSize / 2;
-    // float kernelValue = 1.0 / (float)(kernelSize * kernelSize);
-    float kernelValue = 1.0 / (float)(kernelSize * 5);
+    int kernelMid = blur_size / 2;
+
+    float kernel[blur_size][blur_size];
+    float totalWeight = 0.0;
+    for (i = 0; i < blur_size; ++i) {
+        for (j = 0; j < blur_size; ++j) {
+            float distanceX = i - kernelMid;
+            float distanceY = j - kernelMid;
+            kernel[i][j] = gaussianWeight(sqrt(distanceX * distanceX + distanceY * distanceY), 1);
+			totalWeight += kernel[i][j];
+        }
+    }
+
+    for (i = 0; i < blur_size; ++i) {
+        for (j = 0; j < blur_size; ++j) {
+            kernel[i][j] /= totalWeight;
+        }
+    }
 
 	t_vec3f **blurredImage = init_img(NULL, resolution.x, resolution.y);
     for (i = 0; i < resolution.y; ++i) {
@@ -125,93 +143,40 @@ t_vec3f **boxBlur(t_vec3f **image, t_vec2f resolution) {
                     int row = i + k;
                     int col = j + l;
                     if (row >= 0 && row < resolution.y && col >= 0 && col < resolution.x)
-					{
-                        sum = vec3f_add_v(sum, vec3f_mul_f(image[row][col], kernelValue));
-                    }
-                }
+                        sum = vec3f_add_v(sum, vec3f_mul_f(image[row][col], kernel[k + kernelMid][l + kernelMid]));
+				}
             }
             blurredImage[i][j] = sum;
         }
     }
 	dup_img(image, blurredImage, resolution);
-	free(blurredImage);
+	ft_free_tab((void **)blurredImage);
 	return (image);
 }
 
-t_vec3f **box_blur(t_vec3f **image, t_vec2f resolution)
-{
-	t_vec3f	**tmp;
-	int		pos[2];
-	int		radius;
-
-	tmp = init_img(NULL, resolution.x, resolution.y);
-	radius = 10;
-
-	pos[1] = 0;
-	while (pos[1] < resolution.y)
-	{
-		pos[0] = 0;
-		while (pos[0] < resolution.x)
-		{
-			t_vec3f color = (t_vec3f){0,0,0};
-			
-			int count = 0;
-			int	i = -radius;
-			while (i < radius)
-			{
-				int	j = -radius;
-				while (j < radius)
-				{
-					if (pos[1] + i < 0 || pos[0] + j < 0 || pos[1] + i >= resolution.y || pos[0] + j >= resolution.x)
-					{
-						j++;
-						continue;
-					}
-					color = vec3f_add_v(color, image[pos[1] + i][pos[0] + j]);		
-					j++;
-					count++;
-				}
-				i++;
-			}
-			color = vec3f_div_f(color, count);
-			tmp[pos[1]][pos[0]] = color;
-
-			pos[0]++;
-		}
-		pos[1]++;
-	}
-	dup_img(image, tmp, resolution);
-	free(tmp);
-
-	return image;
-}
-
-
-t_vec3f **down_sample(t_vec3f **image)
+t_vec3f **sample(t_vec3f **image, int mip_num, int blur_size)
 {
 	t_vec2f resolution;
 	int 	i;
-	int		time = 3;
 
 	resolution = (t_vec2f){WIDTH / 2, HEIGHT / 2};
 	i = 0;
-	while (i < time)
+	while (i < mip_num)
 	{
 		image = down_sample_2x(image, resolution);
-		image = boxBlur(image, (t_vec2f){(int)resolution.x, (int)resolution.y}); 
+		image = gaussianBlur(image, (t_vec2f){(int)resolution.x, (int)resolution.y}, blur_size); 
 		resolution = (t_vec2f){resolution.x / 2, resolution.y / 2};
 		i++;
 	}
 	i = 0;
 	resolution = (t_vec2f){resolution.x * 2, resolution.y * 2};
-	while (i < time)
+	while (i < mip_num)
 	{
 		image = up_sample_2x(image, (t_vec2f){(int)resolution.x, (int)resolution.y});
-		image = boxBlur(image, (t_vec2f){(int)(resolution.x * 2), (int)(resolution.y * 2)}); 
+		image = gaussianBlur(image, (t_vec2f){(int)(resolution.x * 2), (int)(resolution.y * 2)}, blur_size); 
 		resolution = (t_vec2f){resolution.x * 2, resolution.y * 2};
 		i++;
 	}
-	printf("resolution %f %f\n", resolution.x, resolution.y);
 	return (image);
 }
 
@@ -219,8 +184,8 @@ t_vec3f	**bloom(t_scene *scene, t_vec3f **image)
 {
 	if (scene->mlx->is_bloom == 1)
 	{
-		calcul_treshold(&scene->mlx->postpro_img, image, 2.0f);
-		scene->mlx->postpro_img = down_sample(scene->mlx->postpro_img);
+		calcul_treshold(&scene->mlx->postpro_img, image, scene->bloom->treshold);
+		scene->mlx->postpro_img = sample(scene->mlx->postpro_img, scene->bloom->mip_num, scene->bloom->blur_size);
 		return (add_img(scene->mlx->postpro_img, image));
 		// return (scene->mlx->postpro_img);
 	}

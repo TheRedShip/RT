@@ -54,3 +54,17 @@ int		rt_parse_light(char *line, t_scene **scene)
 	ft_free_tab((void **)(split));
 	return (1);
 }
+
+int		rt_parse_bloom(char *line, t_scene **scene)
+{
+	char	**split;
+	
+	split = ft_split(line, '\t');
+	if (!split)
+		return (0);
+	(*scene)->bloom->treshold = ft_atof(split[1]);
+	(*scene)->bloom->blur_size = ft_atoi(split[2]);
+	(*scene)->bloom->mip_num = ft_atoi(split[3]);
+	ft_free_tab((void **)(split));
+	return (1);
+}

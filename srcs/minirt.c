@@ -41,12 +41,10 @@ int			rt_free_scene(t_scene *scene)
 	t_objects	*tmp;
 
 	destroy_mlx(scene);
-	if (scene->ambient_light)
-		free(scene->ambient_light);
-	if (scene->camera)
-		free(scene->camera);
-	if (scene->lights)
-		free(scene->lights);
+	free(scene->ambient_light);
+	free(scene->camera);
+	free(scene->lights);
+	free(scene->bloom);
 	while (scene->objects)
 	{
 		tmp = scene->objects;
@@ -74,13 +72,14 @@ t_scene		*init_scene(void)
 	scene->ambient_light = ft_calloc(1, sizeof(t_ambient_light));
 	scene->camera = ft_calloc(1, sizeof(t_camera));
 	scene->lights = ft_calloc(1, sizeof(t_light));
+	scene->bloom = ft_calloc(1, sizeof(t_bloom));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	create_window(&scene);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);

@@ -62,6 +62,13 @@ typedef struct	s_mouse
 	int		is_pressed;
 }				t_mouse;
 
+typedef struct	s_bloom
+{
+	float		treshold;
+	int			blur_size;
+	int			mip_num;
+}				t_bloom;
+
 typedef struct	s_light
 {
 	int			hard;
@@ -76,6 +83,7 @@ typedef struct	s_scene
 	t_camera		*camera;
 	t_light			*lights;
 	t_objects		*objects;
+	t_bloom			*bloom;
 	t_mlx			*mlx;
 	t_mouse			mouse;
 }				t_scene;
