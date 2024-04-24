@@ -88,6 +88,7 @@ t_scene		*init_scene(void)
 	scene->mlx->frame_index = 1;
 	scene->mlx->antialiasing = 1;
 	scene->mlx->is_acc = 1;
+	scene->mlx->is_bloom = 0;
 	return (scene);
 }
 

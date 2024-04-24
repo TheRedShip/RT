@@ -47,7 +47,12 @@ int		key_hook(int keycode, t_scene *scene)
 		scene->mlx->antialiasing = !scene->mlx->antialiasing;
 		printf("miniRT : antialiasing %d\n", scene->mlx->antialiasing);
 	}
-	if (keycode < 65000)
+	else if (keycode == KEY_BLOOM)
+	{
+		scene->mlx->is_bloom = !scene->mlx->is_bloom;
+		printf("miniRT : bloom %d\n", scene->mlx->is_bloom);
+	}
+	if (keycode < 65000 && keycode != KEY_BLOOM)
 		scene->mlx->frame_index = 1;
 	return (0);
 }

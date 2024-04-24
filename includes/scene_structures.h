@@ -47,6 +47,7 @@ typedef struct	s_mlx
 	void	*mlx;
 	void	*win;
 	int		is_acc;
+	int		is_bloom;
 	int		frame_index;
 	int		antialiasing;
 	t_data	img;
