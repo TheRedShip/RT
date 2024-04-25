@@ -79,6 +79,8 @@ int		rt_parse_cylinder(char *line, t_scene **scene)
 	objects->cylinder->diameter = ft_atof(split[3]);
 	objects->cylinder->height = ft_atof(split[4]);
 	objects->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
+	if (rt_parse_material(*scene, split[6], &(objects->material)) == -1)
+		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
 }

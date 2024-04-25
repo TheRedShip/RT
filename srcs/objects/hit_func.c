@@ -133,6 +133,63 @@ t_hitInfo		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	return (hit_info);
 }
 
+t_hitInfo		hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
+{
+	t_hitInfo	hit_info;
+
+	t_vec3f tmp1 = vec3f_cross(ray.direction, cylinder->orientation);
+	t_vec3f	tmp_vect = vec3f_sub_v(ray.origin, obj->origin);
+	t_vec3f	tmp2 = vec3f_cross(tmp_vect, cylinder->orientation);
+	
+	float	a = vec3f_dot(tmp1, tmp1);
+	float	b = 2.0 * vec3f_dot(tmp1, tmp2);
+	float	c = vec3f_dot(tmp2, tmp2) - (cylinder->diameter / 2.0) * (cylinder->diameter / 2.0);
+	float	discriminant = b*b - 4.0 * a * c;
+
+	float	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
+	float	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
+	if (t1 > t2)
+	{
+		float tmp = t1;
+		t1 = t2;
+		t2 = tmp;
+	}
+
+	t_vec3f	mid_vect = vec3f_mul_f(cylinder->orientation, (cylinder->height / 2.0));
+	t_vec3f	mid_point = vec3f_add_v(obj->origin, mid_vect);
+	float	tmp1_bis = vec3f_dot(vec3f_sub_v(mid_point, ray.origin), cylinder->orientation);
+	float	tmp2_bis = vec3f_dot(ray.direction, cylinder->orientation);
+	float	t3 = (tmp1_bis + (cylinder->height / 2.0)) / tmp2_bis;
+	float	t4 = (tmp1_bis - (cylinder->height / 2.0)) / tmp2_bis;
+	if (t3 > t4)
+	{
+		float tmp = t3;
+		t3 = t4;
+		t4 = tmp;
+	}
+	if (t3 > t2 || t4 < t1)
+	{
+		hit_info.distance = -1.0f;
+		return (hit_info);
+	}
+	float	t_final = fmax(t1, t3);
+	if (t_final < 0)
+		t_final = fmin(t2, t4);
+	if (t_final <= 0)
+	{
+		hit_info.distance = -1.0f;
+		return (hit_info);
+	}
+
+	hit_info.distance = t_final;
+	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
+	if (t3 < t1)
+		hit_info.normal = normalize(vec3f_sub_v(vec3f_sub_v(hit_info.position, obj->origin), vec3f_mul_f(cylinder->orientation, vec3f_dot(vec3f_sub_v(hit_info.position, obj->origin), cylinder->orientation))));
+	else
+		hit_info.normal = vec3f_mul_f(cylinder->orientation, -ft_sign(vec3f_dot(ray.direction, cylinder->orientation)));
+	return (hit_info);
+}
+
 t_hitInfo		hit_objects(t_ray ray, t_objects *obj)
 {
 	t_hitInfo	hit_info;
@@ -141,6 +198,8 @@ t_hitInfo		hit_objects(t_ray ray, t_objects *obj)
 		return (hit_sphere(ray, obj, obj->sphere));
 	else if (obj->type == OBJ_PLANE)
 		return (hit_plane(ray, obj, obj->plane));
+	else if (obj->type == OBJ_CYLIN)
+		return (hit_cylinder(ray, obj, obj->cylinder));
 	else if (obj->type == OBJ_QUADS)
 		return (hit_quad(ray, obj, obj->quad));
 	else if (obj->type == OBJ_ELLIP)
