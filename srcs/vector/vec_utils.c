@@ -24,9 +24,10 @@ t_vec3f	normalize(t_vec3f v)
 
 t_vec3f	clamp(t_vec3f vec, float min, float max)
 {
-	return ((t_vec3f){fminf(fmaxf(vec.x, min), max), \
-						fminf(fmaxf(vec.y, min), max), \
-						fminf(fmaxf(vec.z, min), max)});
+	(void) min;
+	return ((t_vec3f){fminf(vec.x, max), \
+						fminf(vec.y, max), \
+						fminf(vec.z, max)});
 }
 
 t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
