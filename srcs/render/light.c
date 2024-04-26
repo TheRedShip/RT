@@ -94,8 +94,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 	t_vec3f		light_direction;
 	float		diffuse_ratio;
 
-	light_direction = vec3f_sub_v(hit_info.position, scene->lights->origin);
-	light_direction = normalize(light_direction);
+	light_direction = normalize(vec3f_sub_v(hit_info.position, scene->lights->origin));
 	diffuse_ratio = vec3f_dot(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
 	if (diffuse_ratio < 0.0f)
 		diffuse_ratio = 0.0f;

@@ -17,7 +17,6 @@
 
 typedef struct	s_hitInfo
 {
-	t_vec2f		uv;
 	float		distance;
 	t_vec3f		position;
 	t_vec3f		normal;

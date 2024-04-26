@@ -55,46 +55,43 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
 		{
-			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio + scene->mouse.is_pressed));
+			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
 			break;
 		}
-		hit_info.uv = uv;
 		ray = new_ray(hit_info, ray, thread, &is_specular);
 		calcul_light(hit_info, scene, &light, &contribution, is_specular);
 		if (hit_info.obj->material.emission_power > 0.0f)
 			break;
 	}
-	light = vec3f_mul_v(light, contribution);
-	return (light);
+	return (vec3f_mul_v(light, contribution));
 }
 
 void	*draw(void *thread_ptr)
 {
+	int			pos[2];
 	t_vec2f		uv;
-	t_vec2f		pos;
 	t_scene		*scene;
 	t_threads	*thread;
 
 	thread = (t_threads *)thread_ptr;
 	scene = thread->scene;
-	pos.y = thread->id;
-	while (pos.y < HEIGHT)
+	pos[1] = thread->id;
+	while (pos[1] < HEIGHT)
 	{
-		pos.x = 0;
-		while (pos.x < WIDTH)
+		pos[0] = 0;
+		while (pos[0] < WIDTH)
 		{
-			if (scene->mlx->antialiasing)
-				uv = get_uv(pos.x + (float)(ft_random(thread->id, -1, 1)), pos.y + (float)(ft_random(thread->id, -1, 1)));
-			else
-				uv = get_uv(pos.x, pos.y);
-			
-			scene->mlx->acc_img[(int)pos.y][(int)pos.x] = \
-				vec3f_add_v(scene->mlx->acc_img[(int)pos.y][(int)pos.x], per_pixel(scene, uv, thread));
-			scene->mlx->final_img[(int)pos.y][(int)pos.x] = \
-				vec3f_div_f(scene->mlx->acc_img[(int)pos.y][(int)pos.x], (float)scene->mlx->frame_index);;
-			pos.x++;
+			// if (scene->mlx->antialiasing)
+				// uv = get_uv(pos[0] + (float)(ft_random(thread->id, -1, 1)), pos[1] + (float)(ft_random(thread->id, -1, 1)));
+			// else
+			uv = get_uv(pos[0], pos[1]);
+			scene->mlx->acc_img[pos[1]][pos[0]] = \
+				vec3f_add_v(scene->mlx->acc_img[pos[1]][pos[0]], per_pixel(scene, uv, thread));
+			scene->mlx->final_img[pos[1]][pos[0]] = \
+				vec3f_div_f(scene->mlx->acc_img[pos[1]][pos[0]], (float)scene->mlx->frame_index);
+			pos[0]++;
 		}
-		pos.y += THREADS;
+		pos[1] += THREADS;
 	}
 	return (NULL);
 }

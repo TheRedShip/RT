@@ -97,7 +97,7 @@ t_hitInfo		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 	{
 		hit_info.distance = -1.0f;
 		return (hit_info);
-	} 
+	}
 	hit_info.distance = vec3f_dot(vec3f_sub_v(obj->origin, ray.origin), plane->normal) / denom;
 	hit_info.position = vec3f_add_v(ray.origin, vec3f_mul_f(ray.direction, hit_info.distance));
 	hit_info.normal = plane->normal;

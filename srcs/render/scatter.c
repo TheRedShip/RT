@@ -61,9 +61,7 @@ t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
 
     if (hit_info->obj->portal->linked_portal == NULL)
         return ray;
-
     portal_offset = vec3f_sub_v(hit_info->obj->portal->linked_portal->origin, hit_info->obj->origin);
-
 	if (vec3f_dot(ray.direction, hit_info->obj->portal->linked_portal->portal->quad.normal) < 0.0f)
 	{
 		ray.origin = vec3f_add_v(hit_info->position, portal_offset);
@@ -73,7 +71,7 @@ t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
 	{
 		ray.origin = vec3f_add_v(hit_info->position, portal_offset);
 		t_vec3f cross = vec3f_cross(hit_info->obj->portal->linked_portal->portal->quad.up_corner, \
-														hit_info->obj->portal->linked_portal->portal->quad.normal);
+							hit_info->obj->portal->linked_portal->portal->quad.normal);
 		cross = vec3f_mul_f(normalize(cross), 2.0f);
 		ray.origin = vec3f_sub_v(ray.origin, cross);
 	}
