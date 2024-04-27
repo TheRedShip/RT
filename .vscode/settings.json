@@ -23,6 +23,8 @@
 		"cmath": "c",
 		"cstdlib": "cpp",
 		"xlocale": "c",
-		"pthread.h": "c"
+		"pthread.h": "c",
+		"octree.h": "c",
+		"postprocess.h": "c"
 	}
 }

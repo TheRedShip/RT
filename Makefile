@@ -101,9 +101,14 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 
 SRC_POSTPRO :=	postprocess/bloom.c					\
 
+SRC_OCTREE 	:=	octree/octree_creation.c			\
+				octree/objects_bounding_box.c		\
+
+
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
+				$(SRC_OCTREE)						\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

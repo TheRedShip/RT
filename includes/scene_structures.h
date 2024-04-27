@@ -16,6 +16,7 @@
 # include "minirt.h"
 
 typedef struct	s_objects	t_objects;
+typedef struct	s_octree	t_octree;
 
 typedef struct	s_camera
 {
@@ -79,13 +80,14 @@ typedef struct	s_light
 
 typedef struct	s_scene
 {
-	t_ambient_light	*ambient_light;
-	t_camera		*camera;
-	t_light			*lights;
-	t_objects		*objects;
-	t_bloom			*bloom;
-	t_mlx			*mlx;
 	t_mouse			mouse;
+	t_mlx			*mlx;
+	t_bloom			*bloom;
+	t_octree		*octree;
+	t_objects		*objects;
+	t_light			*lights;
+	t_camera		*camera;
+	t_ambient_light	*ambient_light;
 }				t_scene;
 
 typedef struct s_threads
