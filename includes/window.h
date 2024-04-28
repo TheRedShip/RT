@@ -29,7 +29,6 @@
 # define CAM_LEFT	65361
 # define CAM_RIGHT	65363
 # define KEY_BLOOM	98
-# define KEY_OCTREE	111
 
 void			create_window(t_scene **scene);
 void			put_pixel(t_data *data, int x, int y, int color);

@@ -34,11 +34,11 @@ int			rt_render_scene(t_scene *scene);
 
 int			rgb_to_hex(t_vec3f rgb);
 t_vec3f		hex_to_rgb(int hex);
-t_vec2f		get_uv(int x, int y);
+t_vec2f		get_uv(float x, float y);
 u_int64_t	get_time(void);
 
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev);
-t_hitInfo	trace_ray(t_scene *scene, t_octree *octree, t_ray ray);
+t_hitInfo	trace_ray(t_scene *scene, t_ray ray);
 t_ray		portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray);
 t_ray		new_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular);
 

@@ -43,6 +43,14 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(*scene, split[4], &(objects->material)) == -1)
 			return (rt_return(split));
+	if (ft_tab_len(split) == 6)
+	{
+		objects->sphere->rotation = rt_atof3(split[5], 0.0, 180.0);
+		objects->sphere->rotation.x = objects->sphere->rotation.x * M_PI / 180.0;
+		objects->sphere->rotation.y = objects->sphere->rotation.y * M_PI / 180.0;
+		objects->sphere->rotation.z = objects->sphere->rotation.z * M_PI / 180.0;
+
+	}
 	ft_free_tab((void **)(split));
 	return (1);
 }

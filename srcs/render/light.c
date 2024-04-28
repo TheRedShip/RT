@@ -12,11 +12,47 @@
 
 #include "minirt.h"
 
+t_vec3f vec3f_rotate_y(t_vec3f v, float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+
+    float rotation_matrix[3][3] = {
+        {c, 0, s},
+        {0, 1, 0},
+        {-s, 0, c}
+    };
+
+    t_vec3f result;
+    result.x = rotation_matrix[0][0] * v.x + rotation_matrix[0][1] * v.y + rotation_matrix[0][2] * v.z;
+    result.y = rotation_matrix[1][0] * v.x + rotation_matrix[1][1] * v.y + rotation_matrix[1][2] * v.z;
+    result.z = rotation_matrix[2][0] * v.x + rotation_matrix[2][1] * v.y + rotation_matrix[2][2] * v.z;
+
+    return result;
+}
+
+t_vec3f vec3f_rotate_x(t_vec3f v, float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+
+    float rotation_matrix[3][3] = {
+        {1, 0, 0},
+        {0, c, -s},
+        {0, s, c}
+    };
+
+    t_vec3f result;
+    result.x = rotation_matrix[0][0] * v.x + rotation_matrix[0][1] * v.y + rotation_matrix[0][2] * v.z;
+    result.y = rotation_matrix[1][0] * v.x + rotation_matrix[1][1] * v.y + rotation_matrix[1][2] * v.z;
+    result.z = rotation_matrix[2][0] * v.x + rotation_matrix[2][1] * v.y + rotation_matrix[2][2] * v.z;
+
+    return result;
+}
+
 t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 {
 	int			color_hex;
-	t_vec3f		color;
 	t_vec2f		uv;
+	t_vec3f		color;
 	t_vec3f		outward_normal;
 
 	uv.x = 0.0f;
@@ -25,6 +61,9 @@ t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 	if (hit_info.obj->type == OBJ_SPHER)
 	{
 		outward_normal = vec3f_div_f(vec3f_sub_v(hit_info.position, hit_info.obj->origin), (hit_info.obj->sphere->diameter / 2));
+		outward_normal = vec3f_rotate_y(outward_normal, hit_info.obj->sphere->rotation.x);
+		outward_normal = vec3f_rotate_x(outward_normal, hit_info.obj->sphere->rotation.y);
+
 		uv.x = 1 - (0.5 + atan2(outward_normal.z, outward_normal.x) / (2 * M_PI));
 		uv.y = 1 - (0.5 + asin(outward_normal.y) / M_PI);
 	}
@@ -36,7 +75,6 @@ t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 	else if (hit_info.obj->type == OBJ_QUADS)
 	{
 		t_vec3f A = vec3f_add_v(hit_info.obj->origin, hit_info.obj->quad->up_corner);
-		//t_vec3f C = vec3f_add_v(hit_info.obj->origin, hit_info.obj->quad->right_corner);
 		t_vec3f B = vec3f_add_v(A, hit_info.obj->quad->right_corner);
 		t_vec3f D = hit_info.obj->origin;
 		
@@ -104,7 +142,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 		t_ray		ray;
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
 		ray.direction = vec3f_mul_f(light_direction, -1.0f);
-		shadow_hit_info = trace_ray(scene, scene->octree, ray);
+		shadow_hit_info = trace_ray(scene, ray);
 		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < vec3f_length(vec3f_sub_v(scene->lights->origin, hit_info.position)))
 			diffuse_ratio = 0.0f;
 	}

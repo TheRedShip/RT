@@ -86,7 +86,6 @@ t_scene		*init_scene(void)
 	}
 	scene->mlx->is_acc = 1;
 	scene->mlx->is_bloom = 0;
-	scene->mlx->is_octree = 0;
 	scene->mlx->frame_index = 1;
 	scene->mlx->antialiasing = 1;
 	return (scene);
@@ -141,7 +140,6 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		exit(1);
 	rt_parse(argv[1], &scene);
-	create_octree(scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
 	setup_mlx(scene, scene->mlx);

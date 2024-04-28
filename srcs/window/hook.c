@@ -52,11 +52,6 @@ int		key_hook(int keycode, t_scene *scene)
 		scene->mlx->is_bloom = !scene->mlx->is_bloom;
 		printf("miniRT : bloom %d\n", scene->mlx->is_bloom);
 	}
-	else if (keycode == KEY_OCTREE)
-	{
-		scene->mlx->is_octree = !scene->mlx->is_octree;
-		printf("miniRT : octree %d\n", scene->mlx->is_octree);
-	}
 	else if (keycode == 65451)
 		scene->bloom->mip_num++;
 	else if (keycode == 65453)
@@ -99,7 +94,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		ray.origin = scene->camera->origin;
 		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 
-		t_hitInfo hit_info = trace_ray(scene, scene->octree, ray);
+		t_hitInfo hit_info = trace_ray(scene, ray);
 		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));
 	}
 	return (0);

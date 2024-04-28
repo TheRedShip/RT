@@ -49,7 +49,6 @@ typedef struct	s_mlx
 	void	*win;
 	int		is_acc;
 	int		is_bloom;
-	int		is_octree;
 	int		frame_index;
 	int		antialiasing;
 	t_data	img;
@@ -84,7 +83,6 @@ typedef struct	s_scene
 	t_mouse			mouse;
 	t_mlx			*mlx;
 	t_bloom			*bloom;
-	t_octree		*octree;
 	t_objects		*objects;
 	t_light			*lights;
 	t_camera		*camera;
@@ -100,6 +98,7 @@ typedef struct s_threads
 
 typedef struct	s_sphere
 {
+	t_vec3f		rotation;
 	float		diameter;
 }				t_sphere;
 

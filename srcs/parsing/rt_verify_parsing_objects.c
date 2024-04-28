@@ -33,7 +33,7 @@ int		rt_verify_sphere(char *line)
 	char		**split;
 
 	split = ft_split(line, '\t');
-	if (!split || ft_tab_len(split) != 5)
+	if (!split || (ft_tab_len(split) != 5 && ft_tab_len(split) != 6))
 		return rt_return(split);
 	if (rt_atof3(split[1], -1000.0,1000.0).x == -4242)
 		return rt_return(split);
@@ -42,6 +42,8 @@ int		rt_verify_sphere(char *line)
 	if (rt_atof3(split[3], 0, 255).x == -4242)
 		return rt_return(split);
 	if (rt_verify_material(split[4]) == 0)
+		return rt_return(split);
+	if (ft_tab_len(split) == 6 && rt_atof3(split[5], 0.0, 180.0).x == -4242)
 		return rt_return(split);
 	ft_free_tab((void **)(split));
 	return (1);

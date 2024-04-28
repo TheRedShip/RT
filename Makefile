@@ -55,18 +55,33 @@ ASSETS_DIR	:=	assets
 SRC_ASSETS_DIR := assets_src 
 
 SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
-				solar_system/mercury.jpg			\
-				solar_system/skybox_stars.jpg		\
-				solar_system/mars.jpg				\
-				solar_system/moon.jpg				\
-				solar_system/jupiter.jpg			\
-				solar_system/earth.jpg				\
-				solar_system/venus.jpg				\
-				portal_map/cube_blue.jpg			\
-				portal_map/platform.jpg				\
-				portal_map/wall.jpg					\
-				portal_map/floor.jpg				\
-				portal_map/cube.jpg					\
+					solar_system/mercury.jpg		\
+					solar_system/skybox_stars.jpg	\
+					solar_system/mars.jpg			\
+					solar_system/moon.jpg			\
+					solar_system/jupiter.jpg		\
+					solar_system/earth.jpg			\
+					solar_system/venus.jpg			\
+					portal_map/cube_blue.jpg		\
+					portal_map/platform.jpg			\
+					portal_map/wall.jpg				\
+					portal_map/floor.jpg			\
+					portal_map/cube.jpg				\
+					billard/billard_1.jpg			\
+					billard/billard_2.jpg			\
+					billard/billard_3.jpg			\
+					billard/billard_4.jpg			\
+					billard/billard_5.jpg			\
+					billard/billard_6.jpg			\
+					billard/billard_7.jpg			\
+					billard/billard_8.jpg			\
+					billard/billard_9.jpg			\
+					billard/billard_10.jpg			\
+					billard/billard_11.jpg			\
+					billard/billard_12.jpg			\
+					billard/billard_13.jpg			\
+					billard/billard_14.jpg			\
+					billard/billard_15.jpg			\
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/parse_utils.c				\
@@ -102,14 +117,10 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 
 SRC_POSTPRO :=	postprocess/bloom.c					\
 
-SRC_OCTREE 	:=	octree/octree_creation.c			\
-				octree/objects_bounding_box.c		\
-
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
-				$(SRC_OCTREE)						\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

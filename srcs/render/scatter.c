@@ -76,7 +76,7 @@ t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
 		ray.origin = vec3f_sub_v(ray.origin, cross);
 	}
 	ray.origin = vec3f_add_v(ray.origin, vec3f_mul_f(hit_info->obj->portal->linked_portal->portal->quad.normal, 0.0001f));
-	*hit_info = trace_ray(scene, scene->octree, ray);
+	*hit_info = trace_ray(scene, ray);
     return ray;
 }
 
