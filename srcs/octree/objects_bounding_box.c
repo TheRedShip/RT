@@ -59,8 +59,8 @@ t_boundary get_cylinder_boundary(t_objects *object) {
 t_boundary get_plane_boundary(t_objects *object) {
 	t_boundary boundary;
 	(void) object;
-	boundary.origin = (t_vec3f){0,0,0};
-	boundary.size = (t_vec3f){0.1, 0.1, 0.1};
+	boundary.origin = (t_vec3f){-100,-100,-100};
+	boundary.size = (t_vec3f){200, 200, 200};
 
 	return boundary;
 }

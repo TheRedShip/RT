@@ -165,6 +165,7 @@ t_hitInfo	octree_trace_ray_bis(t_scene *scene, t_octree *octree, t_ray ray)
 	t_hitInfo closest_hit;
 	t_hitInfo temp_hit;
 
+	closest_hit.distance = -1.0f;
 	int has_hit = boxIntersection(ray, octree->boundary.origin, octree->boundary.size);
 	if (!has_hit)
 		return (closest_hit);
@@ -203,16 +204,16 @@ void		create_octree(t_scene *scene)
 	}
 	scene->octree = octree;
 
-	// show_boundary_objects(scene);
-	// t_ray ray = (t_ray){(t_vec3f){0, 0, 0},(t_vec3f){0, 1, 0}};
-	// t_hitInfo hit_info = octree_trace_ray_bis(scene, scene->octree, ray);
+	show_boundary_objects(scene);
+	t_ray ray = (t_ray){(t_vec3f){5, 0, 3},(t_vec3f){0, 1, 0}};
+	t_hitInfo hit_info = octree_trace_ray_bis(scene, scene->octree, ray);
 	// printf("hit distance: %f\n", hit_info.distance);
 	// printf("%p\n", hit_info.obj->sphere);
-	// create_sphere(scene, hit_info.position, (t_vec3f){1, 0, 0});
+	create_sphere(scene, hit_info.position, (t_vec3f){1, 0, 0});
 
-	// create_sphere(scene, ray.origin, (t_vec3f){1, 0, 0});
-	// for(int i = 0; i < 5; i++)
-		// create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
+	create_sphere(scene, ray.origin, (t_vec3f){1, 0, 0});
+	for(int i = 0; i < 5; i++)
+		create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
 
 	// show_octree(scene, scene->octree, (t_vec3f){1,1,1}, 1);
 }
