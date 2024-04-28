@@ -42,7 +42,7 @@ int		rt_verify_camera(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
 		return rt_return(split);
-	if (rt_atof3(split[1], -1000.0, 10000.00).x == -4242)
+	if (rt_atof3(split[1], -1000.0,1000.00).x == -4242)
 		return rt_return(split);
 	if (rt_atof3(split[2], -1.0, 1.0).x == -4242)
 		return rt_return(split);
@@ -65,7 +65,7 @@ int		rt_verify_light(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
 		return rt_return(split);
-	if (rt_atof3(split[1], -1000.0, 10000.00).x == -4242)
+	if (rt_atof3(split[1], -1000.0,1000.00).x == -4242)
 		return rt_return(split);
 	if (rt_range_atof(split[2], 0.0, 1.0) == -1)
 		return rt_return(split);

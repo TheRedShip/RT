@@ -84,10 +84,11 @@ t_scene		*init_scene(void)
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);
 	}
-	scene->mlx->frame_index = 1;
-	scene->mlx->antialiasing = 1;
 	scene->mlx->is_acc = 1;
 	scene->mlx->is_bloom = 0;
+	scene->mlx->is_octree = 0;
+	scene->mlx->frame_index = 1;
+	scene->mlx->antialiasing = 1;
 	return (scene);
 }
 

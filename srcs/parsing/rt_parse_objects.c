@@ -38,7 +38,7 @@ int		rt_parse_sphere(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "sp");
-	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
+	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
 	objects->sphere->diameter = ft_atof(split[2]);
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(*scene, split[4], &(objects->material)) == -1)
@@ -56,7 +56,7 @@ int		rt_parse_plane(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "pl");
-	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
+	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
 	objects->plane->normal = rt_atof3(split[2], -1.0, 1.0);
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(*scene, split[4], &(objects->material)) == -1)
@@ -74,7 +74,7 @@ int		rt_parse_cylinder(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "cy");
-	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
+	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
 	objects->cylinder->orientation = rt_atof3(split[2], -1.0, 1.0);
 	objects->cylinder->diameter = ft_atof(split[3]);
 	objects->cylinder->height = ft_atof(split[4]);
@@ -94,9 +94,9 @@ int		rt_parse_quad(char *line, t_scene **scene)
 	if (!split)
 		return (0);
 	objects = rt_add_objects(scene, "qd");
-	objects->origin = rt_atof3(split[1], -1000.0, 10000.0);
-	objects->quad->right_corner = rt_atof3(split[2], -1000.0, 10000.0);
-	objects->quad->up_corner = rt_atof3(split[3], -1000.0, 10000.0);
+	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
+	objects->quad->right_corner = rt_atof3(split[2], -1000.0,1000.0);
+	objects->quad->up_corner = rt_atof3(split[3], -1000.0,1000.0);
 	objects->material.color = vec3f_div_f(rt_atof3(split[4], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(*scene, split[5], &(objects->material)) == -1)
 		return (rt_return(split));

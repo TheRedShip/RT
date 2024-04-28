@@ -41,4 +41,6 @@ t_hitInfo	hit_objects(t_ray ray, t_objects *obj);
 t_objects	*rt_add_objects(t_scene **scene, char *type);
 t_objects	*rt_objlast(t_objects *lst);
 
+int			boxIntersection(t_ray ray, t_vec3f origin, t_vec3f rad);
+
 #endif

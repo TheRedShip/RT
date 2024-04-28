@@ -66,7 +66,6 @@ int			insert_octree(t_octree *octree, t_objects *object)
 		return (0);
 	if (octree->objects == NULL)
 	{
-		printf("inserted\n");
 		octree->objects = object;
 		return (1);
 	}
@@ -108,20 +107,15 @@ void		show_boundary(t_scene *scene, t_boundary boundary, t_vec3f color)
 	create_sphere(scene, vec3f_add_v(boundary.origin, (t_vec3f){boundary.size.x, 0, boundary.size.z}), color);
 	create_sphere(scene, vec3f_add_v(boundary.origin, (t_vec3f){boundary.size.x, boundary.size.y, boundary.size.z}), color);
 }
-void		show_octree(t_scene *scene, t_octree *octree, t_vec3f color)
+void		show_octree(t_scene *scene, t_octree *octree, t_vec3f color, int is_recursive)
 {
-	static int		octree_num = 0;
 	
 	if (octree->objects)
-	{
-		octree_num++;
-		printf("octree_num: %d %f %f %f\n", octree_num, octree->objects->origin.x, octree->objects->origin.y, octree->objects->origin.z);
 		show_boundary(scene, octree->boundary, color);
-	}
-	if (octree->is_divided)
+	if (octree->is_divided && is_recursive)
 	{
 		for(int i = 0; i < 8; i++)
-			show_octree(scene, octree->children[i], vec3f_mul_v(color, (t_vec3f){0.7, 0.4, 0.3}));
+			show_octree(scene, octree->children[i], vec3f_mul_v(color, (t_vec3f){0.7, 0.4, 0.3}), 1);
 	}
 }
 void	show_boundary_objects(t_scene *scene)
@@ -141,6 +135,56 @@ void	show_boundary_objects(t_scene *scene)
 	}
 }
 
+// t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
+// {
+// 	t_hitInfo	temp_hit;
+// 	t_objects	*temp_object;
+// 	t_hitInfo	closest_hit;
+
+// 	temp_object = scene->objects;
+// 	closest_hit.distance = -1.0f;
+// 	while (temp_object)
+// 	{
+// 		temp_hit = hit_objects(ray, temp_object);
+// 		if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance == -1.0f))
+// 		{
+// 			closest_hit = temp_hit;
+// 			closest_hit.obj = temp_object;
+// 		}
+// 		temp_object = temp_object->next;
+// 	}
+// 	if (closest_hit.distance == -1.0f)
+// 		return (closest_hit);
+// 	if (closest_hit.obj->type == OBJ_PORTAL)
+// 		ray = portal_ray(scene, &closest_hit, ray);
+// 	return (closest_hit);
+// }
+
+t_hitInfo	octree_trace_ray_bis(t_scene *scene, t_octree *octree, t_ray ray)
+{
+	t_hitInfo closest_hit;
+	t_hitInfo temp_hit;
+
+	int has_hit = boxIntersection(ray, octree->boundary.origin, octree->boundary.size);
+	if (!has_hit)
+		return (closest_hit);
+	closest_hit = hit_objects(ray, octree->objects);
+	if (closest_hit.distance >= 0.0f)
+		closest_hit.obj = octree->objects;
+	if (octree->is_divided)
+	{
+		for(int i = 0; i < 8; i++)
+		{
+			if (octree->children[i]->objects)
+			{
+				temp_hit = octree_trace_ray_bis(scene, octree->children[i], ray);
+				if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance < 0.0f))
+					closest_hit = temp_hit;
+			}
+		}
+	}
+	return (closest_hit);
+}
 void		create_octree(t_scene *scene)
 {
 	t_octree	*octree;
@@ -148,22 +192,27 @@ void		create_octree(t_scene *scene)
 	octree = ft_calloc(1, sizeof(t_octree));
 	if (!octree)
 		rt_free_scene(scene);
-	octree->boundary.origin = (t_vec3f){-3, -3, -3};
-	octree->boundary.size = (t_vec3f){6, 6, 6};
+	octree->boundary.origin = (t_vec3f){-100, -100, -100};
+	octree->boundary.size = (t_vec3f){200, 200, 200};
 
 	t_objects *obj = scene->objects;
 	while (obj)
 	{
-		if (obj->type != OBJ_SPHER)
-		{
-			obj = obj->next;
-			continue;
-		}
 		insert_octree(octree, obj);
 		obj = obj->next;
 	}
 	scene->octree = octree;
 
-	show_boundary_objects(scene);
-	show_octree(scene, scene->octree, (t_vec3f){1,1,1});
+	// show_boundary_objects(scene);
+	// t_ray ray = (t_ray){(t_vec3f){0, 0, 0},(t_vec3f){0, 1, 0}};
+	// t_hitInfo hit_info = octree_trace_ray_bis(scene, scene->octree, ray);
+	// printf("hit distance: %f\n", hit_info.distance);
+	// printf("%p\n", hit_info.obj->sphere);
+	// create_sphere(scene, hit_info.position, (t_vec3f){1, 0, 0});
+
+	// create_sphere(scene, ray.origin, (t_vec3f){1, 0, 0});
+	// for(int i = 0; i < 5; i++)
+		// create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
+
+	// show_octree(scene, scene->octree, (t_vec3f){1,1,1}, 1);
 }

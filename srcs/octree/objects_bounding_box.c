@@ -56,6 +56,15 @@ t_boundary get_cylinder_boundary(t_objects *object) {
     return boundary;
 }
 
+t_boundary get_plane_boundary(t_objects *object) {
+	t_boundary boundary;
+	(void) object;
+	boundary.origin = (t_vec3f){0,0,0};
+	boundary.size = (t_vec3f){0.1, 0.1, 0.1};
+
+	return boundary;
+}
+
 t_boundary	get_boundary(t_objects *object)
 {
 	if (object->type == OBJ_SPHER)
@@ -64,6 +73,8 @@ t_boundary	get_boundary(t_objects *object)
 		return get_quad_boundary(object);
 	else if (object->type == OBJ_CYLIN)
 		return get_cylinder_boundary(object);
+	else if (object->type == OBJ_PLANE)
+		return get_plane_boundary(object);
 	// else if (object->type == OBJ_ELLIP)
 		// return get_ellipse_boundary(object);
 	return (t_boundary){(t_vec3f){0, 0, 0}, (t_vec3f){0, 0, 0}};

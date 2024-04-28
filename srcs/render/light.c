@@ -104,7 +104,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 		t_ray		ray;
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
 		ray.direction = vec3f_mul_f(light_direction, -1.0f);
-		shadow_hit_info = trace_ray(scene, ray);
+		shadow_hit_info = trace_ray(scene, scene->octree, ray);
 		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < vec3f_length(vec3f_sub_v(scene->lights->origin, hit_info.position)))
 			diffuse_ratio = 0.0f;
 	}

@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
+t_hitInfo	basic_trace_ray(t_scene *scene, t_ray ray)
 {
 	t_hitInfo	temp_hit;
 	t_objects	*temp_object;
@@ -23,7 +23,7 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	while (temp_object)
 	{
 		temp_hit = hit_objects(ray, temp_object);
-		if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance == -1.0f))
+		if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance < 0.0f))
 		{
 			closest_hit = temp_hit;
 			closest_hit.obj = temp_object;
@@ -35,6 +35,40 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	if (closest_hit.obj->type == OBJ_PORTAL)
 		ray = portal_ray(scene, &closest_hit, ray);
 	return (closest_hit);
+}
+
+t_hitInfo	octree_trace_ray(t_scene *scene, t_octree *octree, t_ray ray)
+{
+	t_hitInfo closest_hit;
+	t_hitInfo temp_hit;
+
+	closest_hit.distance = -1.0f;
+	int has_hit = boxIntersection(ray, octree->boundary.origin, octree->boundary.size);
+	if (!has_hit)
+		return (closest_hit);
+	closest_hit = hit_objects(ray, octree->objects);
+	if (closest_hit.distance >= 0.0f)
+		closest_hit.obj = octree->objects;
+	if (octree->is_divided)
+	{
+		for(int i = 0; i < 8; i++)
+		{
+			if (octree->children[i]->objects)
+			{
+				temp_hit = octree_trace_ray(scene, octree->children[i], ray);
+				if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance < 0.0f))
+					closest_hit = temp_hit;
+			}
+		}
+	}
+	return (closest_hit);
+}
+
+t_hitInfo	trace_ray(t_scene *scene, t_octree *octree, t_ray ray)
+{
+	if (scene->mlx->is_octree)
+		return (octree_trace_ray(scene, octree, ray));
+	return (basic_trace_ray(scene, ray));
 }
 
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
@@ -52,7 +86,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
 	for (int i = 0; i < (!scene->mouse.is_pressed * (scene->camera->bounce - 2)) + 2; i++)
 	{
-		hit_info = trace_ray(scene, ray);
+		hit_info = trace_ray(scene, scene->octree, ray);
 		if (hit_info.distance < 0.0f)
 		{
 			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
