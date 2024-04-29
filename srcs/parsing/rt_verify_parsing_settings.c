@@ -23,7 +23,7 @@ int		rt_verify_ambient(char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 3)
 		return rt_return(split);
-	if (rt_range_atof(split[1], 0.0, 1.0) == -1)
+	if (rt_range_atof(split[1], 0.0, 3.0) == -1)
 		return (rt_return(split));
 	if (rt_atof3(split[2], 0, 255).x == -4242)
 		return (rt_return(split));

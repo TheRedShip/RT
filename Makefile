@@ -43,7 +43,7 @@ MINILIB_DIR := ./minilibx-linux
 
 LFT			:=	$(LFT_DIR)/libft.a
 
-MLX			:=	$(MINILIB_DIR)/libft.a
+MLX			:=	$(MINILIB_DIR)/libmlx.a
 
 
 SRCS_DIR	:=	srcs
@@ -82,6 +82,7 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					billard/billard_13.jpg			\
 					billard/billard_14.jpg			\
 					billard/billard_15.jpg			\
+					thing/skybox.jpg				\
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/parse_utils.c				\

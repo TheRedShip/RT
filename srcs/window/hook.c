@@ -40,17 +40,17 @@ int		key_hook(int keycode, t_scene *scene)
 	else if (keycode == KEY_ENTER)
 	{
 		scene->mlx->is_acc = !scene->mlx->is_acc;
-		printf("miniRT : accumulating %d\n", scene->mlx->is_acc);
+		printf("miniRT : accumulating %d      \n", scene->mlx->is_acc);
 	}
 	else if (keycode == KEY_ALIA)
 	{
 		scene->mlx->antialiasing = !scene->mlx->antialiasing;
-		printf("miniRT : antialiasing %d\n", scene->mlx->antialiasing);
+		printf("miniRT : antialiasing %d      \n", scene->mlx->antialiasing);
 	}
 	else if (keycode == KEY_BLOOM)
 	{
 		scene->mlx->is_bloom = !scene->mlx->is_bloom;
-		printf("miniRT : bloom %d\n", scene->mlx->is_bloom);
+		printf("miniRT : bloom %d             \n", scene->mlx->is_bloom);
 	}
 	else if (keycode == 65451)
 		scene->bloom->mip_num++;
