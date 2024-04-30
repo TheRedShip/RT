@@ -39,7 +39,7 @@ t_ray		lambert_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_spe
 
 t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
 {
-	double	refraction_ratio;
+	float	refraction_ratio;
 	t_vec3f	unit_direction;
 	
 	if (vec3f_dot(ray.direction, hit_info.normal) > 0.0f)

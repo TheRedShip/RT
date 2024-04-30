@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/04/07 17:53:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/30 17:51:34 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char	*ft_strchr(char *s, int c);
 char	*ft_strrchr(char *s, int c);
 int		ft_atoi(char *nptr);
 int		ft_atoi_base(char *nptr, int base);
-double	ft_atof(char *nptr);
+float	ft_atof(char *nptr);
 char	*ft_strdup(char *s);
 char	*ft_strndup(char *str, int n);
 char	*ft_strnstr(char *big, char *little, size_t len);

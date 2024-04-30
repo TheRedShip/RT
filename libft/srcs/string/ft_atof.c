@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:20:17 by rgramati          #+#    #+#             */
-/*   Updated: 2024/04/07 20:08:57 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/30 17:51:34 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static double	after_point(char *nptr, double res, int index)
+static float	after_point(char *nptr, float res, int index)
 {
 	int	e;
 
@@ -31,11 +31,11 @@ static double	after_point(char *nptr, double res, int index)
 	return (res);
 }
 
-double			ft_atof(char *nptr)
+float			ft_atof(char *nptr)
 {
 	int		i;
 	int		sign;
-	double	res;
+	float	res;
 
 	i = 0;
 	sign = 1;
