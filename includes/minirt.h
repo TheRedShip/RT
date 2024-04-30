@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/09 01:03:06 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/30 17:56:22 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define THREADS 16
 
 # include <stdio.h>
+# include <stdint.h>
 # include <sys/time.h>
 # include <math.h>
 # include <pthread.h>
@@ -32,6 +33,8 @@
 # include "parsing.h"
 # include "window.h"
 # include "render.h"
+# include "server.h"
+# include "client.h"
 
 t_vec3f	**init_img(t_scene *scene, int width, int height);
 int		rt_free_scene(t_scene *scene);

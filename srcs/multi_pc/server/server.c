@@ -6,24 +6,12 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 02:24:48 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/30 20:21:05 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/server.h"
+#include "minirt.h"
 
-int	g_stop = 0;
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("stop signal received, waiting for all the connections to stop..\
-.\n");
-		g_stop = 1;
-	}
-}
-
-int	setup_socket(int port)
+int	setup_socket(uint16_t port)
 {
 	int					server_fd;
 	struct sockaddr_in	s_addr;
@@ -52,14 +40,25 @@ int	setup_socket(int port)
 	return (server_fd);
 }
 
-int	main(void)
+int	start_server(t_scene *scene, char *port_str)
 {
 	int	socket;
+	uint16_t port;
 
-	signal(SIGINT, signal_handler);
-	socket = setup_socket(1880);
+	port = ft_atoi(port_str);
+	if(pthread_mutex_init(&scene->server.img_mutex, 0)
+		|| pthread_mutex_init(&scene->server.render_mutex, 0))
+		return(1);
+	if(port >= 65535 || port <= 0)
+	{
+		fprintf(stderr, "invalid port, must be between 0 and 65535\n");
+		return(1);
+	}
+	socket = setup_socket(port);
 	if (socket < 0)
 		return (1);
-	wait_clients(socket);
+	create_window(&scene);
+	wait_clients(scene, socket);
 	close(socket);
+	return(0);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/09 00:08:10 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/30 19:28:05 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,16 @@ typedef struct	s_light
 	t_vec3f		origin;
 }				t_light;
 
+typedef struct	s_server
+{
+	char			*ip;
+	uint16_t		port;
+	int				error;
+	int				fd;
+	pthread_mutex_t img_mutex;
+	pthread_mutex_t	render_mutex;
+}	t_server;
+
 typedef struct	s_scene
 {
 	t_mouse			mouse;
@@ -87,6 +97,7 @@ typedef struct	s_scene
 	t_light			*lights;
 	t_camera		*camera;
 	t_ambient_light	*ambient_light;
+	t_server		server;
 }				t_scene;
 
 typedef struct s_threads

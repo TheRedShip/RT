@@ -6,15 +6,15 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:10:50 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 02:26:05 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:22:43 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/server.h"
+#include "minirt.h"
 
-unsigned long int	get_buffer_str_len(t_buffer *buffer)
+unsigned int	get_buffer_str_len(t_buffer *buffer)
 {
-	unsigned long int	res;
+	unsigned int	res;
 
 	res = 0;
 	while (buffer)

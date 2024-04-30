@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_threads.c                                      :+:      :+:    :+:   */
+/*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 02:10:11 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 02:22:25 by tomoron          ###   ########.fr       */
+/*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
+/*   Updated: 2024/04/30 18:01:46 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/server.h"
 
-int	add_thread(t_threads **thrds)
-{
-	t_threads	*new;
+#ifndef CLIENT_H
+# define CLIENT_H
+/*
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <pthread.h>
+*/
+# include <arpa/inet.h>
 
-	new = malloc(sizeof(t_threads));
-	if (!new)
-		return (0);
-	new->prev = *thrds;
-	*thrds = new;
-	return (1);
-}
+void	rt_to_server(t_scene *scene, char *ip, char *port);
+int		send_map(t_scene *scene, t_vec3f **map);
+#endif
 
-void	wait_threads(t_threads *thrds)
-{
-	t_thread	*tmp;
-
-	while (thrds->prev)
-	{
-		tmp = thrds->prev;
-		pthread_join(thrds->id, 0);
-		free(thrds);
-		thrds = tmp;
-	}
-}

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/14 18:14:08 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/04/30 20:23:39 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			rt_free_scene(t_scene *scene)
 	return (0);
 }
 
-t_scene		*init_scene(void)
+t_scene		*init_scene(int headless)
 {
 	t_scene *scene;
 
@@ -77,7 +77,8 @@ t_scene		*init_scene(void)
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
-	create_window(&scene);
+	if(!headless)
+		create_window(&scene);
 	scene->objects = NULL;
 	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom)
 	{
@@ -131,17 +132,27 @@ int	main(int argc, char **argv)
 {
 	t_scene		*scene;
 
-	if (argc != 2)
+	if (argc < 2 || argc > 4)
 	{
-		printf("Usage: %s scenes/<file.rt>\n", argv[0]);
+		printf("Usage:	%s scenes/<file.rt> [IP [PORT]]\n", argv[0]);
+		printf("		%s server [PORT]\n", argv[0]);
 		return (1);
 	}
-	scene = init_scene();
+	scene = init_scene(argc >= 3 || !ft_strcmp(argv[1], "server"));
+	if(!ft_strcmp(argv[1], "server") && argc == 3)
+		return(start_server(scene, argv[2]));
+	if(!ft_strcmp(argv[1], "server") && argc == 2)
+			return(start_server(scene, "8080"));
 	if (scene == NULL)
-		exit(1);
+		return (1);
 	rt_parse(argv[1], &scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
-	setup_mlx(scene, scene->mlx);
+	if(argc == 2)
+		setup_mlx(scene, scene->mlx);
+	else if(argc == 3)
+		rt_to_server(scene, argv[2], "8080");
+	else if(argc == 4)
+		rt_to_server(scene,argv[2], argv[3]);
 	return (0);
 }
