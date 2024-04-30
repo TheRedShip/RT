@@ -55,15 +55,15 @@ void	multiplyMatrixVector(float (*matrix)[3], t_vec3f vector, t_vec3f *result)
 	result->z = matrix[2][0] * vector.x + matrix[2][1] * vector.y + matrix[2][2] * vector.z;
 }
 
-t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev)
+t_vec3f		calculate_ray_direction(t_scene *scene, int thread_id, t_vec3f prev)
 {
 	t_vec3f			result;
-	static float	calcul = -42;
+	static float	calcul[THREADS] = {0};
 
-	if (calcul == -42)
-		calcul = tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
-	prev.x *= calcul;
-	prev.y *= calcul;
+	if (calcul[thread_id] == 0)
+		calcul[thread_id] = tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
+	prev.x *= calcul[thread_id];
+	prev.y *= calcul[thread_id];
 	multiplyMatrixVector(scene->camera->rotationMatrixX, prev, &result);
 	multiplyMatrixVector(scene->camera->rotationMatrixY, result, &result);
 	result = normalize(result);

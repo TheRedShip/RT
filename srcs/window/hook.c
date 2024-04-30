@@ -92,7 +92,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		t_vec2f uv = get_uv(x, y);
 		t_ray	ray;
 		ray.origin = scene->camera->origin;
-		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
+		ray.direction = calculate_ray_direction(scene, 0, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 
 		t_hitInfo hit_info = trace_ray(scene, ray);
 		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));
