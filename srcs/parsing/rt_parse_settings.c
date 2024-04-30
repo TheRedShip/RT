@@ -28,12 +28,18 @@ int		rt_parse_ambient(char *line, t_scene **scene)
 int		rt_parse_camera(char *line, t_scene **scene)
 {
 	char	**split;
-	
+
 	split = ft_split(line, '\t');
 	if (!split)
 		return (0);;
 	(*scene)->camera->origin = rt_atof3(split[1], -1000, 1000);
+
 	(*scene)->camera->direction = rt_atof3(split[2], -1, 1);
+	(*scene)->camera->direction.z = (*scene)->camera->direction.x;
+	(*scene)->camera->direction.x = (*scene)->camera->direction.y;
+	(*scene)->camera->direction.y = (*scene)->camera->direction.z;
+	(*scene)->camera->direction.z = -1;
+	
 	(*scene)->camera->fov = ft_atoi(split[3]);
 	(*scene)->camera->bounce = ft_atoi(split[4]);
 	ft_free_tab((void **)(split));
