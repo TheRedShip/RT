@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:10:50 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 14:22:43 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 12:50:50 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	copy_buffer(char *res, t_buffer *buffer)
 		}
 		buffer = buffer->next;
 	}
-	*res = 0;
 }
 
 void	free_buffer(t_buffer *buffer)

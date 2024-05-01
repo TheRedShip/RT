@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 18:22:04 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 20:32:37 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -36,14 +36,55 @@ int		open_client_socket(char *ip, uint16_t port)
 	return(sock_fd);
 }
 
+char	*get_scene_name(int fd)
+{
+	int i;
+	int read_len;
+	t_buffer *buffer;
+
+	buffer = 0;	
+	read_len = 1;
+	while(read_len)
+	{	
+		if (!add_buffer(&buffer))
+		{
+			fprintf(stderr, "too much data from fd %d\n", fd);
+			free_buffer(buffer);
+			return (0);
+		}
+		read_len = read(fd, buffer->str, SOCKET_BUFFER_SIZE);
+		buffer->len = read_len;
+		i = 0;
+		while(i < read_len)
+		{
+			if(!buffer->str[i])
+				read_len = 0;
+			i++;
+		}
+	}
+	return (buffer_to_str(buffer, 0));
+}
+
 int		send_map(t_scene *scene, t_vec3f **map)
 {
-	int dest_fd;
-	int i;
+	int		dest_fd;
+	int		i;
+	char	*scene_name;
 
 	dest_fd = open_client_socket(scene->server.ip, scene->server.port);
 	if(dest_fd < 0)
 		return(0);
+	printf("start get name\n");
+	scene_name = get_scene_name(dest_fd);
+	printf("scene_name : %s\n", scene_name);
+	if(ft_strcmp(scene_name, scene_name))
+	{
+		printf("wrong map\n");
+		free(scene_name);
+		close(dest_fd);
+		return(0);
+	}
+	free(scene_name);
 	i = 0;
 	while(i < HEIGHT)
 	{
@@ -71,6 +112,6 @@ void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 	scene->server.ip = ip;
 	scene->server.port = port;
 	scene->mlx->is_acc = 0;
-	while(!scene->server.error)
+	while(!scene->server.stop)
 		rt_render_scene((void *)scene);
 }

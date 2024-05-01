@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 20:23:39 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 19:44:47 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void		destroy_mlx(t_scene *scene)
 {
+	if(!scene->mlx)
+		return ;
 	if(!scene->mlx->win)
 	{
 		mlx_destroy_display(scene->mlx->mlx);
@@ -45,6 +47,7 @@ int			rt_free_scene(t_scene *scene)
 	free(scene->camera);
 	free(scene->lights);
 	free(scene->bloom);
+	free(scene->name);
 	while (scene->objects)
 	{
 		tmp = scene->objects;
@@ -62,7 +65,7 @@ int			rt_free_scene(t_scene *scene)
 	return (0);
 }
 
-t_scene		*init_scene(int headless)
+t_scene		*init_scene(char *name, int headless)
 {
 	t_scene *scene;
 
@@ -74,13 +77,14 @@ t_scene		*init_scene(int headless)
 	scene->lights = ft_calloc(1, sizeof(t_light));
 	scene->bloom = ft_calloc(1, sizeof(t_bloom));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
+	scene->name = ft_strdup(name);
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	if(!headless)
 		create_window(&scene);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || ! scene->name)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);
@@ -135,23 +139,23 @@ int	main(int argc, char **argv)
 	if (argc < 2 || argc > 4)
 	{
 		printf("Usage:	%s scenes/<file.rt> [IP [PORT]]\n", argv[0]);
-		printf("		%s server [PORT]\n", argv[0]);
+		printf("		%s scenes/<file.rt> server [PORT]\n", argv[0]);
 		return (1);
 	}
-	scene = init_scene(argc >= 3 || !ft_strcmp(argv[1], "server"));
-	if(!ft_strcmp(argv[1], "server") && argc == 3)
-		return(start_server(scene, argv[2]));
-	if(!ft_strcmp(argv[1], "server") && argc == 2)
-			return(start_server(scene, "8080"));
+	scene = init_scene(argv[1], argc >= 3 && ft_strcmp(argv[2], "server"));
 	if (scene == NULL)
 		return (1);
 	rt_parse(argv[1], &scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
+	if(argc == 4 && !ft_strcmp(argv[2], "server"))
+		return(start_server(scene, argv[3]));
+	if(argc == 3 && !ft_strcmp(argv[2], "server"))
+		return(start_server(scene, "25565"));
 	if(argc == 2)
 		setup_mlx(scene, scene->mlx);
 	else if(argc == 3)
-		rt_to_server(scene, argv[2], "8080");
+		rt_to_server(scene, argv[2], "25565");
 	else if(argc == 4)
 		rt_to_server(scene,argv[2], argv[3]);
 	return (0);

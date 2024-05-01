@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/04/30 14:28:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/05/01 17:03:04 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ NAME        :=	miniRT
 
 LFT_DIR 	:=	./libft
 
-MINILIB_DIR := ./minilibx-linux
+MINILIB_DIR := ./mlx
 
 LFT			:=	$(LFT_DIR)/libft.a
 
@@ -121,7 +121,9 @@ SRC_POSTPRO :=	postprocess/bloom.c
 SRC_MULTI_S	:=	multi_pc/server/server.c			\
 				multi_pc/server/handle_clients.c	\
 				multi_pc/server/lst_buffer.c		\
-				multi_pc/server/lst_threads.c		
+				multi_pc/server/lst_threads.c		\
+				multi_pc/server/hooks.c				\
+				multi_pc/server/mutex.c
 
 SRC_MULTI_C :=	multi_pc/client/rt_to_server.c		
 
@@ -159,7 +161,7 @@ DIR_DUP     =	mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS) $(ASSETS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lminilibx-linux -lmlx_Linux -I./minilibx-linux -lXext -lX11 -lm -lz -o $(NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lmlx -lmlx_Linux -I./mlx -lXext -lX11 -lm -lz -o $(NAME)
 	@printf "$(LINE_CLR)$(BWHITE) $(NAME): PROJECT COMPILED !$(RESET)\n\n"
 
 $(MLX):

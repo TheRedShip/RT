@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 20:19:21 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 18:18:58 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 
-# define SOCKET_BUFFER_SIZE 16384
-# define MAX_BUFFER 16384
+# define SOCKET_BUFFER_SIZE 1000000
+# define MAX_BUFFER 50
 
 
 typedef struct s_srv_threads
@@ -51,6 +51,8 @@ unsigned int	get_buffer_str_len(t_buffer *buffer);
 int				add_thread(t_srv_threads **thrds);
 void			wait_threads(t_srv_threads *thrds);
 int				start_server(t_scene *scene, char *port_str);
+pthread_t		init_server_hooks(t_scene *scene);
+int				get_stopped(t_scene *scene);
 
 #endif
 

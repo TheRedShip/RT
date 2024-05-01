@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/04/30 20:21:05 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 18:49:57 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -44,11 +44,12 @@ int	start_server(t_scene *scene, char *port_str)
 {
 	int	socket;
 	uint16_t port;
+	pthread_t	mlx_thread;
 
 	port = ft_atoi(port_str);
-	if(pthread_mutex_init(&scene->server.img_mutex, 0)
-		|| pthread_mutex_init(&scene->server.render_mutex, 0))
+	if(pthread_mutex_init(&scene->server.mutex, 0))
 		return(1);
+	mlx_thread = init_server_hooks(scene);
 	if(port >= 65535 || port <= 0)
 	{
 		fprintf(stderr, "invalid port, must be between 0 and 65535\n");
@@ -57,8 +58,10 @@ int	start_server(t_scene *scene, char *port_str)
 	socket = setup_socket(port);
 	if (socket < 0)
 		return (1);
-	create_window(&scene);
+	scene->server.last_img_time = get_time();
 	wait_clients(scene, socket);
 	close(socket);
+	pthread_join(mlx_thread, 0);
+	rt_free_scene(scene);
 	return(0);
 }

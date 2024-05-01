@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 19:28:05 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/01 19:43:12 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ typedef struct	s_server
 {
 	char			*ip;
 	uint16_t		port;
-	int				error;
+	int				stop;
 	int				fd;
-	pthread_mutex_t img_mutex;
-	pthread_mutex_t	render_mutex;
+	uint64_t		last_img_time;
+	pthread_mutex_t mutex;
 }	t_server;
 
 typedef struct	s_scene
@@ -98,6 +98,7 @@ typedef struct	s_scene
 	t_camera		*camera;
 	t_ambient_light	*ambient_light;
 	t_server		server;
+	char			*name;
 }				t_scene;
 
 typedef struct s_threads
