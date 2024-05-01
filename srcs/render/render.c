@@ -30,9 +30,7 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 		}
 		temp_object = temp_object->next;
 	}
-	if (closest_hit.distance == -1.0f)
-		return (closest_hit);
-	if (closest_hit.obj->type == OBJ_PORTAL)
+	if (closest_hit.distance > 0.0f && closest_hit.obj->type == OBJ_PORTAL)
 		ray = portal_ray(scene, &closest_hit, ray);
 	return (closest_hit);
 }

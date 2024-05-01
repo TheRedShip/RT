@@ -16,7 +16,6 @@
 # include "minirt.h"
 
 typedef struct	s_objects	t_objects;
-typedef struct	s_octree	t_octree;
 
 typedef struct	s_camera
 {

@@ -26,6 +26,7 @@
 		"pthread.h": "c",
 		"octree.h": "c",
 		"postprocess.h": "c",
-		"time.h": "c"
+		"time.h": "c",
+		"bvh.h": "c"
 	}
 }

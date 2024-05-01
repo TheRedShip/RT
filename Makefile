@@ -99,7 +99,6 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
-				objects/intersection.c				\
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
@@ -122,6 +121,7 @@ SRC_POSTPRO :=	postprocess/bloom.c					\
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
+				$(SRC_BVH)							\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
