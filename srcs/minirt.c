@@ -41,10 +41,11 @@ int			rt_free_scene(t_scene *scene)
 	t_objects	*tmp;
 
 	destroy_mlx(scene);
-	free(scene->ambient_light);
+	free(scene->bvh);
+	free(scene->bloom);
 	free(scene->camera);
 	free(scene->lights);
-	free(scene->bloom);
+	free(scene->ambient_light);
 	while (scene->objects)
 	{
 		tmp = scene->objects;
@@ -74,17 +75,19 @@ t_scene		*init_scene(void)
 	scene->lights = ft_calloc(1, sizeof(t_light));
 	scene->bloom = ft_calloc(1, sizeof(t_bloom));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
+	scene->bvh = ft_calloc(1, sizeof(t_bvh));
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	create_window(&scene);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || !scene->bvh)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene);
 	}
 	scene->mlx->is_acc = 1;
+	scene->mlx->is_bvh = 0;
 	scene->mlx->is_bloom = 0;
 	scene->mlx->frame_index = 1;
 	scene->mlx->antialiasing = 1;
@@ -140,6 +143,7 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		exit(1);
 	rt_parse(argv[1], &scene);
+	create_bvh(scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
 	setup_mlx(scene, scene->mlx);
