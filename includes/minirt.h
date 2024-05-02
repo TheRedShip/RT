@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 18:56:21 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 13:54:20 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@
 t_vec3f	**init_img(t_scene *scene, int width, int height);
 int		rt_free_scene(t_scene *scene);
 void		destroy_mlx(t_scene *scene);
+void	link_portals(t_scene *scene);
+t_scene		*init_scene(char *name, int headless, t_scene *scene);
 
 #endif

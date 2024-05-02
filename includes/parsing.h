@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:12:27 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:12:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/02 14:22:44 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int			rt_range_atoi(char *line, int min, int max);
 float		rt_range_atof(char *line, float min, float max);
 t_vec3f		rt_atof3(char *line, float min, float max);
 
-int			rt_verify_camera(char *line);
-int			rt_verify_ambient(char *line);
-int			rt_verify_light(char *line);
-int			rt_verify_bloom(char *line);
+int			rt_verify_camera(t_scene *scen, char *line);
+int			rt_verify_ambient(t_scene *scene, char *line);
+int			rt_verify_light(t_scene *scene, char *line);
+int			rt_verify_bloom(t_scene *scene, char *line);
 int			rt_verify_sphere(char *line);
 int			rt_verify_plane(char *line);
 int			rt_verify_cylinder(char *line);

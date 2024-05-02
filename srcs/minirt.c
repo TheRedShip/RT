@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 19:44:47 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:05:14 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,16 @@ void		destroy_mlx(t_scene *scene)
 {
 	if(!scene->mlx)
 		return ;
-	if(!scene->mlx->win)
-	{
+	if(scene->mlx->win)
+		mlx_clear_window(scene->mlx->mlx, scene->mlx->win);
+	if(scene->mlx->img.img)
+		mlx_destroy_image(scene->mlx->mlx, scene->mlx->img.img);
+	if(scene->mlx->win)
+		mlx_destroy_window(scene->mlx->mlx, scene->mlx->win);
+	if(scene->mlx->mlx)
 		mlx_destroy_display(scene->mlx->mlx);
-		free(scene->mlx->mlx);
-		free(scene->mlx);
-		return ;
-	}
-	mlx_clear_window(scene->mlx->mlx, scene->mlx->win);
-	mlx_destroy_image(scene->mlx->mlx, scene->mlx->img.img);
-	mlx_destroy_window(scene->mlx->mlx, scene->mlx->win);
-	mlx_destroy_display(scene->mlx->mlx);
-	mlx_loop_end(scene->mlx->mlx);
+	if(scene->mlx->mlx)
+		mlx_loop_end(scene->mlx->mlx);
 	free(scene->mlx->mlx);
 	if (scene->mlx->acc_img)
 		ft_free_tab((void **)(scene->mlx->acc_img));
@@ -65,11 +63,10 @@ int			rt_free_scene(t_scene *scene)
 	return (0);
 }
 
-t_scene		*init_scene(char *name, int headless)
+t_scene		*init_scene(char *name, int headless, t_scene *scene)
 {
-	t_scene *scene;
-
-	scene = ft_calloc(1, sizeof(t_scene));
+	if(!scene)
+		scene = ft_calloc(1, sizeof(t_scene));
 	if (!scene)
 		return (NULL);
 	scene->ambient_light = ft_calloc(1, sizeof(t_ambient_light));
@@ -142,7 +139,7 @@ int	main(int argc, char **argv)
 		printf("		%s scenes/<file.rt> server [PORT]\n", argv[0]);
 		return (1);
 	}
-	scene = init_scene(argv[1], argc >= 3 && ft_strcmp(argv[2], "server"));
+	scene = init_scene(argv[1], argc >= 3 && ft_strcmp(argv[2], "server"), 0);
 	if (scene == NULL)
 		return (1);
 	rt_parse(argv[1], &scene);

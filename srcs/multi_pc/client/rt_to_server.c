@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/01 20:32:37 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:26:14 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -65,6 +65,42 @@ char	*get_scene_name(int fd)
 	return (buffer_to_str(buffer, 0));
 }
 
+void			rt_free_scene_replace(t_scene *scene)
+{
+	t_objects	*tmp;
+
+	free(scene->ambient_light);
+	free(scene->camera);
+	free(scene->lights);
+	free(scene->bloom);
+	free(scene->name);
+	while (scene->objects)
+	{
+		tmp = scene->objects;
+		scene->objects = scene->objects->next;
+		free(tmp->sphere);
+		free(tmp->plane);
+		free(tmp->cylinder);
+		free(tmp->ellipse);
+		free(tmp->quad);	
+		free(tmp->portal);
+		free(tmp);
+	}
+}
+
+int	change_scene(t_scene *scene, char *scene_name)
+{
+	rt_free_scene_replace(scene);
+	init_scene(scene_name, 1, scene);
+	scene->objects = 0;
+	scene->mlx->is_acc = 0;
+	rt_parse(scene_name, &scene);
+	link_portals(scene);
+	free(scene_name);
+	printf("\nParsing successful\n");
+	return(1);
+}
+
 int		send_map(t_scene *scene, t_vec3f **map)
 {
 	int		dest_fd;
@@ -77,12 +113,11 @@ int		send_map(t_scene *scene, t_vec3f **map)
 	printf("start get name\n");
 	scene_name = get_scene_name(dest_fd);
 	printf("scene_name : %s\n", scene_name);
-	if(ft_strcmp(scene_name, scene_name))
+	if(ft_strcmp(scene_name, scene->name))
 	{
-		printf("wrong map\n");
-		free(scene_name);
+		printf("changing to map %s\n", scene_name);
 		close(dest_fd);
-		return(0);
+		return(change_scene(scene, scene_name));
 	}
 	free(scene_name);
 	i = 0;
@@ -114,4 +149,5 @@ void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 	scene->mlx->is_acc = 0;
 	while(!scene->server.stop)
 		rt_render_scene((void *)scene);
+	rt_free_scene(scene);
 }

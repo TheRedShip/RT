@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:11:16 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/28 19:11:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/02 14:23:24 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int		is_file_valid(char *file_name)
 
 int		rt_verify_parsing(char *line, t_scene **scene)
 {
-	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(line))
+	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(*scene, line))
 		return (rt_parse_ambient(line, scene));
-	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(line))
+	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(*scene, line))
 		return (rt_parse_camera(line, scene));
-	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(line))
+	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(*scene, line))
 		return (rt_parse_light(line, scene));
-	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(line))
+	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(*scene, line))
 		return (rt_parse_bloom(line, scene));
 	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
 		return (rt_parse_sphere(line, scene));

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 19:43:12 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:19:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct	s_octree	t_octree;
 
 typedef struct	s_camera
 {
+	int			has_seen;
 	float		fov;
 	int			bounce;
 	t_vec3f		origin;
@@ -30,6 +31,7 @@ typedef struct	s_camera
 
 typedef struct	s_ambient_light
 {
+	int			has_seen;
 	float		ratio;
 	t_vec3f		color;
 }				t_ambient_light;
@@ -65,6 +67,7 @@ typedef struct	s_mouse
 
 typedef struct	s_bloom
 {
+	int			has_seen;
 	float		treshold;
 	int			blur_size;
 	int			mip_num;
@@ -72,6 +75,7 @@ typedef struct	s_bloom
 
 typedef struct	s_light
 {
+	int			has_seen;
 	int			hard;
 	float		ratio;
 	t_vec3f		color;

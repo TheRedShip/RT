@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 00:00:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:57:25 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 12:58:47 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,10 @@ int		rt_render_scene(t_scene *scene)
 	if(scene->server.ip)
 	{
 		if(!send_map(scene, scene->mlx->acc_img)) 
+		{
+			printf("stop\n");
 			scene->server.stop = 1;
+		}
 	}
 	else
 		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
