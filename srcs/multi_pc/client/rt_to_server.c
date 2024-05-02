@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/02 18:06:00 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 19:37:20 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -156,7 +156,6 @@ void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 	scene->server.ip = ip;
 	scene->server.port = port;
 	scene->mlx->is_acc = 0;
-	while(!scene->server.stop)
+	while(1)
 		rt_render_scene((void *)scene);
-	rt_free_scene(scene);
 }
