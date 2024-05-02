@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/02 14:26:14 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:49:11 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -90,12 +90,14 @@ void			rt_free_scene_replace(t_scene *scene)
 
 int	change_scene(t_scene *scene, char *scene_name)
 {
+	printf("%f , %f, %f\n", scene->camera->origin.y, scene->camera->origin.x, scene->camera->origin.z);
 	rt_free_scene_replace(scene);
 	init_scene(scene_name, 1, scene);
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
 	rt_parse(scene_name, &scene);
 	link_portals(scene);
+	printf("%f , %f, %f\n", scene->camera->origin.y, scene->camera->origin.x, scene->camera->origin.z);
 	free(scene_name);
 	printf("\nParsing successful\n");
 	return(1);

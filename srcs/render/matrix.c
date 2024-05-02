@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 23:06:18 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/02 23:06:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/02 14:57:16 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,9 @@ void	multiplyMatrixVector(float (*matrix)[3], t_vec3f vector, t_vec3f *result)
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev)
 {
 	t_vec3f			result;
-	static float	calcul = -42;
+	float	calcul;
 
-	if (calcul == -42)
-		calcul = tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
+	calcul = tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
 	prev.x *= calcul;
 	prev.y *= calcul;
 	multiplyMatrixVector(scene->camera->rotationMatrixX, prev, &result);
