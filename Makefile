@@ -39,7 +39,7 @@ NAME        :=	miniRT
 
 LFT_DIR 	:=	./libft
 
-MINILIB_DIR := ./minilibx-linux
+MINILIB_DIR := ./mlx
 
 LFT			:=	$(LFT_DIR)/libft.a
 
@@ -151,7 +151,7 @@ DIR_DUP     =	mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS) $(ASSETS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lminilibx-linux -lmlx_Linux -I./minilibx-linux -lXext -lX11 -lm -lz -o $(NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lmlx -lmlx_Linux -I./mlx -lXext -lX11 -lm -lz -o $(NAME)
 	@printf "$(LINE_CLR)$(BWHITE) $(NAME): PROJECT COMPILED !$(RESET)\n\n"
 
 $(MLX):
