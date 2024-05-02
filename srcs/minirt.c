@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 19:09:49 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/02 14:05:14 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 19:00:49 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ t_scene		*init_scene(char *name, int headless, t_scene *scene)
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
-	if(!headless)
-		create_window(&scene);
+	create_window(&scene, headless);
 	scene->objects = NULL;
 	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || ! scene->name)
 	{
