@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/02 14:49:11 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 18:06:00 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -19,7 +19,6 @@ int		open_client_socket(char *ip, uint16_t port)
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock_fd < 0)
 	{
-		perror("socket");
 		return(-1);
 	}
 	ft_bzero(&serv_addr, sizeof(struct sockaddr_in));
@@ -29,7 +28,6 @@ int		open_client_socket(char *ip, uint16_t port)
 	serv_addr.sin_port = port >> 8 | port << 8;
 	if(connect(sock_fd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in)) < 0)
 	{
-		perror("connect");
 		close(sock_fd);
 		return(-1);
 	}
@@ -90,17 +88,28 @@ void			rt_free_scene_replace(t_scene *scene)
 
 int	change_scene(t_scene *scene, char *scene_name)
 {
-	printf("%f , %f, %f\n", scene->camera->origin.y, scene->camera->origin.x, scene->camera->origin.z);
 	rt_free_scene_replace(scene);
 	init_scene(scene_name, 1, scene);
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
 	rt_parse(scene_name, &scene);
 	link_portals(scene);
-	printf("%f , %f, %f\n", scene->camera->origin.y, scene->camera->origin.x, scene->camera->origin.z);
 	free(scene_name);
 	printf("\nParsing successful\n");
 	return(1);
+}
+
+void	wait_for_server(t_scene *scene)
+{
+	int fd;
+
+	fd = -1;
+	while (fd < 0)
+	{
+		sleep(1);
+		fd = open_client_socket(scene->server.ip, scene->server.port);
+	}
+	close(fd);
 }
 
 int		send_map(t_scene *scene, t_vec3f **map)
@@ -112,12 +121,10 @@ int		send_map(t_scene *scene, t_vec3f **map)
 	dest_fd = open_client_socket(scene->server.ip, scene->server.port);
 	if(dest_fd < 0)
 		return(0);
-	printf("start get name\n");
 	scene_name = get_scene_name(dest_fd);
-	printf("scene_name : %s\n", scene_name);
 	if(ft_strcmp(scene_name, scene->name))
 	{
-		printf("changing to map %s\n", scene_name);
+		printf("\nchanging to map %s\n", scene_name);
 		close(dest_fd);
 		return(change_scene(scene, scene_name));
 	}
