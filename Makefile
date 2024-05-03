@@ -118,14 +118,9 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 SRC_POSTPRO :=	postprocess/bloom.c					\
 
 
-SRC_BVH 	:=	bvh/bvh_creation.c					\
-				bvh/boundary.c						\
-				bvh/box_intersect.c					\
-
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
-				$(SRC_BVH)							\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
@@ -139,7 +134,7 @@ HEADERS		:=	includes/minirt.h
 
 CC          :=	cc
 
-CFLAGS      :=	-pthread -g -Wall -Wextra -Werror
+CFLAGS      :=	-Ofast -pthread -g -Wall -Wextra -Werror
 
 IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes -I $(MINILIB_DIR)
 

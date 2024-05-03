@@ -16,7 +16,6 @@
 # include "minirt.h"
 
 typedef struct s_objects	t_objects;
-typedef struct s_bvh		t_bvh;
 
 typedef struct	s_camera
 {
@@ -47,7 +46,6 @@ typedef struct	s_mlx
 {
 	void	*mlx;
 	void	*win;
-	int		is_bvh;
 	int		is_acc;
 	int		is_bloom;
 	int		frame_index;
@@ -82,7 +80,6 @@ typedef struct	s_light
 typedef struct	s_scene
 {
 	t_mouse			mouse;
-	t_bvh			*bvh;
 	t_mlx			*mlx;
 	t_bloom			*bloom;
 	t_objects		*objects;
