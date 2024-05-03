@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:57 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/03 02:32:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:07:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 t_bvh	*create_bvh_node(t_vec3f origin, t_vec3f size)
 {
+	static int id = 0;
+	id++;
+	printf("%d %ld\n", id, id * sizeof(t_bvh));
 	t_bvh	*bvh;
 
 	bvh = ft_calloc(1, sizeof(t_bvh));
@@ -46,9 +49,9 @@ int			boundary_intersect(t_boundary boundary, t_objects *object)
 	float y4 = obj_boundary.origin.y + obj_boundary.size.y;
 	float z4 = obj_boundary.origin.z + obj_boundary.size.z;
 
-	return (x1 < x4 && x2 > x3 &&
-		y1 < y4 && y2 > y3 &&
-		z1 < z4 && z2 > z3);
+	return (x1 <= x4 && x2 >= x3 &&
+		y1 <= y4 && y2 >= y3 &&
+		z1 <= z4 && z2 >= z3);
 }
 
 void		create_sphere(t_scene *scene, t_vec3f origin, t_vec3f color)
@@ -77,18 +80,14 @@ void	show_boundary_objects(t_scene *scene)
 	obj = scene->objects;
 	while (obj)
 	{
-		if (obj->material.emission_power == 2.0f || !obj->sphere)
-		{
-			obj = obj->next;
-			continue;
-		}
-		show_boundary(scene, get_boundary(obj), (t_vec3f){1, 1, 1});
+		if (obj->material.emission_power != 2.0f)
+			show_boundary(scene, get_boundary(obj), (t_vec3f){0.2, 0.5, 0.2});
 		obj = obj->next;
 	}
 }
 void		show_bvh(t_scene *scene, t_bvh *bvh, t_vec3f color)
 {
-	if (bvh->leaf)
+	// if (bvh->leaf)
 		show_boundary(scene, bvh->boundary, color);
 	if (bvh->divided)
 	{
@@ -153,6 +152,50 @@ void	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
 	return ;
 }
 
+t_hitInfo	closest_hit_in_bvh_bis(t_bvh *bvh, t_ray ray)
+{
+	int			i;
+	t_hitInfo	hit_info;
+	t_hitInfo	tmp_hit;
+
+	hit_info.distance = -1.0f;
+	i = 0;
+	while (i < bvh->obj_count)
+	{
+		tmp_hit = hit_objects(ray, bvh->objects[i]);
+		if (tmp_hit.distance >= 0 && (tmp_hit.distance < hit_info.distance || hit_info.distance < 0))
+		{
+			hit_info = tmp_hit;
+			hit_info.obj = bvh->objects[i];
+		}
+		i++;
+	}
+	return (hit_info);
+}
+
+t_hitInfo	bvh_trace_ray_bis(t_bvh *bvh, t_ray ray)
+{
+	t_hitInfo	hit_info;
+	t_hitInfo	hit_0;
+	t_hitInfo	hit_1;
+
+	hit_info.distance = -1.0f;
+	if (!boxIntersection(ray, bvh->boundary.origin, bvh->boundary.size))
+		return (hit_info);
+	if (bvh->leaf)
+		return (closest_hit_in_bvh_bis(bvh, ray));
+	if (bvh->divided)
+	{
+		hit_0 = bvh_trace_ray_bis(bvh->children[0], ray);
+		hit_1 = bvh_trace_ray_bis(bvh->children[1], ray);
+		if (hit_0.distance >= 0.0f && (hit_1.distance < 0.0f || hit_0.distance <= hit_1.distance))
+			return (hit_0);
+		if (hit_1.distance >= 0.0f && (hit_0.distance < 0.0f || hit_1.distance < hit_0.distance))
+			return (hit_1);
+	}
+	return (hit_info);
+}
+
 void		create_bvh(t_scene *scene)
 {
 	t_bvh	*bvh;
@@ -160,28 +203,30 @@ void		create_bvh(t_scene *scene)
 	bvh = ft_calloc(1, sizeof(t_bvh));
 	if (!bvh)
 		rt_free_scene(scene);
-	bvh->boundary.origin = (t_vec3f){-10, -10, -10};
-	bvh->boundary.size = (t_vec3f){20, 20, 20};
+	bvh->boundary.origin = (t_vec3f){-20, -20, -20};
+	bvh->boundary.size = (t_vec3f){40, 40, 40};
 
 	t_objects *obj = scene->objects;
 	while (obj)
 	{
-		if (obj->type == OBJ_SPHER)
+		if (obj->type != OBJ_PLANE)
 			insert_bvh(bvh, obj, 0);
 		obj = obj->next;
 	}
 	scene->bvh = bvh;
 
 	// show_boundary_objects(scene);
-	// t_ray ray = (t_ray){(t_vec3f){0, 0, 0},(t_vec3f){0, 1, 0}};
-	// t_hitInfo hit_info = bvh_trace_ray_bis(scene, scene->bvh, ray);
+	// t_ray ray = (t_ray){(t_vec3f){-0.5, -3, 2},(t_vec3f){0, 3, -1}};
+	// t_hitInfo hit_info = bvh_trace_ray_bis(scene->bvh, ray);
 	// printf("hit distance: %f\n", hit_info.distance);
-	// printf("%p\n", hit_info.obj->sphere);
-	// create_sphere(scene, hit_info.position, (t_vec3f){1, 0, 0});
-
+	// if (hit_info.distance >= 0)
+	// {
+	// 	hit_info.obj->material.color = (t_vec3f){1, 0.2, 0.2};
+	// 	create_sphere(scene, hit_info.position, (t_vec3f){1, 0, 0});
+	// }
 	// create_sphere(scene, ray.origin, (t_vec3f){1, 0, 0});
 	// for(int i = 0; i < 5; i++)
-		// create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
+	// 	create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
 
 	// show_bvh(scene, scene->bvh, (t_vec3f){1,1,1});
 }

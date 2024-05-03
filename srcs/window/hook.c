@@ -52,6 +52,11 @@ int		key_hook(int keycode, t_scene *scene)
 		scene->mlx->is_bloom = !scene->mlx->is_bloom;
 		printf("miniRT : bloom %d             \n", scene->mlx->is_bloom);
 	}
+	else if (keycode == 111)
+	{
+		scene->mlx->is_bvh = !scene->mlx->is_bvh;
+		printf("miniRT : bvh %d             \n", scene->mlx->is_bvh);
+	}
 	else if (keycode == 65451)
 		scene->bloom->mip_num++;
 	else if (keycode == 65453)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bvh.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:22:59 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/02 19:16:37 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/03 14:05:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "minirt.h"
 
 # define MAX_OBJECTS 4
+
+typedef struct	s_ray	t_ray;
 
 typedef struct	s_boundary
 {
@@ -33,7 +35,8 @@ typedef struct	s_bvh
 	t_objects		*objects[MAX_OBJECTS];
 }				t_bvh;
 
-t_boundary	get_boundary(t_objects *object);
+int			boxIntersection(t_ray ray, t_vec3f origin, t_vec3f rad);
 void		create_bvh(t_scene *scene);
+t_boundary	get_boundary(t_objects *object);
 
 #endif

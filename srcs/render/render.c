@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
+t_hitInfo	basic_trace_ray(t_scene *scene, t_ray ray)
 {
 	t_hitInfo	temp_hit;
 	t_objects	*temp_object;
@@ -33,6 +33,57 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 	if (closest_hit.distance > 0.0f && closest_hit.obj->type == OBJ_PORTAL)
 		ray = portal_ray(scene, &closest_hit, ray);
 	return (closest_hit);
+}
+
+t_hitInfo	closest_hit_in_bvh(t_bvh *bvh, t_ray ray)
+{
+	int			i;
+	t_hitInfo	hit_info;
+	t_hitInfo	tmp_hit;
+
+	hit_info.distance = -1.0f;
+	i = 0;
+	while (i < bvh->obj_count)
+	{
+		tmp_hit = hit_objects(ray, bvh->objects[i]);
+		if (tmp_hit.distance >= 0 && (tmp_hit.distance < hit_info.distance || hit_info.distance < 0))
+		{
+			hit_info = tmp_hit;
+			hit_info.obj = bvh->objects[i];
+		}
+		i++;
+	}
+	return (hit_info);
+}
+
+t_hitInfo	bvh_trace_ray(t_bvh *bvh, t_ray ray)
+{
+	t_hitInfo	hit_info;
+	t_hitInfo	hit_0;
+	t_hitInfo	hit_1;
+
+	hit_info.distance = -1.0f;
+	if (!boxIntersection(ray, bvh->boundary.origin, bvh->boundary.size))
+		return (hit_info);
+	if (bvh->leaf)
+		return (closest_hit_in_bvh(bvh, ray));
+	if (bvh->divided)
+	{
+		hit_0 = bvh_trace_ray(bvh->children[0], ray);
+		hit_1 = bvh_trace_ray(bvh->children[1], ray);
+		if (hit_0.distance >= 0.0f && (hit_1.distance < 0.0f || hit_0.distance <= hit_1.distance))
+			return (hit_0);
+		if (hit_1.distance >= 0.0f && (hit_0.distance < 0.0f || hit_1.distance < hit_0.distance))
+			return (hit_1);
+	}
+	return (hit_info);
+}
+
+t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
+{
+	if (scene->mlx->is_bvh)
+		return (bvh_trace_ray(scene->bvh, ray));
+	return (basic_trace_ray(scene, ray));
 }
 
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
