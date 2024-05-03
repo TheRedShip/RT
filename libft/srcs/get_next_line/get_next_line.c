@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 23:09:05 by rgramati          #+#    #+#             */
-/*   Updated: 2023/12/17 18:44:42 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/05/03 02:32:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	isfull(t_slist *lst)
 {
 	int	i;
 
+	i = 0;
 	if (!lst)
 		return (1);
 	while (lst->next)

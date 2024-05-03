@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bvh_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:57 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/02 19:25:16 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/03 02:32:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void		show_bvh(t_scene *scene, t_bvh *bvh, t_vec3f color)
 	if (bvh->divided)
 	{
 		for(int i = 0; i < 2; i++)
-			show_bvh(scene, bvh->children[i], vec3f_mul_v(color, (t_vec3f){0.7, 0.4, 0.3}));
+			show_bvh(scene, bvh->children[i], vec3f_mul_v(color, (t_vec3f){0.8, 0.5, 0.4}));
 	}
 }
 
@@ -105,7 +105,7 @@ void		sub_divide(t_bvh *bvh, int depth)
 
 	origin = bvh->boundary.origin;
 	dim = depth % 3;
-	if (dim == 0 || 1)
+	if (dim == 0)
 	{
 		half = (t_vec3f){bvh->boundary.size.x, bvh->boundary.size.y / 2.0f, bvh->boundary.size.z};
 		bvh->children[1] = create_bvh_node(vec3f_add_v(origin, (t_vec3f){0, half.y, 0}), half);
@@ -129,6 +129,8 @@ void	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
 		return ;
 	if (depth > 0 && bvh->obj_count < MAX_OBJECTS)
 	{
+		bvh->leaf = 1;
+		bvh->objects[bvh->obj_count] = object;
 		bvh->obj_count++;
 		return ;
 	}
@@ -137,28 +139,19 @@ void	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
 		sub_divide(bvh, depth);
 		bvh->divided = 1;
 	}
+	if (bvh->obj_count == MAX_OBJECTS && bvh->leaf)
+	{
+		bvh->leaf = 0;
+		for (int i = 0; i < MAX_OBJECTS; i++)
+		{
+			for (int j = 0; j < 2; j++)
+				insert_bvh(bvh->children[j], bvh->objects[i], depth + 1);
+		}
+	}
 	for (int i = 0; i < 2; i++)
 		insert_bvh(bvh->children[i], object, depth + 1);
 	return ;
 }
-
-void	insert_obj_bvh(t_bvh *bvh, t_objects *object, int depth)
-{
-	if (!boundary_intersect(bvh->boundary, object))
-		return ;
-	if (!bvh->divided)
-	{
-		bvh->objects[bvh->obj_count - 1] = object;
-		bvh->obj_count--;
-		bvh->leaf = 1;
-		printf("size %f %f %f\n", bvh->boundary.size.x, bvh->boundary.size.y, bvh->boundary.size.z);
-		return ;
-	}
-	for (int i = 0; i < 2; i++)
-		insert_obj_bvh(bvh->children[i], object, depth + 1);
-	return ;
-}
-
 
 void		create_bvh(t_scene *scene)
 {
@@ -177,13 +170,6 @@ void		create_bvh(t_scene *scene)
 			insert_bvh(bvh, obj, 0);
 		obj = obj->next;
 	}
-	obj = scene->objects;
-	while (obj)
-	{
-		if (obj->type == OBJ_SPHER)
-			insert_obj_bvh(bvh, obj, 0);
-		obj = obj->next;
-	}
 	scene->bvh = bvh;
 
 	// show_boundary_objects(scene);
@@ -197,5 +183,5 @@ void		create_bvh(t_scene *scene)
 	// for(int i = 0; i < 5; i++)
 		// create_sphere(scene, vec3f_add_v(ray.origin, vec3f_mul_f(vec3f_mul_f(ray.direction, i), 0.2)), (t_vec3f){1, 0.5, 0});
 
-	show_bvh(scene, scene->bvh, (t_vec3f){1,1,1});
+	// show_bvh(scene, scene->bvh, (t_vec3f){1,1,1});
 }
