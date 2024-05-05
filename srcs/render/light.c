@@ -101,20 +101,30 @@ t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 
 t_vec3f	get_checkered_color(t_hitInfo hit_info)
 {
-	if (hit_info.obj->type == OBJ_SPHER)
-	{
-		if (((int)(floor(0.25 * (hit_info.normal.x + 0.001)) + \
-		floor(0.25 * (hit_info.normal.y + 0.001)) + \
-		floor(0.25 * (hit_info.normal.z + 0.001)))) % 2 == 0)
-			return (t_vec3f){0.1, 0.1, 0.1};
-	}
-	else if (hit_info.obj->type == OBJ_PLANE)
+	t_vec2f		uv;
+
+	uv = (t_vec2f){0.0f, 0.0f};
+	if (hit_info.obj->type == OBJ_PLANE)
 	{
 		if (((int)(floor(0.25 * (hit_info.position.x + 0.001)) + \
 		floor(0.25 * (hit_info.position.y + 0.001)) + \
 		floor(0.25 * (hit_info.position.z + 0.001)))) % 2 == 0)
 			return (t_vec3f){0.1, 0.1, 0.1};
+		return (t_vec3f){1.0, 1.0, 1.0};
 	}
+	else if (hit_info.obj->type == OBJ_SPHER)
+	{
+		uv.x = 1 - (atan2f(hit_info.normal.x, hit_info.normal.z) / (2 * M_PI) + 0.5);
+		uv.y = 1 - acosf(hit_info.normal.y / vec3f_length(hit_info.normal)) / M_PI;
+	}
+	else if (hit_info.obj->type == OBJ_CYLIN)
+	{
+		uv.x = 1 - (atan2f(hit_info.normal.x, hit_info.normal.z) / (2 * M_PI) + 0.5);
+		uv.y = (int)hit_info.normal.y % 1;
+	}
+	if (((int)(floor(10 * (uv.x + 0.001)) + \
+		floor(10 * (uv.y + 0.001)))) % 2 == 0)
+			return (t_vec3f){0.1, 0.1, 0.1};
 	return (t_vec3f){1.0, 1.0, 1.0};
 }
 
