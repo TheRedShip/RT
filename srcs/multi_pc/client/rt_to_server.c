@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/02 19:37:20 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/05 14:19:42 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -122,6 +122,8 @@ int		send_map(t_scene *scene, t_vec3f **map)
 	if(dest_fd < 0)
 		return(0);
 	scene_name = get_scene_name(dest_fd);
+	if(!scene_name)
+		return(0);
 	if(ft_strcmp(scene_name, scene->name))
 	{
 		printf("\nchanging to map %s\n", scene_name);

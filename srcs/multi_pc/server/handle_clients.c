@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/01 20:25:13 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/05 14:31:33 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ char	*buffer_to_str(t_buffer *buffer, int expect_size)
 	if(expect_size && len != (unsigned)(WIDTH * HEIGHT * sizeof(t_vec3f)))
 	{
 		free_buffer(buffer);
-		fprintf(stderr, "invalid data size\nexpected :%d\ngot :%d", \
-		(int)(WIDTH * HEIGHT * sizeof(t_vec3f)), len);
 		return(0);
 	}
 	res = malloc(len);

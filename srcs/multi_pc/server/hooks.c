@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:16:19 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/01 18:49:06 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/05 14:36:46 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	server_key_hook(int key, void *data)
 
 	scene = data;
 	pthread_mutex_lock(&scene->server.mutex);
-	printf("key : %d\n", key);
+	//printf("key : %d\n", key);
 	if(key == KEY_ESCH)
 		scene->server.stop = 1;
 	if(key == KEY_BLOOM)
