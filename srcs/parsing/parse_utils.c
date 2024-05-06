@@ -12,14 +12,14 @@
 
 #include "minirt.h"
 
-int		rt_return(char **split)
+int	rt_return(char **split)
 {
 	if (split)
 		ft_free_tab((void **)(split));
 	return (0);
 }
 
-int			rt_range_atoi(char *line, int min, int max)
+int	rt_range_atoi(char *line, int min, int max)
 {
 	int		n;
 
@@ -29,7 +29,7 @@ int			rt_range_atoi(char *line, int min, int max)
 	return (1);
 }
 
-float		rt_range_atof(char *line, float min, float max)
+float	rt_range_atof(char *line, float min, float max)
 {
 	float		n;
 
@@ -39,7 +39,7 @@ float		rt_range_atof(char *line, float min, float max)
 	return (1.0);
 }
 
-t_vec3f		rt_atof3(char *line, float min, float max)
+t_vec3f	rt_atof3(char *line, float min, float max)
 {
 	t_vec3f		vec;
 	char		**split;

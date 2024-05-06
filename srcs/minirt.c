@@ -12,19 +12,19 @@
 
 #include "minirt.h"
 
-void		destroy_mlx(t_scene *scene)
+void	destroy_mlx(t_scene *scene)
 {
-	if(!scene->mlx)
+	if (!scene->mlx)
 		return ;
-	if(scene->mlx->win)
+	if (scene->mlx->win)
 		mlx_clear_window(scene->mlx->mlx, scene->mlx->win);
-	if(scene->mlx->img.img)
+	if (scene->mlx->img.img)
 		mlx_destroy_image(scene->mlx->mlx, scene->mlx->img.img);
-	if(scene->mlx->win)
+	if (scene->mlx->win)
 		mlx_destroy_window(scene->mlx->mlx, scene->mlx->win);
-	if(scene->mlx->mlx)
+	if (scene->mlx->mlx)
 		mlx_destroy_display(scene->mlx->mlx);
-	if(scene->mlx->mlx)
+	if (scene->mlx->mlx)
 		mlx_loop_end(scene->mlx->mlx);
 	free(scene->mlx->mlx);
 	if (scene->mlx->acc_img)
@@ -36,7 +36,7 @@ void		destroy_mlx(t_scene *scene)
 	free(scene->mlx);
 }
 
-int			rt_free_scene(t_scene *scene, int ex)
+int	rt_free_scene(t_scene *scene, int ex)
 {
 	t_objects	*tmp;
 
@@ -55,7 +55,7 @@ int			rt_free_scene(t_scene *scene, int ex)
 		free(tmp->plane);
 		free(tmp->cylinder);
 		free(tmp->ellipse);
-		free(tmp->quad);	
+		free(tmp->quad);
 		free(tmp->portal);
 		free(tmp);
 	}
@@ -68,9 +68,9 @@ int			rt_free_scene(t_scene *scene, int ex)
 	return (0);
 }
 
-t_scene		*init_scene(char *name, t_scene *scene)
+t_scene	*init_scene(char *name, t_scene *scene)
 {
-	if(!scene)
+	if (!scene)
 		scene = ft_calloc(1, sizeof(t_scene));
 	if (!scene)
 		exit(0);
@@ -84,7 +84,8 @@ t_scene		*init_scene(char *name, t_scene *scene)
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || !scene->name)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || \
+		!scene->mlx || !scene->bloom || !scene->name)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene, 1);
@@ -109,21 +110,21 @@ void	setup_mlx(t_scene *scene, t_mlx *mlx)
 
 void	link_portals(t_scene *scene)
 {
-	t_objects *obj;
-	t_objects *tmp;
-	t_objects *start;
+	t_objects	*obj;
+	t_objects	*tmp;
+	t_objects	*start;
 
 	obj = scene->objects;
 	start = obj;
-	while(obj)
+	while (obj)
 	{
-		if(obj->type == OBJ_PORTAL)
+		if (obj->type == OBJ_PORTAL)
 		{
 			tmp = start;
-			while(tmp && !obj->portal->linked_portal)
+			while (tmp && !obj->portal->linked_portal)
 			{
-				if(tmp->type == OBJ_PORTAL
-				&& obj->portal->linked_id == tmp->portal->portal_id)
+				if (tmp->type == OBJ_PORTAL
+					&& obj->portal->linked_id == tmp->portal->portal_id)
 					obj->portal->linked_portal = tmp;
 				tmp = tmp->next;
 			}
@@ -149,15 +150,15 @@ int	main(int argc, char **argv)
 	rt_parse(argv[1], scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
-	if(argc == 4 && !ft_strcmp(argv[2], "server"))
-		return(start_server(scene, argv[3]));
-	if(argc == 3 && !ft_strcmp(argv[2], "server"))
-		return(start_server(scene, "25565"));
-	if(argc == 2)
+	if (argc == 4 && !ft_strcmp(argv[2], "server"))
+		return (start_server(scene, argv[3]));
+	if (argc == 3 && !ft_strcmp(argv[2], "server"))
+		return (start_server(scene, "25565"));
+	if (argc == 2)
 		setup_mlx(scene, scene->mlx);
-	else if(argc == 3)
+	else if (argc == 3)
 		rt_to_server(scene, argv[2], "25565");
-	else if(argc == 4)
-		rt_to_server(scene,argv[2], argv[3]);
+	else if (argc == 4)
+		rt_to_server(scene, argv[2], argv[3]);
 	return (0);
 }

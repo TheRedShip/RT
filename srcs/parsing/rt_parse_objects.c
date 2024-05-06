@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int		rt_parse_material(t_scene *scene, char *str, t_material *material)
+int	rt_parse_material(t_scene *scene, char *str, t_material *material)
 {
 	char		**split;
 
@@ -29,88 +29,89 @@ int		rt_parse_material(t_scene *scene, char *str, t_material *material)
 	return (1);
 }
 
-int		rt_parse_sphere(char *line, t_scene *scene)
+int	rt_parse_sphere(char *line, t_scene *scene)
 {
-	t_objects	*objects;
-	char		**split;
-	
-	split = ft_split(line, '\t');
-	if (!split)
-		return (0);
-	objects = rt_add_objects(scene, "sp");
-	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
-	objects->sphere->diameter = ft_atof(split[2]);
-	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(scene, split[4], &(objects->material)) == -1)
-			return (rt_return(split));
-	if (ft_tab_len(split) == 6)
-	{
-		objects->sphere->rotation = rt_atof3(split[5], 0.0, 180.0);
-		objects->sphere->rotation.x = objects->sphere->rotation.x * M_PI / 180.0;
-		objects->sphere->rotation.y = objects->sphere->rotation.y * M_PI / 180.0;
-		objects->sphere->rotation.z = objects->sphere->rotation.z * M_PI / 180.0;
+	t_objects	*o;
+	char		**s;
 
+	s = ft_split(line, '\t');
+	if (!s)
+		return (0);
+	o = rt_add_objects(scene, "sp");
+	o->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	o->sphere->diameter = ft_atof(s[2]);
+	o->material.color = vec3f_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	if (rt_parse_material(scene, s[4], &(o->material)) == -1)
+		return (rt_return (s));
+	if (ft_tab_len(s) == 6)
+	{
+		o->sphere->rotation = rt_atof3(s[5], 0.0, 180.0);
+		o->sphere->rotation.x = o->sphere->rotation.x * M_PI / 180.0;
+		o->sphere->rotation.y = o->sphere->rotation.y * M_PI / 180.0;
+		o->sphere->rotation.z = o->sphere->rotation.z * M_PI / 180.0;
 	}
-	ft_free_tab((void **)(split));
+	ft_free_tab((void **)(s));
 	return (1);
 }
 
-int		rt_parse_plane(char *line, t_scene *scene)
+int	rt_parse_plane(char *line, t_scene *scene)
 {
+	char		**s;
 	t_objects	*objects;
-	char		**split;
-	
-	split = ft_split(line, '\t');
-	if (!split)
+
+	s = ft_split(line, '\t');
+	if (!s)
 		return (0);
 	objects = rt_add_objects(scene, "pl");
-	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
-	objects->plane->normal = rt_atof3(split[2], -1.0, 1.0);
-	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(scene, split[4], &(objects->material)) == -1)
-		return (rt_return(split));
-	ft_free_tab((void **)(split));
+	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	objects->plane->normal = rt_atof3(s[2], -1.0, 1.0);
+	objects->material.color = vec3f_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	if (rt_parse_material(scene, s[4], &(objects->material)) == -1)
+		return (rt_return (s));
+	ft_free_tab((void **)(s));
 	return (1);
 }
 
-int		rt_parse_cylinder(char *line, t_scene *scene)
+int	rt_parse_cylinder(char *line, t_scene *scene)
 {
 	t_objects	*objects;
-	char		**split;
-	
-	split = ft_split(line, '\t');
-	if (!split)
+	char		**s;
+
+	s = ft_split(line, '\t');
+	if (!s)
 		return (0);
 	objects = rt_add_objects(scene, "cy");
-	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
-	objects->cylinder->orientation = rt_atof3(split[2], -1.0, 1.0);
-	objects->cylinder->diameter = ft_atof(split[3]);
-	objects->cylinder->height = ft_atof(split[4]);
-	objects->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(scene, split[6], &(objects->material)) == -1)
-		return (rt_return(split));
-	ft_free_tab((void **)(split));
+	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	objects->cylinder->orientation = rt_atof3(s[2], -1.0, 1.0);
+	objects->cylinder->diameter = ft_atof(s[3]);
+	objects->cylinder->height = ft_atof(s[4]);
+	objects->material.color = vec3f_div_f(rt_atof3(s[5], 0.0f, 255.0f), 255.0f);
+	if (rt_parse_material(scene, s[6], &(objects->material)) == -1)
+		return (rt_return (s));
+	ft_free_tab((void **)(s));
 	return (1);
 }
 
-int		rt_parse_quad(char *line, t_scene *scene)
+int	rt_parse_quad(char *line, t_scene *scene)
 {
 	t_objects	*objects;
-	char		**split;
-	
-	split = ft_split(line, '\t');
-	if (!split)
+	char		**s;
+
+	s = ft_split(line, '\t');
+	if (!s)
 		return (0);
 	objects = rt_add_objects(scene, "qd");
-	objects->origin = rt_atof3(split[1], -1000.0,1000.0);
-	objects->quad->right_corner = rt_atof3(split[2], -1000.0,1000.0);
-	objects->quad->up_corner = rt_atof3(split[3], -1000.0,1000.0);
-	objects->material.color = vec3f_div_f(rt_atof3(split[4], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(scene, split[5], &(objects->material)) == -1)
-		return (rt_return(split));
-	objects->quad->normal = normalize(vec3f_cross(objects->quad->up_corner, objects->quad->right_corner));
+	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	objects->quad->right_corner = rt_atof3(s[2], -1000.0, 1000.0);
+	objects->quad->up_corner = rt_atof3(s[3], -1000.0, 1000.0);
+	objects->material.color = vec3f_div_f(rt_atof3(s[4], 0.0f, 255.0f), 255.0f);
+	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
+		return (rt_return (s));
+	objects->quad->normal = normalize(vec3f_cross(objects->quad->up_corner, \
+							objects->quad->right_corner));
 	objects->quad->d = vec3f_dot(objects->quad->normal, objects->origin);
-	objects->quad->w = vec3f_div_f(objects->quad->normal, vec3f_dot(objects->quad->normal,objects->quad->normal));
-	ft_free_tab((void **)(split));
+	objects->quad->w = vec3f_div_f(objects->quad->normal, \
+					vec3f_dot(objects->quad->normal, objects->quad->normal));
+	ft_free_tab((void **)(s));
 	return (1);
 }

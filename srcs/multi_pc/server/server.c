@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 18:01:02 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/06 19:41:24 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ int	setup_socket(uint16_t port)
 
 int	start_server(t_scene *scene, char *port_str)
 {
-	int	socket;
-	uint16_t port;
+	int			socket;
+	uint16_t	port;
 	pthread_t	mlx_thread;
 
 	port = ft_atoi(port_str);
-	if(pthread_mutex_init(&scene->server.mutex, 0))
-		return(1);
+	if (pthread_mutex_init(&scene->server.mutex, 0))
+		return (1);
 	mlx_thread = init_server_hooks(scene);
-	if(port >= 65535 || port <= 0)
+	if (port >= 65535 || port <= 0)
 	{
 		fprintf(stderr, "invalid port, must be between 0 and 65535\n");
-		return(1);
+		return (1);
 	}
 	socket = setup_socket(port);
 	if (socket < 0)
@@ -64,5 +64,5 @@ int	start_server(t_scene *scene, char *port_str)
 	close(socket);
 	pthread_join(mlx_thread, 0);
 	rt_free_scene(scene, 1);
-	return(0);
+	return (0);
 }

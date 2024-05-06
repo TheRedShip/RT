@@ -6,13 +6,13 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:36:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:51:34 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/06 20:10:35 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void calcul_treshold(t_vec3f ***result, t_vec3f **image, float treshold)
+void	calcul_treshold(t_vec3f ***result, t_vec3f **i, float treshold)
 {
 	int	pos[2];
 
@@ -22,8 +22,10 @@ void calcul_treshold(t_vec3f ***result, t_vec3f **image, float treshold)
 		pos[0] = 0;
 		while (pos[0] < WIDTH)
 		{
-			if (image[pos[1]][pos[0]].x >= treshold || image[pos[1]][pos[0]].y >= treshold || image[pos[1]][pos[0]].z >= treshold)
-				(*result)[pos[1]][pos[0]] = image[pos[1]][pos[0]]; 
+			if (i[pos[1]][pos[0]].x >= treshold || \
+				i[pos[1]][pos[0]].y >= treshold || \
+				i[pos[1]][pos[0]].z >= treshold)
+				(*result)[pos[1]][pos[0]] = i[pos[1]][pos[0]];
 			else
 				(*result)[pos[1]][pos[0]] = (t_vec3f){0.0f, 0.0f, 0.0f};
 			pos[0]++;
@@ -42,7 +44,8 @@ t_vec3f	**add_img(t_vec3f **treshold, t_vec3f **image)
 		pos[0] = 0;
 		while (pos[0] < WIDTH)
 		{
-			treshold[pos[1]][pos[0]] = vec3f_add_v(treshold[pos[1]][pos[0]], image[pos[1]][pos[0]]);
+			treshold[pos[1]][pos[0]] = \
+				vec3f_add_v(treshold[pos[1]][pos[0]], image[pos[1]][pos[0]]);
 			pos[0]++;
 		}
 		pos[1]++;
@@ -85,10 +88,10 @@ void	dup_img(t_vec3f **image, t_vec3f **image2, t_vec2f resolution)
 	}
 }
 
-t_vec3f **up_sample_2x(t_vec3f **image, t_vec2f resolution)
+t_vec3f	**up_sample_2x(t_vec3f **image, t_vec2f resolution)
 {
 	int		pos[2];
-	t_vec3f **tmp;
+	t_vec3f	**tmp;
 
 	tmp = init_img(NULL, resolution.x * 2, resolution.y * 2);
 	pos[1] = 0;
@@ -102,18 +105,18 @@ t_vec3f **up_sample_2x(t_vec3f **image, t_vec2f resolution)
 		}
 		pos[1]++;
 	}
-
 	dup_img(image, tmp, (t_vec2f){resolution.x * 2, resolution.y * 2});
 	ft_free_tab((void **)tmp);
-
 	return (image);
 }
 
-float gaussianWeight(float x, float sigma) {
-    return exp(-(x * x) / (2 * sigma * sigma)) / (sqrt(2 * M_PI) * sigma);
+float	gaussianWeight(float x, float sigma)
+{
+	return (exp(-(x * x) / (2 * sigma * sigma)) \
+			/ (sqrt(2 * M_PI) * sigma));
 }
 
-t_vec3f **gaussianBlur(t_vec3f **image, t_vec2f resolution, int blur_size) {
+t_vec3f	**gaussianBlur(t_vec3f **image, t_vec2f resolution, int blur_size) {
     int i, j, k, l;
     int kernelMid = blur_size / 2;
 

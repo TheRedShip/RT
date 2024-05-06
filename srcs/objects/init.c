@@ -14,27 +14,29 @@
 
 t_texture	init_texture(t_scene *scene, char *path)
 {
-	t_texture	texture;
+	t_texture	tex;
 
-	texture.exist = 1;
-	texture.path = path;
-	if (texture.path[ft_strlen(texture.path) - 2] == '\r')
-		texture.path[ft_strlen(texture.path) - 2] = '\0';
-	if (texture.path[ft_strlen(texture.path) - 1] == '\n')
-		texture.path[ft_strlen(texture.path) - 1] = '\0';
-	texture.data.img = mlx_xpm_file_to_image(scene->mlx->mlx, texture.path, &texture.width, &texture.height);
-	if (texture.data.img == NULL)
+	tex.exist = 1;
+	tex.path = path;
+	if (tex.path[ft_strlen(tex.path) - 2] == '\r')
+		tex.path[ft_strlen(tex.path) - 2] = '\0';
+	if (tex.path[ft_strlen(tex.path) - 1] == '\n')
+		tex.path[ft_strlen(tex.path) - 1] = '\0';
+	tex.data.img = mlx_xpm_file_to_image(scene->mlx->mlx, tex.path, \
+						&tex.width, &tex.height);
+	if (tex.data.img == NULL)
 	{
 		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), path);
 		rt_free_scene(scene, 1);
 	}
-	texture.data.addr = mlx_get_data_addr(texture.data.img, &texture.data.bits_per_pixel, &texture.data.line_length, &texture.data.endian);
-	return (texture);
+	tex.data.addr = mlx_get_data_addr(tex.data.img, &tex.data.bits_per_pixel, \
+									&tex.data.line_length, &tex.data.endian);
+	return (tex);
 }
 
-t_material	init_material()
+t_material	init_material(void)
 {
-	t_material mat;
+	t_material	mat;
 
 	mat.color = (t_vec3f){0.0f, 0.0f, 0.0f};
 	mat.type = MAT_LAMBERT;
@@ -49,7 +51,7 @@ t_material	init_material()
 
 void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
 {
-	t_objects *tmp;
+	t_objects	*tmp;
 
 	if (!scene->objects)
 		scene->objects = obj;
@@ -64,19 +66,17 @@ void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
 
 t_objects	*rt_add_objects(t_scene *scene, char *type)
 {
-	int	i;
-	t_objects *objects;
-	static	char *type_list_str[7] = {"sp", "pl", "cy", "qd", "el", "po", NULL};
+	int			i;
+	t_objects	*objects;
+	static char	*type_list_str[7] = {"sp", "pl", "cy", "qd", "el", "po", NULL};
 
 	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
 		rt_free_scene(scene, 1);
 	i = -1;
 	while (type_list_str[++i] != NULL)
-	{
 		if (!ft_strncmp(type, type_list_str[i], 2))
 			break ;
-	}
 	objects->type = i;
 	objects->material = init_material();
 	rt_set_objects_to_scene(scene, objects);

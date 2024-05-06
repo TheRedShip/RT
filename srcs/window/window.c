@@ -17,7 +17,7 @@ void	create_window(t_scene *scene, int headless)
 	scene->mlx->mlx = mlx_init();
 	if (!scene->mlx->mlx)
 		rt_free_scene(scene, 1);
-	if(!headless)
+	if (!headless)
 		scene->mlx->win = mlx_new_window(scene->mlx->mlx, WIDTH, HEIGHT, "miniRT");
 	if (!headless && !scene->mlx->win)
 		rt_free_scene(scene, 1);
@@ -36,5 +36,5 @@ void	put_pixel(t_data *img, int x, int y, int color)
 
 unsigned int	get_pixel(t_data *img, int x, int y)
 {
-	return(*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
+	return (*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
 }

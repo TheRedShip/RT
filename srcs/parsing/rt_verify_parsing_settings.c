@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int		rt_verify_ambient(t_scene *scene, char *line)
+int	rt_verify_ambient(t_scene *scene, char *line)
 {
 	char		**split;
 
@@ -21,16 +21,16 @@ int		rt_verify_ambient(t_scene *scene, char *line)
 	scene->ambient_light->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 3)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atof(split[1], 0.0, 3.0) == -1)
-		return (rt_return(split));
+		return (rt_return (split));
 	if (rt_atof3(split[2], 0, 255).x == -4242)
-		return (rt_return(split));
+		return (rt_return (split));
 	ft_free_tab((void **)(split));
 	return (1);
 }
 
-int		rt_verify_camera(t_scene *scene, char *line)
+int	rt_verify_camera(t_scene *scene, char *line)
 {
 	char		**split;
 
@@ -39,20 +39,20 @@ int		rt_verify_camera(t_scene *scene, char *line)
 	scene->camera->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
-		return rt_return(split);
-	if (rt_atof3(split[1], -1000.0,1000.00).x == -4242)
-		return rt_return(split);
+		return (rt_return(split));
+	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
+		return (rt_return(split));
 	if (rt_atof3(split[2], -1.0, 1.0).x == -4242)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atoi(split[3], 0, 180) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atoi(split[4], 0, 500) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
 }
 
-int		rt_verify_light(t_scene *scene, char *line)
+int	rt_verify_light(t_scene *scene, char *line)
 {
 	char		**split;
 
@@ -61,20 +61,20 @@ int		rt_verify_light(t_scene *scene, char *line)
 	scene->lights->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
-		return rt_return(split);
-	if (rt_atof3(split[1], -1000.0,1000.00).x == -4242)
-		return rt_return(split);
+		return (rt_return(split));
+	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
+		return (rt_return(split));
 	if (rt_range_atof(split[2], 0.0, 1.0) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_atof3(split[3], 0, 255).x == -4242)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atoi(split[4], 0, 1) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
 }
 
-int		rt_verify_bloom(t_scene *scene, char *line)
+int	rt_verify_bloom(t_scene *scene, char *line)
 {
 	char		**split;
 
@@ -83,13 +83,13 @@ int		rt_verify_bloom(t_scene *scene, char *line)
 	scene->bloom->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 4)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atof(split[1], 0.0, 10.0) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atoi(split[2], 0, 10) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	if (rt_range_atoi(split[3], 0, 13) == -1)
-		return rt_return(split);
+		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
 }

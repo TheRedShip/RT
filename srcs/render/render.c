@@ -123,7 +123,7 @@ int		rt_render_scene(t_scene *scene)
 	{
 		ft_free_tab((void **)(scene->mlx->acc_img));
 		scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
-		if(!scene->server.ip)
+		if (!scene->server.ip)
 			ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
@@ -139,11 +139,11 @@ int		rt_render_scene(t_scene *scene)
 	}
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
-	if(!scene->server.ip)
+	if (!scene->server.ip)
 		rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
-	if(scene->server.ip)
+	if (scene->server.ip)
 	{
-		if(!send_map(scene, scene->mlx->acc_img)) 
+		if (!send_map(scene, scene->mlx->acc_img)) 
 		{
 			printf("\nwaiting for server...\n");
 			wait_for_server(scene);
