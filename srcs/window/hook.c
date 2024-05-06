@@ -16,8 +16,8 @@ void moveCamera(t_scene *scene, t_vec3f movement)
 {
 	t_vec3f		rotatedMovement;
 
-	multiplyMatrixVector(scene->camera->rotationMatrixX, movement, &rotatedMovement);
-	multiplyMatrixVector(scene->camera->rotationMatrixY, rotatedMovement, &rotatedMovement);
+	multiplyMatrixVector(scene->camera->rotation_matrix_x, movement, &rotatedMovement);
+	multiplyMatrixVector(scene->camera->rotation_matrix_y, rotatedMovement, &rotatedMovement);
     scene->camera->origin = vec3f_add_v(scene->camera->origin, rotatedMovement);
 }
 
@@ -94,7 +94,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		ray.origin = scene->camera->origin;
 		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 
-		t_hitInfo hit_info = trace_ray(scene, ray);
+		t_hit_info hit_info = trace_ray(scene, ray);
 		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));
 	}
 	return (0);

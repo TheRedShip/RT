@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	apply_rotationMatrixX(float angle, float (*matrix)[3])
+void	apply_rotation_matrix_x(float angle, float (*matrix)[3])
 {
 	float cosTheta = cos(angle);
 	float sinTheta = sin(angle);
@@ -30,7 +30,7 @@ void	apply_rotationMatrixX(float angle, float (*matrix)[3])
 	matrix[2][2] = cosTheta;
 }
 
-void	apply_rotationMatrixY(float angle, float (*matrix)[3])
+void	apply_rotation_matrix_y(float angle, float (*matrix)[3])
 {
 	float cosTheta = cos(angle);
 	float sinTheta = sin(angle);
@@ -63,8 +63,8 @@ t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev)
 	calcul = tan(scene->camera->fov / 2.0f * M_PI / 180.0f);
 	prev.x *= calcul;
 	prev.y *= calcul;
-	multiplyMatrixVector(scene->camera->rotationMatrixX, prev, &result);
-	multiplyMatrixVector(scene->camera->rotationMatrixY, result, &result);
+	multiplyMatrixVector(scene->camera->rotation_matrix_x, prev, &result);
+	multiplyMatrixVector(scene->camera->rotation_matrix_y, result, &result);
 	result = normalize(result);
 	return (result);
 }

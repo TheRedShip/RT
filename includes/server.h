@@ -6,21 +6,20 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 17:07:41 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/06 18:32:11 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
 
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <netinet/in.h>
+# include <sys/socket.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <netinet/in.h>
 
 # define SOCKET_BUFFER_SIZE 100000
 # define MAX_BUFFER 5000
-
 
 typedef struct s_srv_threads
 {
@@ -39,7 +38,7 @@ typedef struct s_buffer
 
 typedef struct s_thread_data
 {
-	int fd;
+	int		fd;
 	t_scene	*scene;
 }	t_thread_data;
 
@@ -55,4 +54,3 @@ pthread_t		init_server_hooks(t_scene *scene);
 int				get_stopped(t_scene *scene);
 
 #endif
-

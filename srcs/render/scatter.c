@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_ray		lambert_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)
+t_ray		lambert_ray(t_hit_info hit_info, t_ray ray, t_threads *thread, int *is_specular)
 {
 	t_vec3f	in_unit_sphere;
 	t_vec3f	diffuse_dir;
@@ -37,7 +37,7 @@ t_ray		lambert_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_spe
 	return (ray);
 }
 
-t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
+t_ray		dielectric_ray(t_hit_info hit_info, t_ray ray)
 {
 	float	refraction_ratio;
 	t_vec3f	unit_direction;
@@ -55,7 +55,7 @@ t_ray		dielectric_ray(t_hitInfo hit_info, t_ray ray)
 	return (ray);
 }
 
-t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
+t_ray portal_ray(t_scene *scene, t_hit_info *hit_info, t_ray ray)
 {
     t_vec3f portal_offset;
 
@@ -80,7 +80,7 @@ t_ray portal_ray(t_scene *scene, t_hitInfo *hit_info, t_ray ray)
     return ray;
 }
 
-t_ray		new_ray(t_hitInfo hit_info, t_ray ray, t_threads *thread, int *is_specular)
+t_ray		new_ray(t_hit_info hit_info, t_ray ray, t_threads *thread, int *is_specular)
 {
 	*is_specular = 1;
 	if (hit_info.obj->material.type == MAT_LAMBERT)

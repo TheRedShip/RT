@@ -48,7 +48,7 @@ t_vec3f vec3f_rotate_x(t_vec3f v, float angle) {
     return result;
 }
 
-t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
+t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 {
 	int			color_hex;
 	t_vec2f		uv;
@@ -99,7 +99,7 @@ t_vec3f	get_texture_color(t_hitInfo hit_info, int is_specular)
 	return (color);
 }
 
-t_vec3f	get_checkered_color(t_hitInfo hit_info)
+t_vec3f	get_checkered_color(t_hit_info hit_info)
 {
 	t_vec2f		uv;
 
@@ -128,7 +128,7 @@ t_vec3f	get_checkered_color(t_hitInfo hit_info)
 	return (t_vec3f){1.0, 1.0, 1.0};
 }
 
-void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
+void	calcul_color(t_vec3f *contribution, t_hit_info hit_info, int is_specular)
 {
 	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
 	if (hit_info.obj->material.checkered == 1)
@@ -137,7 +137,7 @@ void	calcul_color(t_vec3f *contribution, t_hitInfo hit_info, int is_specular)
 		*contribution = vec3f_mul_v(*contribution, get_texture_color(hit_info, is_specular));
 }
 
-void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
+void	calcul_light(t_hit_info hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
 {
 	t_vec3f		light_direction;
 	float		diffuse_ratio;
@@ -148,7 +148,7 @@ void	calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *c
 		diffuse_ratio = 0.0f;
 	if (scene->lights->hard == 1 && scene->lights->ratio > 0.0f)
 	{
-		t_hitInfo	shadow_hit_info;
+		t_hit_info	shadow_hit_info;
 		t_ray		ray;
 		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
 		ray.direction = vec3f_mul_f(light_direction, -1.0f);

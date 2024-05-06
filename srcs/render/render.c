@@ -12,11 +12,11 @@
 
 #include "minirt.h"
 
-t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
+t_hit_info	trace_ray(t_scene *scene, t_ray ray)
 {
-	t_hitInfo	temp_hit;
+	t_hit_info	temp_hit;
 	t_objects	*temp_object;
-	t_hitInfo	closest_hit;
+	t_hit_info	closest_hit;
 
 	temp_object = scene->objects;
 	closest_hit.distance = -1.0f;
@@ -38,7 +38,7 @@ t_hitInfo	trace_ray(t_scene *scene, t_ray ray)
 t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
 	t_ray		ray;
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 	t_vec3f		light;
 	t_vec3f 	contribution;
 	int			is_specular;
@@ -127,8 +127,8 @@ int		rt_render_scene(t_scene *scene)
 			ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
-	apply_rotationMatrixX(scene->camera->direction.x, scene->camera->rotationMatrixX);
-    apply_rotationMatrixY(scene->camera->direction.y, scene->camera->rotationMatrixY);
+	apply_rotation_matrix_x(scene->camera->direction.x, scene->camera->rotation_matrix_x);
+    apply_rotation_matrix_y(scene->camera->direction.y, scene->camera->rotation_matrix_y);
 
 	start = get_time();
 	for(int i = 0; i < THREADS; i++)

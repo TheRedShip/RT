@@ -12,12 +12,12 @@
 
 #include "minirt.h"
 
-t_hitInfo	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
+t_hit_info	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 {
 	float		a;
 	float		b;
 	float		c;
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 	float		discriminant;
 
 	a = vec3f_dot(ray.direction, ray.direction);
@@ -49,7 +49,7 @@ t_hitInfo	hit_sphere(t_ray ray, t_objects *obj, t_sphere *sphere)
 	return (hit_info);
 }
 
-t_hitInfo		hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
+t_hit_info		hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
 {
 	// x^2/a^2 + y^2/b^2 + z^2/c^2 = r
 	// x = x0 + t * dx
@@ -64,7 +64,7 @@ t_hitInfo		hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
 	float		a;
 	float		b;
 	float		c;
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 	float		discriminant;
 	
 	ray.origin = vec3f_sub_v(ray.origin, obj->origin);
@@ -87,9 +87,9 @@ t_hitInfo		hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
 	return (hit_info);
 }
 
-t_hitInfo		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
+t_hit_info		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 {
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 	float		denom;
 
 	denom = vec3f_dot(plane->normal, ray.direction);
@@ -104,12 +104,12 @@ t_hitInfo		hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 	return (hit_info);
 }
 
-t_hitInfo		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
+t_hit_info		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 {
 	float		denom;
 	float		beta;
 	float		alpha;
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 	t_vec3f		planar_hitpt_vector;
 
 	denom = vec3f_dot(quad->normal, ray.direction);
@@ -132,9 +132,9 @@ t_hitInfo		hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	return (hit_info);
 }
 
-t_hitInfo		hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
+t_hit_info		hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
 {
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 
 	t_vec3f tmp1 = vec3f_cross(ray.direction, cylinder->orientation);
 	t_vec3f	tmp_vect = vec3f_sub_v(ray.origin, obj->origin);
@@ -189,9 +189,9 @@ t_hitInfo		hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
 	return (hit_info);
 }
 
-t_hitInfo		hit_objects(t_ray ray, t_objects *obj)
+t_hit_info		hit_objects(t_ray ray, t_objects *obj)
 {
-	t_hitInfo	hit_info;
+	t_hit_info	hit_info;
 
 	if (obj->type == OBJ_SPHER)
 		return (hit_sphere(ray, obj, obj->sphere));

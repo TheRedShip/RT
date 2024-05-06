@@ -17,26 +17,25 @@
 
 typedef struct s_objects	t_objects;
 
-typedef struct	s_camera
+typedef struct s_camera
 {
 	int			has_seen;
 	float		fov;
 	int			bounce;
 	t_vec3f		origin;
 	t_vec3f		direction;
-	float		rotationMatrixX[3][3];
-	float		rotationMatrixY[3][3];
+	float		rotation_matrix_x[3][3];
+	float		rotation_matrix_y[3][3];
 }				t_camera;
 
-typedef struct	s_ambient_light
+typedef struct s_ambient_light
 {
 	int			has_seen;
 	float		ratio;
 	t_vec3f		color;
 }				t_ambient_light;
 
-
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -44,7 +43,7 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-typedef struct	s_mlx
+typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
@@ -58,13 +57,13 @@ typedef struct	s_mlx
 	t_vec3f	**postpro_img;
 }				t_mlx;
 
-typedef struct	s_mouse
+typedef struct s_mouse
 {
-	t_vec2f pos;
+	t_vec2f	pos;
 	int		is_pressed;
 }				t_mouse;
 
-typedef struct	s_bloom
+typedef struct s_bloom
 {
 	int			has_seen;
 	float		treshold;
@@ -72,7 +71,7 @@ typedef struct	s_bloom
 	int			mip_num;
 }				t_bloom;
 
-typedef struct	s_light
+typedef struct s_light
 {
 	int			has_seen;
 	int			hard;
@@ -81,17 +80,17 @@ typedef struct	s_light
 	t_vec3f		origin;
 }				t_light;
 
-typedef struct	s_server
+typedef struct s_server
 {
-	char			*ip;
-	uint16_t		port;
-	int				stop;
 	int				fd;
+	char			*ip;
+	int				stop;
+	uint16_t		port;
 	uint64_t		last_img_time;
-	pthread_mutex_t mutex;
+	pthread_mutex_t	mutex;
 }	t_server;
 
-typedef struct	s_scene
+typedef struct s_scene
 {
 	t_mouse			mouse;
 	t_mlx			*mlx;
@@ -111,18 +110,18 @@ typedef struct s_threads
 	t_scene		*scene;
 }				t_threads;
 
-typedef struct	s_sphere
+typedef struct s_sphere
 {
 	t_vec3f		rotation;
 	float		diameter;
 }				t_sphere;
 
-typedef struct	s_plane
+typedef struct s_plane
 {
 	t_vec3f		normal;
 }				t_plane;
 
-typedef struct	s_quad
+typedef struct s_quad
 {
 	float		d;
 	float		witdh;
@@ -133,21 +132,21 @@ typedef struct	s_quad
 	t_vec3f		right_corner;
 }				t_quad;
 
-typedef struct	s_cylinder
+typedef struct s_cylinder
 {
 	float		height;
 	float		diameter;
 	t_vec3f		orientation;
 }				t_cylinder;
 
-typedef struct	s_ellipse
+typedef struct s_ellipse
 {
 	float		a;
 	float		b;
 	float		c;
 }				t_ellipse;
 
-typedef struct	s_portal
+typedef struct s_portal
 {
 	t_quad		quad;
 	int			portal_id;
@@ -155,7 +154,7 @@ typedef struct	s_portal
 	t_objects	*linked_portal;
 }				t_portal;
 
-typedef struct	s_texture
+typedef struct s_texture
 {
 	int			exist;
 	char		*path;
@@ -164,7 +163,7 @@ typedef struct	s_texture
 	int			height;
 }				t_texture;
 
-typedef struct	s_material
+typedef struct s_material
 {
 	int			type;
 	t_vec3f		color;
@@ -176,7 +175,7 @@ typedef struct	s_material
 	float		refraction_index;
 }				t_material;
 
-typedef struct	s_objects
+typedef struct s_objects
 {
 	int					type;
 	t_vec3f				origin;
