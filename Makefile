@@ -115,7 +115,10 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_utils.c
 
 
-SRC_POSTPRO :=	postprocess/bloom.c					
+SRC_POSTPRO :=	postprocess/bloom.c					\
+				postprocess/blur.C					\
+				postprocess/img_utils.C				\
+				postprocess/sample.c			
 
 SRC_MULTI_S	:=	multi_pc/server/server.c			\
 				multi_pc/server/handle_clients.c	\

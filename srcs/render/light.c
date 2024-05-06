@@ -12,40 +12,31 @@
 
 #include "minirt.h"
 
-t_vec3f vec3f_rotate_y(t_vec3f v, float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
+t_vec3f	vec3f_rotate_xy(t_vec3f v, float angle, int xy)
+{
+	static float	rm_x[3][3] = {\
+		{1, 0, 0}, \
+		{0, c, -s}, \
+		{0, s, c}
+	};
+	static float	rm_y[3][3] = {\
+		{c, 0, s}, \
+		{0, 1, 0}, \
+		{-s, 0, c}
+	};
+	float			rm[3][3];
+	float			s = sin(angle);
+	float			c = cos(angle);
+	t_vec3f			result;
 
-    float rotation_matrix[3][3] = {
-        {c, 0, s},
-        {0, 1, 0},
-        {-s, 0, c}
-    };
-
-    t_vec3f result;
-    result.x = rotation_matrix[0][0] * v.x + rotation_matrix[0][1] * v.y + rotation_matrix[0][2] * v.z;
-    result.y = rotation_matrix[1][0] * v.x + rotation_matrix[1][1] * v.y + rotation_matrix[1][2] * v.z;
-    result.z = rotation_matrix[2][0] * v.x + rotation_matrix[2][1] * v.y + rotation_matrix[2][2] * v.z;
-
-    return result;
-}
-
-t_vec3f vec3f_rotate_x(t_vec3f v, float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-
-    float rotation_matrix[3][3] = {
-        {1, 0, 0},
-        {0, c, -s},
-        {0, s, c}
-    };
-
-    t_vec3f result;
-    result.x = rotation_matrix[0][0] * v.x + rotation_matrix[0][1] * v.y + rotation_matrix[0][2] * v.z;
-    result.y = rotation_matrix[1][0] * v.x + rotation_matrix[1][1] * v.y + rotation_matrix[1][2] * v.z;
-    result.z = rotation_matrix[2][0] * v.x + rotation_matrix[2][1] * v.y + rotation_matrix[2][2] * v.z;
-
-    return result;
+	if (xy == 1)
+		rm = rm_y;
+	else
+		rm = rm_x;
+	result.x = rm[0][0] * v.x + rm[0][1] * v.y + rm[0][2] * v.z;
+	result.y = rm[1][0] * v.x + rm[1][1] * v.y + rm[1][2] * v.z;
+	result.z = rm[2][0] * v.x + rm[2][1] * v.y + rm[2][2] * v.z;
+	return (result);
 }
 
 t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
@@ -53,19 +44,20 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 	int			color_hex;
 	t_vec2f		uv;
 	t_vec3f		color;
-	t_vec3f		outward_normal;
+	t_vec3f		o_n;
 
 	uv.x = 0.0f;
 	uv.y = 0.0f;
 	color = (t_vec3f){1.0f, 1.0f, 1.0f};
 	if (hit_info.obj->type == OBJ_SPHER)
 	{
-		outward_normal = vec3f_div_f(vec3f_sub_v(hit_info.position, hit_info.obj->origin), (hit_info.obj->sphere->diameter / 2));
-		outward_normal = vec3f_rotate_y(outward_normal, hit_info.obj->sphere->rotation.x);
-		outward_normal = vec3f_rotate_x(outward_normal, hit_info.obj->sphere->rotation.y);
-
-		uv.x = 1 - (0.5 + atan2(outward_normal.z, outward_normal.x) / (2 * M_PI));
-		uv.y = 1 - (0.5 + asin(outward_normal.y) / M_PI);
+		o_n = vec3f_div_f( \
+					vec3f_sub_v(hit_info.position, hit_info.obj->origin), \
+					(hit_info.obj->sphere->diameter / 2));
+		o_n = vec3f_rotate_xy(o_n, hit_info.obj->sphere->rotation.x, 1);
+		o_n = vec3f_rotate_xy(o_n, hit_info.obj->sphere->rotation.y, 0);
+		uv.x = 1 - (0.5 + atan2(o_n.z, o_n.x) / (2 * M_PI));
+		uv.y = 1 - (0.5 + asin(o_n.y) / M_PI);
 	}
 	else if (hit_info.obj->type == OBJ_PLANE)
 	{

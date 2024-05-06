@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_clients.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 19:36:55 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/07 00:21:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	*handle_client(void *data)
 	pthread_mutex_lock(&scene->server.mutex);
 	if (!scene->server.stop && client_data)
 	{
-		add_to_acc_img((t_vec3f *)client_data, scene); 
+		add_to_acc_img((t_vec3f *)client_data, scene);
 		if (scene->mlx->is_acc)
 			scene->mlx->frame_index++;
 		printf("accumulation : %lums, %d         \r", get_time() - \

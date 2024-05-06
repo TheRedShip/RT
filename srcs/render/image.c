@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_vec3f		**init_img(t_scene *scene, int width, int height)
+t_vec3f	**init_img(t_scene *scene, int width, int height)
 {
 	t_vec3f	**acc_img;
 	int		i;
@@ -31,7 +31,7 @@ t_vec3f		**init_img(t_scene *scene, int width, int height)
 	return (acc_img);
 }
 
-t_vec2f		get_uv(float x, float y)
+t_vec2f	get_uv(float x, float y)
 {
 	static float	aspect_ratio = (float)WIDTH / (float)HEIGHT;
 	t_vec2f			uv;

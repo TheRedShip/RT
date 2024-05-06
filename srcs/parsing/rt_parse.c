@@ -36,7 +36,7 @@ int	is_file_valid(char *file_name)
 	return (1);
 }
 
-int		rt_verify_parsing(char *line, t_scene *scene)
+int	rt_verify_parsing(char *line, t_scene *scene)
 {
 	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(scene, line))
 		return (rt_parse_ambient(line, scene));

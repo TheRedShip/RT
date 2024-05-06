@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_to_server.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 19:36:07 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/07 00:21:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	wait_for_server(t_scene *scene)
 	close(fd);
 }
 
-int		send_map(t_scene *scene, t_vec3f **map)
+int	send_map(t_scene *scene, t_vec3f **map)
 {
 	int		dest_fd;
 	int		i;
@@ -126,7 +126,7 @@ int		send_map(t_scene *scene, t_vec3f **map)
 
 void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 {
-	int port;
+	int	port;
 
 	port = ft_atoi(port_str);
 	if (port < 0 || port > 65535)
