@@ -17,14 +17,14 @@
 
 # include "minirt.h"
 
-void		rt_parse(char *file, t_scene **scene);
+void		rt_parse(char *file, t_scene *scene);
 
 int			rt_return(char **split);
 int			rt_range_atoi(char *line, int min, int max);
 float		rt_range_atof(char *line, float min, float max);
 t_vec3f		rt_atof3(char *line, float min, float max);
 
-int			rt_verify_camera(t_scene *scen, char *line);
+int			rt_verify_camera(t_scene *scene, char *line);
 int			rt_verify_ambient(t_scene *scene, char *line);
 int			rt_verify_light(t_scene *scene, char *line);
 int			rt_verify_bloom(t_scene *scene, char *line);
@@ -41,21 +41,21 @@ int			rt_verify_material(char *str);
 int			rt_verify_ellipse(char *line);
 int			rt_verify_portal(char *line);
 
-int			rt_parse_ambient(char *line, t_scene **scene);
-int			rt_parse_camera(char *line, t_scene **scene);
-int			rt_parse_light(char *line, t_scene **scene);
-int			rt_parse_bloom(char *line, t_scene **scene);
-int			rt_parse_sphere(char *line, t_scene **scene);
-int			rt_parse_plane(char *line, t_scene **scene);
-int			rt_parse_cylinder(char *line, t_scene **scene);
-int			rt_parse_quad(char *line, t_scene **scene);
-int			rt_parse_lightsphere(char *line, t_scene **scene);
-int			rt_parse_lightquad(char *line, t_scene **scene);
-int			rt_parse_glasssphere(char *line, t_scene **scene);
-int			rt_parse_cube(char *line, t_scene **scene);
-int			rt_parse_glasscube(char *line, t_scene **scene);
-int			rt_parse_ellipse(char *line, t_scene **scene);
-int			rt_parse_portal(char *line, t_scene **scene);
+int			rt_parse_ambient(char *line, t_scene *scene);
+int			rt_parse_camera(char *line, t_scene *scene);
+int			rt_parse_light(char *line, t_scene *scene);
+int			rt_parse_bloom(char *line, t_scene *scene);
+int			rt_parse_sphere(char *line, t_scene *scene);
+int			rt_parse_plane(char *line, t_scene *scene);
+int			rt_parse_cylinder(char *line, t_scene *scene);
+int			rt_parse_quad(char *line, t_scene *scene);
+int			rt_parse_lightsphere(char *line, t_scene *scene);
+int			rt_parse_lightquad(char *line, t_scene *scene);
+int			rt_parse_glasssphere(char *line, t_scene *scene);
+int			rt_parse_cube(char *line, t_scene *scene);
+int			rt_parse_glasscube(char *line, t_scene *scene);
+int			rt_parse_ellipse(char *line, t_scene *scene);
+int			rt_parse_portal(char *line, t_scene *scene);
 int			rt_parse_material(t_scene *scene, char *str, t_material *material);
 
 #endif

@@ -36,20 +36,21 @@ void		destroy_mlx(t_scene *scene)
 	free(scene->mlx);
 }
 
-int			rt_free_scene(t_scene *scene)
+int			rt_free_scene(t_scene *scene, int ex)
 {
 	t_objects	*tmp;
 
-	destroy_mlx(scene);
+	free(scene->ambient_light);
 	free(scene->bloom);
 	free(scene->camera);
 	free(scene->lights);
-	free(scene->bloom);
 	free(scene->name);
 	while (scene->objects)
 	{
 		tmp = scene->objects;
 		scene->objects = scene->objects->next;
+		if (tmp->material.texture.exist == 1)
+			mlx_destroy_image(scene->mlx->mlx, tmp->material.texture.data.img);
 		free(tmp->sphere);
 		free(tmp->plane);
 		free(tmp->cylinder);
@@ -58,17 +59,21 @@ int			rt_free_scene(t_scene *scene)
 		free(tmp->portal);
 		free(tmp);
 	}
-	free(scene);
-	exit(0);
+	if (ex)
+	{
+		destroy_mlx(scene);
+		free(scene);
+		exit(0);
+	}
 	return (0);
 }
 
-t_scene		*init_scene(char *name, int headless, t_scene *scene)
+t_scene		*init_scene(char *name, t_scene *scene)
 {
 	if(!scene)
 		scene = ft_calloc(1, sizeof(t_scene));
 	if (!scene)
-		return (NULL);
+		exit(0);
 	scene->ambient_light = ft_calloc(1, sizeof(t_ambient_light));
 	scene->camera = ft_calloc(1, sizeof(t_camera));
 	scene->lights = ft_calloc(1, sizeof(t_light));
@@ -78,12 +83,11 @@ t_scene		*init_scene(char *name, int headless, t_scene *scene)
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
-	create_window(&scene, headless);
 	scene->objects = NULL;
-	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || ! scene->name)
+	if (!scene->ambient_light || !scene->camera || !scene->lights || !scene->mlx || !scene->bloom || !scene->name)
 	{
 		printf("Error: Memory allocation failed\n");
-		rt_free_scene(scene);
+		rt_free_scene(scene, 1);
 	}
 	scene->mlx->is_acc = 1;
 	scene->mlx->is_bloom = 0;
@@ -138,10 +142,11 @@ int	main(int argc, char **argv)
 		printf("		%s scenes/<file.rt> server [PORT]\n", argv[0]);
 		return (1);
 	}
-	scene = init_scene(argv[1], argc >= 3 && ft_strcmp(argv[2], "server"), 0);
+	scene = init_scene(argv[1], 0);
 	if (scene == NULL)
 		return (1);
-	rt_parse(argv[1], &scene);
+	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
+	rt_parse(argv[1], scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
 	if(argc == 4 && !ft_strcmp(argv[2], "server"))

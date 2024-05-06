@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int		rt_parse_lightquad(char *line, t_scene **scene)
+int		rt_parse_lightquad(char *line, t_scene *scene)
 {
 	t_objects	*objects;
 	char		**split;
@@ -33,7 +33,7 @@ int		rt_parse_lightquad(char *line, t_scene **scene)
 	return (1);
 }
 
-int		rt_parse_ellipse(char *line, t_scene **scene)
+int		rt_parse_ellipse(char *line, t_scene *scene)
 {
 	char		**split;
 	t_vec3f		radius;
@@ -49,7 +49,7 @@ int		rt_parse_ellipse(char *line, t_scene **scene)
 	objects->ellipse->b = radius.y;
 	objects->ellipse->c = radius.z;
 	objects->material.color = vec3f_div_f(rt_atof3(split[3], 0.0f, 255.0f), 255.0f);
-	if (rt_parse_material(*scene, split[4], &(objects->material)) == -1)
+	if (rt_parse_material(scene, split[4], &(objects->material)) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);
@@ -90,7 +90,7 @@ void scale_quad(t_vec3f *up, t_vec3f *right, t_vec3f *origin, float width, float
 	origin->z -= (right->z + up->z) * 0.5;
 }
 
-int		rt_parse_portal(char *line, t_scene **scene)
+int		rt_parse_portal(char *line, t_scene *scene)
 {
 	t_objects	*portal;
 	t_objects	*support;
@@ -109,9 +109,6 @@ int		rt_parse_portal(char *line, t_scene **scene)
 	support->quad->w = vec3f_div_f(support->quad->normal, vec3f_dot(support->quad->normal,support->quad->normal));
 	support->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
 	support->material.emission_power = 1.5;
-	// if (rt_parse_material(*scene, "1.0,0.0", &(support->material)) == -1)
-	// 	return (rt_return(split));
-
 	portal = rt_add_objects(scene, "po");
 	portal->portal->portal_id = ft_atoi(split[3]);
 	portal->portal->linked_id = ft_atoi(split[4]);

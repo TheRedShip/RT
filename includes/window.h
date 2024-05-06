@@ -30,7 +30,7 @@
 # define CAM_RIGHT	65363
 # define KEY_BLOOM	98
 
-void			create_window(t_scene **scene, int headless);
+void			create_window(t_scene *scene, int headless);
 void			put_pixel(t_data *data, int x, int y, int color);
 unsigned int	get_pixel(t_data *img, int x, int y);
 

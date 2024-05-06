@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/01 18:49:57 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:09:18 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minirt.h"
 
 int	setup_socket(uint16_t port)
@@ -62,6 +63,6 @@ int	start_server(t_scene *scene, char *port_str)
 	wait_clients(scene, socket);
 	close(socket);
 	pthread_join(mlx_thread, 0);
-	rt_free_scene(scene);
+	rt_free_scene(scene, 1);
 	return(0);
 }

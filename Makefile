@@ -99,7 +99,6 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
-				objects/intersection.c				
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						

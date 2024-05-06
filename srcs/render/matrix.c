@@ -55,7 +55,7 @@ void	multiplyMatrixVector(float (*matrix)[3], t_vec3f vector, t_vec3f *result)
 	result->z = matrix[2][0] * vector.x + matrix[2][1] * vector.y + matrix[2][2] * vector.z;
 }
 
-t_vec3f		calculate_ray_direction(t_scene *scene, int thread_id, t_vec3f prev)
+t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev)
 {
 	t_vec3f			result;
 	float	calcul;

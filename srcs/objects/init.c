@@ -26,7 +26,7 @@ t_texture	init_texture(t_scene *scene, char *path)
 	if (texture.data.img == NULL)
 	{
 		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), path);
-		rt_free_scene(scene);
+		rt_free_scene(scene, 1);
 	}
 	texture.data.addr = mlx_get_data_addr(texture.data.img, &texture.data.bits_per_pixel, &texture.data.line_length, &texture.data.endian);
 	return (texture);
@@ -62,7 +62,7 @@ void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
 	}
 }
 
-t_objects	*rt_add_objects(t_scene **scene, char *type)
+t_objects	*rt_add_objects(t_scene *scene, char *type)
 {
 	int	i;
 	t_objects *objects;
@@ -70,7 +70,7 @@ t_objects	*rt_add_objects(t_scene **scene, char *type)
 
 	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
-		rt_free_scene(*scene);
+		rt_free_scene(scene, 1);
 	i = -1;
 	while (type_list_str[++i] != NULL)
 	{
@@ -79,7 +79,7 @@ t_objects	*rt_add_objects(t_scene **scene, char *type)
 	}
 	objects->type = i;
 	objects->material = init_material();
-	rt_set_objects_to_scene(*scene, objects);
+	rt_set_objects_to_scene(scene, objects);
 	if (i == OBJ_SPHER)
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
 	else if (i == OBJ_PLANE)

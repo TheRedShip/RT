@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   rt_to_server.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/05 14:19:42 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:09:53 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minirt.h"
 
 int		open_client_socket(char *ip, uint16_t port)
@@ -63,36 +64,13 @@ char	*get_scene_name(int fd)
 	return (buffer_to_str(buffer, 0));
 }
 
-void			rt_free_scene_replace(t_scene *scene)
-{
-	t_objects	*tmp;
-
-	free(scene->ambient_light);
-	free(scene->camera);
-	free(scene->lights);
-	free(scene->bloom);
-	free(scene->name);
-	while (scene->objects)
-	{
-		tmp = scene->objects;
-		scene->objects = scene->objects->next;
-		free(tmp->sphere);
-		free(tmp->plane);
-		free(tmp->cylinder);
-		free(tmp->ellipse);
-		free(tmp->quad);	
-		free(tmp->portal);
-		free(tmp);
-	}
-}
-
 int	change_scene(t_scene *scene, char *scene_name)
 {
-	rt_free_scene_replace(scene);
-	init_scene(scene_name, 1, scene);
+	rt_free_scene(scene, 0);
+	init_scene(scene_name, scene);
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
-	rt_parse(scene_name, &scene);
+	rt_parse(scene_name, scene);
 	link_portals(scene);
 	free(scene_name);
 	printf("\nParsing successful\n");

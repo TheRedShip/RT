@@ -36,15 +36,15 @@ int		is_file_valid(char *file_name)
 	return (1);
 }
 
-int		rt_verify_parsing(char *line, t_scene **scene)
+int		rt_verify_parsing(char *line, t_scene *scene)
 {
-	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(*scene, line))
+	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(scene, line))
 		return (rt_parse_ambient(line, scene));
-	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(*scene, line))
+	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(scene, line))
 		return (rt_parse_camera(line, scene));
-	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(*scene, line))
+	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(scene, line))
 		return (rt_parse_light(line, scene));
-	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(*scene, line))
+	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(scene, line))
 		return (rt_parse_bloom(line, scene));
 	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
 		return (rt_parse_sphere(line, scene));
@@ -85,22 +85,22 @@ void	rt_exit_parsing(char *line, t_scene *scene, int fd)
 	}
 	if (fd != -1)
 		close(fd);
-	rt_free_scene(scene);
+	rt_free_scene(scene, 1);
 }
 
-void	rt_parse(char *file, t_scene **scene)
+void	rt_parse(char *file, t_scene *scene)
 {
 	int		fd;
 	char	*line;
 
 	if (!is_file_valid(file))
-		rt_exit_parsing(NULL, *scene, -1);
+		rt_exit_parsing(NULL, scene, -1);
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
 		if (!rt_verify_parsing(line, scene))
-			rt_exit_parsing(line, *scene, fd);
+			rt_exit_parsing(line, scene, fd);
 		free(line);
 		line = get_next_line(fd);
 	}

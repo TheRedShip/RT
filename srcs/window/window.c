@@ -12,18 +12,18 @@
 
 #include "minirt.h"
 
-void	create_window(t_scene **scene, int headless)
+void	create_window(t_scene *scene, int headless)
 {
-	(*scene)->mlx->mlx = mlx_init();
-	if (!(*scene)->mlx->mlx)
-		rt_free_scene(*scene);
+	scene->mlx->mlx = mlx_init();
+	if (!scene->mlx->mlx)
+		rt_free_scene(scene, 1);
 	if(!headless)
-		(*scene)->mlx->win = mlx_new_window((*scene)->mlx->mlx, WIDTH, HEIGHT, "miniRT");
-	if (!headless && !(*scene)->mlx->win)
-		rt_free_scene(*scene);
-	(*scene)->mlx->img.img = mlx_new_image((*scene)->mlx->mlx, WIDTH, HEIGHT);
-	(*scene)->mlx->img.addr = mlx_get_data_addr((*scene)->mlx->img.img, &(*scene)->mlx->img.bits_per_pixel, \
-												&(*scene)->mlx->img.line_length, &(*scene)->mlx->img.endian);
+		scene->mlx->win = mlx_new_window(scene->mlx->mlx, WIDTH, HEIGHT, "miniRT");
+	if (!headless && !scene->mlx->win)
+		rt_free_scene(scene, 1);
+	scene->mlx->img.img = mlx_new_image(scene->mlx->mlx, WIDTH, HEIGHT);
+	scene->mlx->img.addr = mlx_get_data_addr(scene->mlx->img.img, &scene->mlx->img.bits_per_pixel, \
+												&scene->mlx->img.line_length, &scene->mlx->img.endian);
 }
 
 void	put_pixel(t_data *img, int x, int y, int color)

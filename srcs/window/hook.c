@@ -36,7 +36,7 @@ int		key_hook(int keycode, t_scene *scene)
 	else if (keycode == KEY_DOWNA)
 		moveCamera(scene, (t_vec3f){0, -0.15f, 0});
 	else if (keycode == KEY_ESCH)
-		rt_free_scene(scene);
+		rt_free_scene(scene, 1);
 	else if (keycode == KEY_ENTER)
 	{
 		scene->mlx->is_acc = !scene->mlx->is_acc;
@@ -92,7 +92,7 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 		t_vec2f uv = get_uv(x, y);
 		t_ray	ray;
 		ray.origin = scene->camera->origin;
-		ray.direction = calculate_ray_direction(scene, 0, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
+		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 
 		t_hitInfo hit_info = trace_ray(scene, ray);
 		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));

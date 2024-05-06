@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   lst_threads.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:10:11 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/01 18:50:02 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:09:15 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minirt.h"
 
 int	add_thread(t_srv_threads **thrds)

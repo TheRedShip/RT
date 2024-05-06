@@ -44,7 +44,7 @@ t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 	int			is_specular;
 
 	ray.origin = scene->camera->origin;
-	ray.direction = calculate_ray_direction(scene, thread->id, (t_vec3f){uv.x, uv.y, -1});
+	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, -1});
 
 	light = (t_vec3f){0.0f, 0.0f, 0.0f};
 	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};

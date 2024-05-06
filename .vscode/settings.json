@@ -27,6 +27,8 @@
 		"octree.h": "c",
 		"postprocess.h": "c",
 		"time.h": "c",
-		"bvh.h": "c"
+		"bvh.h": "c",
+		"client.h": "c",
+		"server.h": "c"
 	}
 }

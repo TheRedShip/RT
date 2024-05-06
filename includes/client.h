@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/02 18:04:56 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:08:22 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_H
 # define CLIENT_H
-/*
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <pthread.h>
-*/
+
 # include <arpa/inet.h>
 
 void	rt_to_server(t_scene *scene, char *ip, char *port);

@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int			rt_parse_lightsphere(char *line, t_scene **scene)
+int			rt_parse_lightsphere(char *line, t_scene *scene)
 {
 	t_objects	*objects;
 	char		**split;
@@ -29,7 +29,7 @@ int			rt_parse_lightsphere(char *line, t_scene **scene)
 	return (1);
 }
 
-int			rt_parse_glasssphere(char *line, t_scene **scene)
+int			rt_parse_glasssphere(char *line, t_scene *scene)
 {
 	t_objects	*objects;
 	char		**split;
@@ -86,7 +86,7 @@ void		setup_quad(t_objects *objects[6], char **split, int j)
 	}
 }
 
-int			rt_parse_cube(char *line, t_scene **scene)
+int			rt_parse_cube(char *line, t_scene *scene)
 {
 	int			j;
 	char		**split;
@@ -104,7 +104,7 @@ int			rt_parse_cube(char *line, t_scene **scene)
 		objects[j]->quad->d = vec3f_dot(objects[j]->quad->normal, objects[j]->origin);
 		objects[j]->quad->w = vec3f_div_f(objects[j]->quad->normal, vec3f_dot(objects[j]->quad->normal,objects[j]->quad->normal));
 		objects[j]->material.color = vec3f_div_f(rt_atof3(split[5], 0.0f, 255.0f), 255.0f);
-		if (rt_parse_material(*scene, split[6], &(objects[j]->material)) == -1)
+		if (rt_parse_material(scene, split[6], &(objects[j]->material)) == -1)
 				return (rt_return(split));
 		j++;
 	}
@@ -112,7 +112,7 @@ int			rt_parse_cube(char *line, t_scene **scene)
 	return (1);
 }
 
-int			rt_parse_glasscube(char *line, t_scene **scene)
+int			rt_parse_glasscube(char *line, t_scene *scene)
 {
 	int			j;
 	char		**split;
