@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:16:19 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/05 14:36:46 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:55:57 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,11 @@ int	server_key_hook(int key, void *data)
 
 	scene = data;
 	pthread_mutex_lock(&scene->server.mutex);
-	//printf("key : %d\n", key);
 	if(key == KEY_ESCH)
 		scene->server.stop = 1;
 	if(key == KEY_BLOOM)
 		scene->mlx->is_bloom = !scene->mlx->is_bloom;	
-	if(key == 65421)
+	if(key == KEY_ENTER)
 	{
 		scene->mlx->is_acc = !scene->mlx->is_acc;
 		printf("accumulation : %d\n", scene->mlx->is_acc);
@@ -51,7 +50,6 @@ int	server_key_hook(int key, void *data)
 		scene->bloom->mip_num++;
 	if(key == 65453)
 		scene->bloom->mip_num--;
-	
 	pthread_mutex_unlock(&scene->server.mutex);
 	return(0);
 }

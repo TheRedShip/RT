@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 17:09:09 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/06 18:10:30 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ void	*handle_client(void *data)
 		add_to_acc_img((t_vec3f *)client_data,scene); 
 		if(scene->mlx->is_acc)
 			scene->mlx->frame_index++;
-		printf("accumulation : %d, %lums\r", scene->mlx->frame_index, \
-			get_time() - scene->server.last_img_time);
+		printf("accumulation : %lums, %d         \r", get_time() - \
+				scene->server.last_img_time, scene->mlx->frame_index);
 		fflush(stdout);
 		scene->server.last_img_time = get_time();
 	}

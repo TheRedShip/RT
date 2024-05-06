@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 17:09:53 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/06 17:53:21 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	change_scene(t_scene *scene, char *scene_name)
 {
 	rt_free_scene(scene, 0);
 	init_scene(scene_name, scene);
+	create_window(scene, 1);
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
 	rt_parse(scene_name, scene);
