@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 00:00:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/09 01:01:54 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/02 18:07:03 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int		rt_render_scene(t_scene *scene)
 	{
 		ft_free_tab((void **)(scene->mlx->acc_img));
 		scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
-		ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
+		if(!scene->server.ip)
+			ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
 	apply_rotationMatrixX(scene->camera->direction.x, scene->camera->rotationMatrixX);
@@ -138,8 +139,19 @@ int		rt_render_scene(t_scene *scene)
 	}
 	for(int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
-	rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
-	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
+	if(!scene->server.ip)
+		rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
+	if(scene->server.ip)
+	{
+		if(!send_map(scene, scene->mlx->acc_img)) 
+		{
+			printf("\nwaiting for server...\n");
+			wait_for_server(scene);
+			printf("server back\n");
+		}
+	}
+	else
+		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
 	printf("Rendering scene : %lu ms %d            \r", get_time() - start, scene->mlx->frame_index);
 	fflush(stdout);
 	if (scene->mlx->is_acc)

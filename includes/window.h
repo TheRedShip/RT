@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:19:39 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/30 14:19:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/02 19:03:05 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define CAM_RIGHT	65363
 # define KEY_BLOOM	98
 
-void			create_window(t_scene **scene);
+void			create_window(t_scene **scene, int headless);
 void			put_pixel(t_data *data, int x, int y, int color);
 unsigned int	get_pixel(t_data *img, int x, int y);
 

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_verify_parsing.c                                :+:      :+:    :+:   */
+/*   rt_verify_parsing_settings.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:31:56 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/29 15:31:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/02 14:22:19 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		rt_verify_ambient(char *line)
+int		rt_verify_ambient(t_scene *scene, char *line)
 {
 	char		**split;
-	static int	has_seen = 0;
 
-	if (has_seen)
+	if (scene->ambient_light->has_seen)
 		return (0);
-	has_seen = 1;
+	scene->ambient_light->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 3)
 		return rt_return(split);
@@ -31,14 +30,13 @@ int		rt_verify_ambient(char *line)
 	return (1);
 }
 
-int		rt_verify_camera(char *line)
+int		rt_verify_camera(t_scene *scene, char *line)
 {
 	char		**split;
-	static int	has_seen = 0;
 
-	if (has_seen)
+	if (scene->camera->has_seen)
 		return (0);
-	has_seen = 1;
+	scene->camera->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
 		return rt_return(split);
@@ -54,14 +52,13 @@ int		rt_verify_camera(char *line)
 	return (1);
 }
 
-int		rt_verify_light(char *line)
+int		rt_verify_light(t_scene *scene, char *line)
 {
 	char		**split;
-	static int	has_seen = 0;
 
-	if (has_seen)
+	if (scene->lights->has_seen)
 		return (0);
-	has_seen = 1;
+	scene->lights->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 5)
 		return rt_return(split);
@@ -77,14 +74,13 @@ int		rt_verify_light(char *line)
 	return (1);
 }
 
-int		rt_verify_bloom(char *line)
+int		rt_verify_bloom(t_scene *scene, char *line)
 {
 	char		**split;
-	static int	has_seen = 0;
 
-	if (has_seen)
+	if (scene->bloom->has_seen)
 		return (0);
-	has_seen = 1;
+	scene->bloom->has_seen = 1;
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 4)
 		return rt_return(split);

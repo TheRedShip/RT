@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/04/16 20:46:06 by tomoron          ###   ########.fr        #
+#    Updated: 2024/05/01 17:03:04 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					billard/billard_13.jpg			\
 					billard/billard_14.jpg			\
 					billard/billard_15.jpg			\
-					thing/skybox.jpg				\
+					thing/skybox.jpg				
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/parse_utils.c				\
@@ -93,15 +93,16 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/rt_verify_parsing_others.c	\
 				parsing/rt_verify_parsing_objects.c	\
 				parsing/rt_verify_parsing_objects2.c\
-				parsing/rt_verify_parsing_settings.c\
+				parsing/rt_verify_parsing_settings.c
 
 
 
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
+				objects/intersection.c				
 
 SRC_WINDOW	:=	window/window.c						\
-				window/hook.c						\
+				window/hook.c						
 
 SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
@@ -115,12 +116,22 @@ SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_utils.c
 
 
-SRC_POSTPRO :=	postprocess/bloom.c					\
+SRC_POSTPRO :=	postprocess/bloom.c					
+
+SRC_MULTI_S	:=	multi_pc/server/server.c			\
+				multi_pc/server/handle_clients.c	\
+				multi_pc/server/lst_buffer.c		\
+				multi_pc/server/lst_threads.c		\
+				multi_pc/server/hooks.c				\
+				multi_pc/server/mutex.c
+
+SRC_MULTI_C :=	multi_pc/client/rt_to_server.c		
 
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
+				$(SRC_MULTI_S) $(SRC_MULTI_C)		\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

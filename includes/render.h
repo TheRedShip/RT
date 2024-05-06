@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 00:00:55 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/31 00:00:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/30 19:57:05 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_ray
 
 void		calcul_light(t_hitInfo hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular);
 int			rt_render_scene(t_scene *scene);
+void	rt_render_image(t_vec3f **image, t_data *img);
 
 int			rgb_to_hex(t_vec3f rgb);
 t_vec3f		hex_to_rgb(int hex);
