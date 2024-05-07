@@ -26,6 +26,7 @@
 
 # include "vector.h"
 # include "scene_structures.h"
+# include "bvh.h"
 # include "postprocess.h"
 # include "mlx.h"
 # include "libft.h"

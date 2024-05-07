@@ -90,6 +90,7 @@ t_scene	*init_scene(char *name, t_scene *scene)
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene, 1);
 	}
+	scene->mlx->is_bvh = 0;
 	scene->mlx->is_acc = 1;
 	scene->mlx->is_bloom = 0;
 	scene->mlx->frame_index = 1;
@@ -148,6 +149,7 @@ int	main(int argc, char **argv)
 		return (1);
 	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
 	rt_parse(argv[1], scene);
+	create_bvh(scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
 	if (argc == 4 && !ft_strcmp(argv[2], "server"))

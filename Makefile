@@ -125,6 +125,10 @@ SRC_POSTPRO :=	postprocess/bloom.c					\
 				postprocess/img_utils.c				\
 				postprocess/sample.c			
 
+SRC_BVH		:=	bvh/boundary.c							\
+				bvh/box_intersect.c						\
+				bvh/bvh_creation.c						\
+
 SRC_MULTI_S	:=	multi_pc/server/server.c			\
 				multi_pc/server/handle_clients.c	\
 				multi_pc/server/lst_buffer.c		\
@@ -139,6 +143,7 @@ ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
 				$(SRC_MULTI_S) $(SRC_MULTI_C)		\
+				$(SRC_BVH)							\
 				minirt.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

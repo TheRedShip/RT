@@ -16,6 +16,7 @@
 # include "minirt.h"
 
 typedef struct s_objects	t_objects;
+typedef struct s_bvh		t_bvh;
 
 typedef struct s_camera
 {
@@ -35,7 +36,8 @@ typedef struct s_ambient_light
 	t_vec3f		color;
 }				t_ambient_light;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -48,6 +50,7 @@ typedef struct s_mlx
 	void	*mlx;
 	void	*win;
 	int		is_acc;
+	int		is_bvh;
 	int		is_bloom;
 	int		frame_index;
 	int		antialiasing;
@@ -94,6 +97,7 @@ typedef struct s_server
 typedef struct s_scene
 {
 	t_mouse			mouse;
+	t_bvh			*bvh;
 	t_mlx			*mlx;
 	t_bloom			*bloom;
 	t_objects		*objects;

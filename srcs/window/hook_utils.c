@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:49:11 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/07 17:22:07 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/07 23:34:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ void	key_settings_hook(int keycode, t_scene *scene)
 	{
 		scene->mlx->is_bloom = !scene->mlx->is_bloom;
 		printf("miniRT : bloom %d             \n", scene->mlx->is_bloom);
+	}
+	else if (keycode == 111)
+	{
+		scene->mlx->is_bvh = !scene->mlx->is_bvh;
+		scene->mlx->frame_index = 1;
+		printf("miniRT : bvh %d             \n", scene->mlx->is_bvh);
 	}
 	else if (keycode == 65451 && scene->bloom->mip_num < 10)
 		scene->bloom->mip_num++;

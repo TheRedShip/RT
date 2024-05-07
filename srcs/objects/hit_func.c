@@ -210,10 +210,10 @@ t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
 
 	h.distance = -1.0f;
 	pl = v_dot(tri->normal, ray.direction);
-	if (fabs(pl) < 1e-6)
+	if (fabs(pl) < 0)
 		return (h);
 	h.distance = -(v_dot(tri->normal, ray.origin) + tri->traverse) / pl;
-	if (h.distance < 1e-6)
+	if (h.distance < 0)
 		return (h);
 	h.position = v_add_v(ray.origin, v_mul_f(ray.direction, h.distance));
 	if (!triangle_test(h, tri, obj, 0)
