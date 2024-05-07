@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 19:41:24 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/07 18:38:57 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	start_server(t_scene *scene, char *port_str)
 	socket = setup_socket(port);
 	if (socket < 0)
 		return (1);
-	scene->server.last_img_time = get_time();
+	scene->server.acc_start_time = 0;
 	wait_clients(scene, socket);
 	close(socket);
 	pthread_join(mlx_thread, 0);

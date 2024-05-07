@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/07 00:21:08 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/07 18:30:18 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_scene_name(int fd)
 			i++;
 		}
 	}
-	return (buffer_to_str(buffer, 0));
+	return (buffer_to_str(buffer, 0, 0));
 }
 
 int	change_scene(t_scene *scene, char *scene_name)

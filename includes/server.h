@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 18:32:11 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/07 17:55:40 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 # define SOCKET_BUFFER_SIZE 100000
 # define MAX_BUFFER 5000
+# define BLOCK_SIZE 1000
 
 typedef struct s_srv_threads
 {

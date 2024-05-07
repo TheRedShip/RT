@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/02 14:19:45 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/07 17:56:09 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ typedef struct s_server
 	char			*ip;
 	int				stop;
 	uint16_t		port;
-	uint64_t		last_img_time;
+	uint64_t		acc_start_time;
+	uint64_t		acc_block_received;
 	pthread_mutex_t	mutex;
 }	t_server;
 
