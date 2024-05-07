@@ -14,7 +14,7 @@
 
 void	fill_rm(float rm[3][3], float s, float c, int xy)
 {
-	if(xy == 1)
+	if (xy == 1)
 	{
 		rm[0][0] = c;
 		rm[0][1] = 0;
@@ -25,7 +25,7 @@ void	fill_rm(float rm[3][3], float s, float c, int xy)
 		rm[2][0] = -s;
 		rm[2][1] = 0;
 		rm[2][2] = c;
-		return;
+		return ;
 	}
 	rm[0][0] = 1;
 	rm[0][1] = 0;
@@ -37,24 +37,16 @@ void	fill_rm(float rm[3][3], float s, float c, int xy)
 	rm[2][1] = s;
 	rm[2][2] = c;
 }
-/*	static float	rm_x[3][3] = {\
-		{1, 0, 0}, \
-		{0, c, -s}, \
-		{0, s, c}
-	};
-	static float	rm_y[3][3] = {\
-		{c, 0, s}, \
-		{0, 1, 0}, \
-		{-s, 0, c}
-	};*/
 
 t_vec3f	v_rotate_xy(t_vec3f v, float angle, int xy)
 {
-	float			s = sin(angle);
-	float			c = cos(angle);
+	float			s;
+	float			c;
 	float			rm[3][3];
 	t_vec3f			result;
 
+	s = sin(angle);
+	c = cos(angle);
 	fill_rm(rm, s, c, xy);
 	result.x = rm[0][0] * v.x + rm[0][1] * v.y + rm[0][2] * v.z;
 	result.y = rm[1][0] * v.x + rm[1][1] * v.y + rm[1][2] * v.z;
@@ -74,7 +66,7 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 	color = (t_vec3f){1.0f, 1.0f, 1.0f};
 	if (hit_info.obj->type == OBJ_SPHER)
 	{
-		o_n = v_div_f( \
+		o_n = v_div_f(\
 					v_sub_v(hit_info.position, hit_info.obj->origin), \
 					(hit_info.obj->sphere->diameter / 2));
 		o_n = v_rotate_xy(o_n, hit_info.obj->sphere->rotation.x, 1);
@@ -114,33 +106,33 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 	return (color);
 }
 
-t_vec3f	get_checkered_color(t_hit_info hit_info)
+t_vec3f	get_checkered_color(t_hit_info h)
 {
 	t_vec2f		uv;
 
 	uv = (t_vec2f){0.0f, 0.0f};
-	if (hit_info.obj->type == OBJ_PLANE)
+	if (h.obj->type == OBJ_PLANE)
 	{
-		if (((int)(floor(0.25 * (hit_info.position.x + 0.001)) + \
-		floor(0.25 * (hit_info.position.y + 0.001)) + \
-		floor(0.25 * (hit_info.position.z + 0.001)))) % 2 == 0)
+		if (((int)(floor(0.25 * (h.position.x + 0.001)) + \
+		floor(0.25 * (h.position.y + 0.001)) + \
+		floor(0.25 * (h.position.z + 0.001)))) % 2 == 0)
 			return (t_vec3f){0.1, 0.1, 0.1};
 		return (t_vec3f){1.0, 1.0, 1.0};
 	}
-	else if (hit_info.obj->type == OBJ_SPHER)
+	else if (h.obj->type == OBJ_SPHER)
 	{
-		uv.x = 1 - (atan2f(hit_info.normal.x, hit_info.normal.z) / (2 * M_PI) + 0.5);
-		uv.y = 1 - acosf(hit_info.normal.y / v_length(hit_info.normal)) / M_PI;
+		uv.x = 1 - (atan2f(h.normal.x, h.normal.z) / (2 * M_PI) + 0.5);
+		uv.y = 1 - acosf(h.normal.y / v_length(h.normal)) / M_PI;
 	}
-	else if (hit_info.obj->type == OBJ_CYLIN)
+	else if (h.obj->type == OBJ_CYLIN)
 	{
-		uv.x = 1 - (atan2f(hit_info.normal.x, hit_info.normal.z) / (2 * M_PI) + 0.5);
-		uv.y = (int)hit_info.normal.y % 1;
+		uv.x = 1 - (atan2f(h.normal.x, h.normal.z) / (2 * M_PI) + 0.5);
+		uv.y = (int)h.normal.y % 1;
 	}
 	if (((int)(floor(10 * (uv.x + 0.001)) + \
 		floor(10 * (uv.y + 0.001)))) % 2 == 0)
-			return (t_vec3f){0.1, 0.1, 0.1};
-	return (t_vec3f){1.0, 1.0, 1.0};
+		return ((t_vec3f){0.1, 0.1, 0.1});
+	return ((t_vec3f){1.0, 1.0, 1.0});
 }
 
 void	calcul_color(t_vec3f *contribution, t_hit_info hit_info, int is_specular)

@@ -12,7 +12,6 @@
 
 #include "minirt.h"
 
-
 float	v_length(t_vec3f a)
 {
 	return (sqrt(a.x * a.x + a.y * a.y + a.z * a.z));

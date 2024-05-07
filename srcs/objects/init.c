@@ -74,11 +74,9 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 	if (!objects)
 		rt_free_scene(scene, 1);
 	i = -1;
-	while (type_list_str[++i] != NULL)
-		if (!ft_strncmp(type, type_list_str[i], 2))
-			break ;
-	objects->type = i;
-	objects->material = init_material();
+	while (type_list_str[++i] != NULL && ft_strncmp(type, type_list_str[i], 2))
+		;
+	*objects = (t_objects){.type = i, .material = init_material()};
 	rt_set_objects_to_scene(scene, objects);
 	if (i == OBJ_SPHER)
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
