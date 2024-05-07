@@ -85,15 +85,19 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					thing/skybox.jpg				
 
 SRC_PARSING	:=  parsing/rt_parse.c					\
-				parsing/parse_utils.c				\
-				parsing/rt_parse_objects.c			\
-				parsing/rt_parse_objects2.c			\
+				parsing/rt_parse_glass.c			\
+				parsing/rt_parse_lights.c			\
+				parsing/rt_parse_objects_utils.c	\
+				parsing/rt_parse_primitives.c		\
 				parsing/rt_parse_settings.c			\
 				parsing/rt_parse_others.c			\
-				parsing/rt_verify_parsing_others.c	\
-				parsing/rt_verify_parsing_objects.c	\
-				parsing/rt_verify_parsing_objects2.c\
-				parsing/rt_verify_parsing_settings.c
+				parsing/rt_parse_utils.c			\
+				parsing/rt_verify_glass.c			\
+				parsing/rt_verify_lights.c			\
+				parsing/rt_verify_others.c			\
+				parsing/rt_verify_primitives.c		\
+				parsing/rt_verify_settings.c		\
+				parsing/rt_verify_utils.c
 
 
 
@@ -103,6 +107,7 @@ SRC_OBJECTS :=	objects/init.c						\
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
 				window/hook_utils.c
+
 SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
 				render/image.c						\
@@ -145,7 +150,7 @@ ASSETS		:=	$(addprefix $(ASSETS_DIR)/, $(SRC_ASSETS_NAME:%.jpg=%.xpm))
 
 HEADERS		:=	includes/minirt.h
 
-CC          :=	cc
+CC          :=	clang
 
 CFLAGS      :=	-Ofast -pthread -g -Wall -Wextra -Werror
 
@@ -203,6 +208,15 @@ fclean: dclean
 	@$(MAKE) -C $(LFT_DIR) fclean
 	@killall convert 2>/dev/null > /dev/null|| true && \
 	sleep 0.5 && rm -rf $(ASSETS_DIR)&
+
+mfclean: dclean
+	@$(RM) $(NAME)
+	@killall convert 2>/dev/null > /dev/null|| true && \
+	sleep 0.5 && rm -rf $(ASSETS_DIR)&
+
+mre:
+	@$(MAKE) mfclean
+	@$(MAKE) all
 
 re:
 	@$(MAKE) fclean

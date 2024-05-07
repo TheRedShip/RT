@@ -24,6 +24,10 @@ int			rt_range_atoi(char *line, int min, int max);
 float		rt_range_atof(char *line, float min, float max);
 t_vec3f		rt_atof3(char *line, float min, float max);
 
+void		setup_quad(t_objects *objects[6], char **s, int j);
+void		calculate_up_right(t_vec3f normal, t_vec3f *up, t_vec3f *right);
+void		scale_quad(t_vec3f *up, t_vec3f *right, t_vec3f *origin, t_vec2f size);
+
 int			rt_verify_camera(t_scene *scene, char *line);
 int			rt_verify_ambient(t_scene *scene, char *line);
 int			rt_verify_light(t_scene *scene, char *line);
