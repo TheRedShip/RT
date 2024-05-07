@@ -36,7 +36,7 @@ t_vec2f	get_uv(t_threads *thread, float x, float y)
 	static float	aspect_ratio = (float)WIDTH / (float)HEIGHT;
 	t_vec2f			uv;
 
-	if (thread->scene->mlx->antialiasing)
+	if (thread && thread->scene->mlx->antialiasing)
 	{
 		x += (float)(ft_random(thread->id, -1, 1));
 		y += (float)(ft_random(thread->id, -1, 1));

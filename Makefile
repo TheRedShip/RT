@@ -101,8 +101,8 @@ SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
 
 SRC_WINDOW	:=	window/window.c						\
-				window/hook.c						
-
+				window/hook.c						\
+				window/hook_utils.c
 SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
 				render/image.c						\

@@ -12,59 +12,20 @@
 
 #include "minirt.h"
 
-void	move_camera(t_scene *scene, t_vec3f movement)
+int	key_hook(int keycode, t_scene *scene)
 {
-	t_vec3f	rotate_movement;
+	int	moved;
 
-	multiply_matrix_vector(scene->camera->rotation_matrix_x, \
-							movement, &rotate_movement);
-	multiply_matrix_vector(scene->camera->rotation_matrix_y, \
-					rotate_movement, &rotate_movement);
-	scene->camera->origin = v_add_v(scene->camera->origin, \
-				rotate_movement);
-}
-
-int		key_hook(int keycode, t_scene *scene)
-{
-	if (keycode == KEY_FORW)
-		move_camera(scene, (t_vec3f){0, 0, -0.15f});
-	else if (keycode == KEY_BACK)
-		move_camera(scene, (t_vec3f){0, 0, 0.15f});
-	else if (keycode == KEY_LEFT)
-		move_camera(scene, (t_vec3f){-0.15f, 0, 0});
-	else if (keycode == KEY_RIGHT)
-		move_camera(scene, (t_vec3f){0.15f, 0, 0});
-	else if (keycode == KEY_UPE)
-		move_camera(scene, (t_vec3f){0, 0.15f, 0});
-	else if (keycode == KEY_DOWNA)
-		move_camera(scene, (t_vec3f){0, -0.15f, 0});
-	else if (keycode == KEY_ESCH)
+	moved = key_move_hook(keycode, scene);
+	key_settings_hook(keycode, scene);
+	if (keycode == KEY_ESCH)
 		rt_free_scene(scene, 1);
-	else if (keycode == KEY_ENTER)
-	{
-		scene->mlx->is_acc = !scene->mlx->is_acc;
-		printf("miniRT : accumulating %d      \n", scene->mlx->is_acc);
-	}
-	else if (keycode == KEY_ALIA)
-	{
-		scene->mlx->antialiasing = !scene->mlx->antialiasing;
-		printf("miniRT : antialiasing %d      \n", scene->mlx->antialiasing);
-	}
-	else if (keycode == KEY_BLOOM)
-	{
-		scene->mlx->is_bloom = !scene->mlx->is_bloom;
-		printf("miniRT : bloom %d             \n", scene->mlx->is_bloom);
-	}
-	else if (keycode == 65451)
-		scene->bloom->mip_num++;
-	else if (keycode == 65453)
-		scene->bloom->mip_num--;
-	if (keycode < 65000 && keycode != KEY_BLOOM)
+	if (moved)
 		scene->mlx->frame_index = 1;
 	return (0);
 }
 
-int		mouse_hook_move(int x, int y, t_scene *scene)
+int	mouse_hook_move(int x, int y, t_scene *scene)
 {
 	t_vec3f	mouse_delta;
 
@@ -94,12 +55,12 @@ int	mouse_hook_press(int button, int x, int y, t_scene *scene)
 	}
 	else if (button == 1)
 	{
-		uv = get_uv(0, x, y);
+		uv = get_uv(NULL, x, y);
 		ray.origin = scene->camera->origin;
 		ray.direction = calculate_ray_direction(scene, \
 					(t_vec3f){uv.x, uv.y, scene->camera->direction.z});
 		hit_info = trace_ray(scene, ray);
-		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));
+		(void) hit_info;
 	}
 	return (0);
 }
