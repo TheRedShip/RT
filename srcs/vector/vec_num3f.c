@@ -13,29 +13,29 @@
 #include "minirt.h"
 
 
-float		vec3f_length(t_vec3f a)
+float	v_length(t_vec3f a)
 {
 	return (sqrt(a.x * a.x + a.y * a.y + a.z * a.z));
 }
 
-t_vec3f		vec3f_cross(t_vec3f a, t_vec3f b)
+t_vec3f	v_cross(t_vec3f a, t_vec3f b)
 {
 	return ((t_vec3f){a.y * b.z - a.z * b.y,
-					a.z * b.x - a.x * b.z,
-					a.x * b.y - a.y * b.x});
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x});
 }
 
-t_vec3f    vec3f_add_f(t_vec3f a, float b)
+t_vec3f	v_add_f(t_vec3f a, float b)
 {
 	return ((t_vec3f){a.x + b, a.y + b, a.z + b});
 }
 
-t_vec3f    vec3f_mul_f(t_vec3f a, float b)
+t_vec3f	v_mul_f(t_vec3f a, float b)
 {
 	return ((t_vec3f){a.x * b, a.y * b, a.z * b});
 }
 
-t_vec3f    vec3f_div_f(t_vec3f a, float b)
+t_vec3f	v_div_f(t_vec3f a, float b)
 {
 	return ((t_vec3f){a.x / b, a.y / b, a.z / b});
 }

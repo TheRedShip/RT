@@ -31,11 +31,16 @@ t_vec3f	**init_img(t_scene *scene, int width, int height)
 	return (acc_img);
 }
 
-t_vec2f	get_uv(float x, float y)
+t_vec2f	get_uv(t_threads *thread, float x, float y)
 {
 	static float	aspect_ratio = (float)WIDTH / (float)HEIGHT;
 	t_vec2f			uv;
 
+	if (thread->scene->mlx->antialiasing)
+	{
+		x += (float)(ft_random(thread->id, -1, 1));
+		y += (float)(ft_random(thread->id, -1, 1));
+	}
 	uv = (t_vec2f){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
 	uv.x = uv.x * 2.0f - 1.0f;
 	uv.y = uv.y * 2.0f - 1.0f;

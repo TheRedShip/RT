@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_clients.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/07 00:21:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/07 15:38:47 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	add_to_acc_img(t_vec3f *data, t_scene *scene)
 		{
 			if (scene->mlx->is_acc)
 				scene->mlx->acc_img[i][j] = \
-				vec3f_add_v(scene->mlx->acc_img[i][j], data[i * WIDTH + j]);
+				v_add_v(scene->mlx->acc_img[i][j], data[i * WIDTH + j]);
 			else
 				scene->mlx->acc_img[i][j] = data[i * WIDTH + j];
 			scene->mlx->final_img[i][j] = \
-				vec3f_div_f(scene->mlx->acc_img[i][j], scene->mlx->frame_index);
+				v_div_f(scene->mlx->acc_img[i][j], scene->mlx->frame_index);
 			j++;
 		}
 		i++;

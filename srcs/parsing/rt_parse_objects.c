@@ -40,7 +40,7 @@ int	rt_parse_sphere(char *line, t_scene *scene)
 	o = rt_add_objects(scene, "sp");
 	o->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	o->sphere->diameter = ft_atof(s[2]);
-	o->material.color = vec3f_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	o->material.color = v_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(scene, s[4], &(o->material)) == -1)
 		return (rt_return (s));
 	if (ft_tab_len(s) == 6)
@@ -65,7 +65,7 @@ int	rt_parse_plane(char *line, t_scene *scene)
 	objects = rt_add_objects(scene, "pl");
 	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	objects->plane->normal = rt_atof3(s[2], -1.0, 1.0);
-	objects->material.color = vec3f_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(scene, s[4], &(objects->material)) == -1)
 		return (rt_return (s));
 	ft_free_tab((void **)(s));
@@ -85,7 +85,7 @@ int	rt_parse_cylinder(char *line, t_scene *scene)
 	objects->cylinder->orientation = rt_atof3(s[2], -1.0, 1.0);
 	objects->cylinder->diameter = ft_atof(s[3]);
 	objects->cylinder->height = ft_atof(s[4]);
-	objects->material.color = vec3f_div_f(rt_atof3(s[5], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[5], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(scene, s[6], &(objects->material)) == -1)
 		return (rt_return (s));
 	ft_free_tab((void **)(s));
@@ -104,14 +104,14 @@ int	rt_parse_quad(char *line, t_scene *scene)
 	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	objects->quad->right_corner = rt_atof3(s[2], -1000.0, 1000.0);
 	objects->quad->up_corner = rt_atof3(s[3], -1000.0, 1000.0);
-	objects->material.color = vec3f_div_f(rt_atof3(s[4], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
 		return (rt_return (s));
-	objects->quad->normal = normalize(vec3f_cross(objects->quad->up_corner, \
+	objects->quad->normal = normalize(v_cross(objects->quad->up_corner, \
 							objects->quad->right_corner));
-	objects->quad->d = vec3f_dot(objects->quad->normal, objects->origin);
-	objects->quad->w = vec3f_div_f(objects->quad->normal, \
-					vec3f_dot(objects->quad->normal, objects->quad->normal));
+	objects->quad->d = v_dot(objects->quad->normal, objects->origin);
+	objects->quad->w = v_div_f(objects->quad->normal, \
+					v_dot(objects->quad->normal, objects->quad->normal));
 	ft_free_tab((void **)(s));
 	return (1);
 }

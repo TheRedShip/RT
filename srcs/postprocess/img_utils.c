@@ -23,7 +23,7 @@ t_vec3f	**add_img(t_vec3f **treshold, t_vec3f **image)
 		while (pos[0] < WIDTH)
 		{
 			treshold[pos[1]][pos[0]] = \
-				vec3f_add_v(treshold[pos[1]][pos[0]], image[pos[1]][pos[0]]);
+				v_add_v(treshold[pos[1]][pos[0]], image[pos[1]][pos[0]]);
 			pos[0]++;
 		}
 		pos[1]++;

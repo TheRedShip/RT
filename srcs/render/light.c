@@ -48,7 +48,7 @@ void	fill_rm(float rm[3][3], float s, float c, int xy)
 		{-s, 0, c}
 	};*/
 
-t_vec3f	vec3f_rotate_xy(t_vec3f v, float angle, int xy)
+t_vec3f	v_rotate_xy(t_vec3f v, float angle, int xy)
 {
 	float			s = sin(angle);
 	float			c = cos(angle);
@@ -74,11 +74,11 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 	color = (t_vec3f){1.0f, 1.0f, 1.0f};
 	if (hit_info.obj->type == OBJ_SPHER)
 	{
-		o_n = vec3f_div_f( \
-					vec3f_sub_v(hit_info.position, hit_info.obj->origin), \
+		o_n = v_div_f( \
+					v_sub_v(hit_info.position, hit_info.obj->origin), \
 					(hit_info.obj->sphere->diameter / 2));
-		o_n = vec3f_rotate_xy(o_n, hit_info.obj->sphere->rotation.x, 1);
-		o_n = vec3f_rotate_xy(o_n, hit_info.obj->sphere->rotation.y, 0);
+		o_n = v_rotate_xy(o_n, hit_info.obj->sphere->rotation.x, 1);
+		o_n = v_rotate_xy(o_n, hit_info.obj->sphere->rotation.y, 0);
 		uv.x = 1 - (0.5 + atan2(o_n.z, o_n.x) / (2 * M_PI));
 		uv.y = 1 - (0.5 + asin(o_n.y) / M_PI);
 	}
@@ -89,18 +89,18 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 	}
 	else if (hit_info.obj->type == OBJ_QUADS)
 	{
-		t_vec3f A = vec3f_add_v(hit_info.obj->origin, hit_info.obj->quad->up_corner);
-		t_vec3f B = vec3f_add_v(A, hit_info.obj->quad->right_corner);
+		t_vec3f A = v_add_v(hit_info.obj->origin, hit_info.obj->quad->up_corner);
+		t_vec3f B = v_add_v(A, hit_info.obj->quad->right_corner);
 		t_vec3f D = hit_info.obj->origin;
 		
-		t_vec3f AB = vec3f_sub_v(B, A);
-		t_vec3f AD = vec3f_sub_v(D, A);
+		t_vec3f AB = v_sub_v(B, A);
+		t_vec3f AD = v_sub_v(D, A);
 
-		t_vec3f AP = vec3f_sub_v(hit_info.position, A);
-		float AB_dot_AP = vec3f_dot(AB, AP);
-		float AB_dot_AB = vec3f_dot(AB, AB);
-		float AD_dot_AP = vec3f_dot(AD, AP);
-		float AD_dot_AD = vec3f_dot(AD, AD);
+		t_vec3f AP = v_sub_v(hit_info.position, A);
+		float AB_dot_AP = v_dot(AB, AP);
+		float AB_dot_AB = v_dot(AB, AB);
+		float AD_dot_AP = v_dot(AD, AP);
+		float AD_dot_AD = v_dot(AD, AD);
 		
 		uv.y = 1 - (AB_dot_AP / AB_dot_AB);
 		uv.x = 1 - (AD_dot_AP / AD_dot_AD);
@@ -130,7 +130,7 @@ t_vec3f	get_checkered_color(t_hit_info hit_info)
 	else if (hit_info.obj->type == OBJ_SPHER)
 	{
 		uv.x = 1 - (atan2f(hit_info.normal.x, hit_info.normal.z) / (2 * M_PI) + 0.5);
-		uv.y = 1 - acosf(hit_info.normal.y / vec3f_length(hit_info.normal)) / M_PI;
+		uv.y = 1 - acosf(hit_info.normal.y / v_length(hit_info.normal)) / M_PI;
 	}
 	else if (hit_info.obj->type == OBJ_CYLIN)
 	{
@@ -145,11 +145,11 @@ t_vec3f	get_checkered_color(t_hit_info hit_info)
 
 void	calcul_color(t_vec3f *contribution, t_hit_info hit_info, int is_specular)
 {
-	*contribution = vec3f_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
+	*contribution = v_mul_v(*contribution, lerp(hit_info.obj->material.color, (t_vec3f){1.0f, 1.0f, 1.0f}, is_specular));
 	if (hit_info.obj->material.checkered == 1)
-		*contribution = vec3f_mul_v(*contribution, get_checkered_color(hit_info));
+		*contribution = v_mul_v(*contribution, get_checkered_color(hit_info));
 	if (hit_info.obj->material.texture.exist == 1)
-		*contribution = vec3f_mul_v(*contribution, get_texture_color(hit_info, is_specular));
+		*contribution = v_mul_v(*contribution, get_texture_color(hit_info, is_specular));
 }
 
 void	calcul_light(t_hit_info hit_info, t_scene *scene, t_vec3f *light, t_vec3f *contribution, int is_specular)
@@ -157,21 +157,21 @@ void	calcul_light(t_hit_info hit_info, t_scene *scene, t_vec3f *light, t_vec3f *
 	t_vec3f		light_direction;
 	float		diffuse_ratio;
 
-	light_direction = normalize(vec3f_sub_v(hit_info.position, scene->lights->origin));
-	diffuse_ratio = vec3f_dot(hit_info.normal, vec3f_mul_f(light_direction, -1.0f));
+	light_direction = normalize(v_sub_v(hit_info.position, scene->lights->origin));
+	diffuse_ratio = v_dot(hit_info.normal, v_mul_f(light_direction, -1.0f));
 	if (diffuse_ratio < 0.0f)
 		diffuse_ratio = 0.0f;
 	if (scene->lights->hard == 1 && scene->lights->ratio > 0.0f)
 	{
 		t_hit_info	shadow_hit_info;
 		t_ray		ray;
-		ray.origin = vec3f_add_v(hit_info.position, vec3f_mul_f(hit_info.normal, 0.0001f));
-		ray.direction = vec3f_mul_f(light_direction, -1.0f);
+		ray.origin = v_add_v(hit_info.position, v_mul_f(hit_info.normal, 0.0001f));
+		ray.direction = v_mul_f(light_direction, -1.0f);
 		shadow_hit_info = trace_ray(scene, ray);
-		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < vec3f_length(vec3f_sub_v(scene->lights->origin, hit_info.position)))
+		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < v_length(v_sub_v(scene->lights->origin, hit_info.position)))
 			diffuse_ratio = 0.0f;
 	}
-	*light = vec3f_add_v(*light, vec3f_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
-	*light = vec3f_add_v(*light, vec3f_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
+	*light = v_add_v(*light, v_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
+	*light = v_add_v(*light, v_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 	calcul_color(contribution, hit_info, is_specular);
 }

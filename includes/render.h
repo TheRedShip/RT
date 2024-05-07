@@ -44,7 +44,7 @@ void		rt_render_image(t_vec3f **image, t_data *img);
 int			rgb_to_hex(t_vec3f rgb);
 t_vec3f		hex_to_rgb(int hex);
 
-t_vec2f		get_uv(float x, float y);
+t_vec2f		get_uv(t_threads *thread, float x, float y);
 u_int64_t	get_time(void);
 
 #endif

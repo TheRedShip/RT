@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/31 00:00:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/02 18:07:03 by tomoron          ###   ########.fr       */
+/*   Created: 2024/05/07 15:35:16 by ycontre           #+#    #+#             */
+/*   Updated: 2024/05/07 15:35:16 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ t_hit_info	trace_ray(t_scene *scene, t_ray ray)
 	while (temp_object)
 	{
 		temp_hit = hit_objects(ray, temp_object);
-		if (temp_hit.distance > 0.0f && (temp_hit.distance < closest_hit.distance || closest_hit.distance < 0.0f))
+		if (temp_hit.distance > 0.0f
+			&& (temp_hit.distance < closest_hit.distance
+				|| closest_hit.distance < 0.0f))
 		{
 			closest_hit = temp_hit;
 			closest_hit.obj = temp_object;
@@ -35,61 +37,59 @@ t_hit_info	trace_ray(t_scene *scene, t_ray ray)
 	return (closest_hit);
 }
 
-t_vec3f		per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
+t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
-	t_ray		ray;
 	t_hit_info	hit_info;
-	t_vec3f		light;
-	t_vec3f 	contribution;
+	t_vec3f		l_c[2];
+	t_ray		ray;
 	int			is_specular;
+	int			i;
 
 	ray.origin = scene->camera->origin;
 	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, -1});
-
-	light = (t_vec3f){0.0f, 0.0f, 0.0f};
-	contribution = (t_vec3f){1.0f, 1.0f, 1.0f};
-	for (int i = 0; i < (!scene->mouse.is_pressed * (scene->camera->bounce - 2)) + 2; i++)
+	l_c[0] = (t_vec3f){0.0f, 0.0f, 0.0f};
+	l_c[1] = (t_vec3f){1.0f, 1.0f, 1.0f};
+	i = -1;
+	while (++i < (!scene->mouse.is_pressed * (scene->camera->bounce - 2)) + 2)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
 		{
-			light = vec3f_add_v(light, vec3f_mul_f(scene->ambient_light->color, scene->ambient_light->ratio));
-			break;
+			l_c[0] = v_add_v(l_c[0], v_mul_f(scene->ambient_light->color,
+						scene->ambient_light->ratio));
+			break ;
 		}
 		ray = new_ray(hit_info, ray, thread, &is_specular);
-		calcul_light(hit_info, scene, &light, &contribution, is_specular);
+		calcul_light(hit_info, scene, &l_c[0], &l_c[1], is_specular);
 		if (hit_info.obj->material.emission_power > 0.0f)
-			break;
+			break ;
 	}
-	return (vec3f_mul_v(light, contribution));
+	return (v_mul_v(l_c[0], l_c[1]));
 }
 
 void	*draw(void *thread_ptr)
 {
-	int			pos[2];
+	int			p[2];
 	t_vec2f		uv;
-	t_scene		*scene;
+	t_scene		*s;
 	t_threads	*thread;
 
 	thread = (t_threads *)thread_ptr;
-	scene = thread->scene;
-	pos[1] = thread->id;
-	while (pos[1] < HEIGHT)
+	s = thread->scene;
+	p[1] = thread->id;
+	while (p[1] < HEIGHT)
 	{
-		pos[0] = 0;
-		while (pos[0] < WIDTH)
+		p[0] = 0;
+		while (p[0] < WIDTH)
 		{
-			if (scene->mlx->antialiasing)
-				uv = get_uv(pos[0] + (float)(ft_random(thread->id, -1, 1)), pos[1] + (float)(ft_random(thread->id, -1, 1)));
-			else
-				uv = get_uv(pos[0], pos[1]);
-			scene->mlx->acc_img[pos[1]][pos[0]] = \
-				vec3f_add_v(scene->mlx->acc_img[pos[1]][pos[0]], per_pixel(scene, uv, thread));
-			scene->mlx->final_img[pos[1]][pos[0]] = \
-				vec3f_div_f(scene->mlx->acc_img[pos[1]][pos[0]], (float)scene->mlx->frame_index);
-			pos[0]++;
+			uv = get_uv(thread, p[0], p[1]);
+			s->mlx->acc_img[p[1]][p[0]] = v_add_v(s->mlx->acc_img[p[1]][p[0]],
+					per_pixel(s, uv, thread));
+			s->mlx->final_img[p[1]][p[0]] = v_div_f(s->mlx->acc_img[p[1]][p[0]],
+					(float)s->mlx->frame_index);
+			p[0]++;
 		}
-		pos[1] += THREADS;
+		p[1] += THREADS;
 	}
 	return (NULL);
 }
@@ -114,10 +114,10 @@ void	rt_render_image(t_vec3f **image, t_data *img)
 	}
 }
 
-int		rt_render_scene(t_scene *scene)
+int	rt_render_scene(t_scene *scene)
 {
-	u_int64_t		start;
-	t_threads		threads[THREADS];
+	u_int64_t	start;
+	t_threads	threads[THREADS];
 
 	if (scene->mlx->frame_index == 1)
 	{
@@ -127,23 +127,25 @@ int		rt_render_scene(t_scene *scene)
 			ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}
 
-	apply_rotation_matrix_x(scene->camera->direction.x, scene->camera->rotation_matrix_x);
-    apply_rotation_matrix_y(scene->camera->direction.y, scene->camera->rotation_matrix_y);
+	apply_rotation_matrix_x(scene->camera->direction.x,
+		scene->camera->rotation_matrix_x);
+	apply_rotation_matrix_y(scene->camera->direction.y,
+		scene->camera->rotation_matrix_y);
 
 	start = get_time();
-	for(int i = 0; i < THREADS; i++)
+	for (int i = 0; i < THREADS; i++)
 	{
 		threads[i].id = i;
 		threads[i].scene = scene;
 		pthread_create(&(threads[i].thread), NULL, draw, (threads + i));
 	}
-	for(int i = 0; i < THREADS; i++)
+	for (int i = 0; i < THREADS; i++)
 		pthread_join(threads[i].thread, NULL);
 	if (!scene->server.ip)
 		rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
 	if (scene->server.ip)
 	{
-		if (!send_map(scene, scene->mlx->acc_img)) 
+		if (!send_map(scene, scene->mlx->acc_img))
 		{
 			printf("\nwaiting for server...\n");
 			wait_for_server(scene);
@@ -151,8 +153,10 @@ int		rt_render_scene(t_scene *scene)
 		}
 	}
 	else
-		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, scene->mlx->img.img, 0, 0);
-	printf("Rendering scene : %lu ms %d            \r", get_time() - start, scene->mlx->frame_index);
+		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win,
+			scene->mlx->img.img, 0, 0);
+	printf("Rendering scene : %lu ms %d            \r", get_time() - start,
+		scene->mlx->frame_index);
 	fflush(stdout);
 	if (scene->mlx->is_acc)
 		scene->mlx->frame_index++;

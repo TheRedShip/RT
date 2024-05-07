@@ -72,7 +72,7 @@ t_vec3f	**gaussian_blur(t_vec3f **image, t_vec2f resolution, int blur_size)
 					int row = i + k;
 					int col = j + l;
 					if (row >= 0 && row < resolution.y && col >= 0 && col < resolution.x)
-						sum = vec3f_add_v(sum, vec3f_mul_f(image[row][col], kernel[k + kernel_mid][l + kernel_mid]));
+						sum = v_add_v(sum, v_mul_f(image[row][col], kernel[k + kernel_mid][l + kernel_mid]));
 					l++;
 				}
 				k++;
