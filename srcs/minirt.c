@@ -146,8 +146,8 @@ int	main(int argc, char **argv)
 	scene = init_scene(argv[1], 0);
 	if (scene == NULL)
 		return (1);
-	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
 	rt_parse(argv[1], scene);
+	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
 	link_portals(scene);
 	printf("Parsing successful\n");
 	if (argc == 4 && !ft_strcmp(argv[2], "server"))

@@ -66,8 +66,8 @@ int		key_hook(int keycode, t_scene *scene)
 
 int		mouse_hook_move(int x, int y, t_scene *scene)
 {
-	t_vec3f mouse_delta;
-	
+	t_vec3f	mouse_delta;
+
 	if (scene->mouse.is_pressed)
 	{
 		mouse_delta.x = x - scene->mouse.pos.x;
@@ -81,10 +81,12 @@ int		mouse_hook_move(int x, int y, t_scene *scene)
 	return (0);
 }
 
-int		mouse_hook_press(int button, int x, int y, t_scene *scene)
+int	mouse_hook_press(int button, int x, int y, t_scene *scene)
 {
-	(void)x;
-	(void)y;
+	t_vec2f		uv;
+	t_ray		ray;
+	t_hit_info	hit_info;
+
 	if (button == 3)
 	{
 		scene->mlx->frame_index = 1;
@@ -92,18 +94,17 @@ int		mouse_hook_press(int button, int x, int y, t_scene *scene)
 	}
 	else if (button == 1)
 	{
-		t_vec2f uv = get_uv(0, x, y);
-		t_ray	ray;
+		uv = get_uv(0, x, y);
 		ray.origin = scene->camera->origin;
-		ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, scene->camera->direction.z});
-
-		t_hit_info hit_info = trace_ray(scene, ray);
+		ray.direction = calculate_ray_direction(scene, \
+					(t_vec3f){uv.x, uv.y, scene->camera->direction.z});
+		hit_info = trace_ray(scene, ray);
 		printf("%f %f %f %X\n", hit_info.position.x, hit_info.position.y, hit_info.position.z, get_pixel(&scene->mlx->img, x, y));
 	}
 	return (0);
 }
 
-int		mouse_hook_release(int button, int x, int y, t_scene *scene)
+int	mouse_hook_release(int button, int x, int y, t_scene *scene)
 {
 	(void)x;
 	(void)y;
