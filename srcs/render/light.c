@@ -6,15 +6,38 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 22:33:00 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/13 22:33:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/07 13:26:58 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3f	vec3f_rotate_xy(t_vec3f v, float angle, int xy)
+void	fill_rm(float rm[3][3], float s, float c, int xy)
 {
-	static float	rm_x[3][3] = {\
+	if(xy == 1)
+	{
+		rm[0][0] = c;
+		rm[0][1] = 0;
+		rm[0][2] = s;
+		rm[1][0] = 0;
+		rm[1][1] = 1;
+		rm[1][2] = 0;
+		rm[2][0] = -s;
+		rm[2][1] = 0;
+		rm[2][2] = c;
+		return;
+	}
+	rm[0][0] = 1;
+	rm[0][1] = 0;
+	rm[0][2] = 0;
+	rm[1][0] = 0;
+	rm[1][1] = c;
+	rm[1][2] = -s;
+	rm[2][0] = 0;
+	rm[2][1] = s;
+	rm[2][2] = c;
+}
+/*	static float	rm_x[3][3] = {\
 		{1, 0, 0}, \
 		{0, c, -s}, \
 		{0, s, c}
@@ -23,16 +46,16 @@ t_vec3f	vec3f_rotate_xy(t_vec3f v, float angle, int xy)
 		{c, 0, s}, \
 		{0, 1, 0}, \
 		{-s, 0, c}
-	};
-	float			rm[3][3];
+	};*/
+
+t_vec3f	vec3f_rotate_xy(t_vec3f v, float angle, int xy)
+{
 	float			s = sin(angle);
 	float			c = cos(angle);
+	float			rm[3][3];
 	t_vec3f			result;
 
-	if (xy == 1)
-		rm = rm_y;
-	else
-		rm = rm_x;
+	fill_rm(rm, s, c, xy);
 	result.x = rm[0][0] * v.x + rm[0][1] * v.y + rm[0][2] * v.z;
 	result.y = rm[1][0] * v.x + rm[1][1] * v.y + rm[1][2] * v.z;
 	result.z = rm[2][0] * v.x + rm[2][1] * v.y + rm[2][2] * v.z;
