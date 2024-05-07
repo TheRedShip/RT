@@ -22,7 +22,8 @@ typedef enum e_obj_type
 	OBJ_CYLIN		= 2,
 	OBJ_QUADS		= 3,
 	OBJ_ELLIP		= 4,
-	OBJ_PORTAL		= 5
+	OBJ_PORTA		= 5,
+	OBJ_TRIAN		= 6
 }	t_obj_type;
 
 typedef enum e_mat_type

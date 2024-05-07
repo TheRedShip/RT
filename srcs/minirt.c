@@ -118,12 +118,12 @@ void	link_portals(t_scene *scene)
 	start = obj;
 	while (obj)
 	{
-		if (obj->type == OBJ_PORTAL)
+		if (obj->type == OBJ_PORTA)
 		{
 			tmp = start;
 			while (tmp && !obj->portal->linked_portal)
 			{
-				if (tmp->type == OBJ_PORTAL
+				if (tmp->type == OBJ_PORTA
 					&& obj->portal->linked_id == tmp->portal->portal_id)
 					obj->portal->linked_portal = tmp;
 				tmp = tmp->next;

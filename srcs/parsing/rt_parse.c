@@ -66,8 +66,10 @@ int	rt_verify_parsing(char *line, t_scene *scene)
 		return (rt_parse_glasscube(line, scene));
 	else if (ft_strncmp(line, "el\t", 3) == 0 && rt_verify_ellipse(line))
 		return (rt_parse_ellipse(line, scene));
-	else if (ft_strncmp(line, "po\t", 2) == 0 && rt_verify_portal(line))
+	else if (ft_strncmp(line, "po\t", 3) == 0 && rt_verify_portal(line))
 		return (rt_parse_portal(line, scene));
+	else if (ft_strncmp(line, "tr\t", 3) == 0 && rt_verify_triangle(line))
+		return (rt_parse_triangle(line, scene));
 	else
 	{
 		if ((line[0] != '\r' && line[0] != '\n') && line[0] != '#')

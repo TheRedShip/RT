@@ -29,7 +29,7 @@ int	rt_parse_ellipse(char *line, t_scene *scene)
 	objects->ellipse->c = radius.z;
 	objects->material.color = v_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
 	if (rt_parse_material(scene, s[4], &(objects->material)) == -1)
-		return (rt_return (s));
+		return (rt_return(s));
 	ft_free_tab((void **)(s));
 	return (1);
 }

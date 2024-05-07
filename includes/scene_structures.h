@@ -155,6 +155,15 @@ typedef struct s_portal
 	t_objects	*linked_portal;
 }				t_portal;
 
+typedef struct s_triangle
+{
+	t_vec3f		pb;
+	t_vec3f		pc;
+	t_vec3f		normal;
+	t_vec3f		edge[3];
+	float		traverse;
+}				t_triangle;
+
 typedef struct s_texture
 {
 	int			exist;
@@ -185,6 +194,7 @@ typedef struct s_objects
 	t_sphere			*sphere;
 	t_portal			*portal;
 	t_ellipse			*ellipse;
+	t_triangle			*triangle;
 	t_cylinder			*cylinder;
 	t_material			material;
 	struct s_objects	*next;

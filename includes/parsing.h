@@ -44,6 +44,7 @@ int			rt_verify_glasscube(char *line);
 int			rt_verify_material(char *str);
 int			rt_verify_ellipse(char *line);
 int			rt_verify_portal(char *line);
+int			rt_verify_triangle(char *line);
 
 int			rt_parse_ambient(char *line, t_scene *scene);
 int			rt_parse_camera(char *line, t_scene *scene);
@@ -60,6 +61,7 @@ int			rt_parse_cube(char *line, t_scene *scene);
 int			rt_parse_glasscube(char *line, t_scene *scene);
 int			rt_parse_ellipse(char *line, t_scene *scene);
 int			rt_parse_portal(char *line, t_scene *scene);
+int			rt_parse_triangle(char *line, t_scene *scene);
 int			rt_parse_material(t_scene *scene, char *str, t_material *material);
 
 #endif

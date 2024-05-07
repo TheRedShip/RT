@@ -68,7 +68,7 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 {
 	int			i;
 	t_objects	*objects;
-	static char	*type_list_str[7] = {"sp", "pl", "cy", "qd", "el", "po", NULL};
+	static char	*type_list_str[8] = {"sp", "pl", "cy", "qd", "el", "po", "tr", NULL};
 
 	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
@@ -88,8 +88,10 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 		objects->quad = ft_calloc(1, sizeof(t_quad));
 	else if (i == OBJ_ELLIP)
 		objects->ellipse = ft_calloc(1, sizeof(t_ellipse));
-	else if (i == OBJ_PORTAL)
+	else if (i == OBJ_PORTA)
 		objects->portal = ft_calloc(1, sizeof(t_portal));
+	else if (i == OBJ_TRIAN)
+		objects->triangle = ft_calloc(1, sizeof(t_triangle));
 	return (objects);
 }
 

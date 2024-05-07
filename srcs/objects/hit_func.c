@@ -89,8 +89,7 @@ t_hit_info	hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 	}
 	hit_info.distance = v_dot(v_sub_v(obj->origin, ray.origin), \
 						plane->normal) / denom;
-	hit_info.position = v_add_v(ray.origin, \
-						v_mul_f(ray.direction, hit_info.distance));
+	hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
 	hit_info.normal = plane->normal;
 	return (hit_info);
 }
@@ -175,8 +174,7 @@ t_hit_info	hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
 		return (hit_info);
 	}
 	hit_info.distance = t_final;
-	hit_info.position = v_add_v(ray.origin, \
-						v_mul_f(ray.direction, hit_info.distance));
+	hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
 	if (t3 < t1)
 		hit_info.normal = normalize(v_sub_v(v_sub_v(hit_info.position, \
 						obj->origin), v_mul_f(cylinder->orientation, \
@@ -187,6 +185,50 @@ t_hit_info	hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
 					-ft_sign(v_dot(ray.direction, cylinder->orientation)));
 	return (hit_info);
 }
+
+int	triangle_test(t_hit_info hit_info, t_triangle *tri, t_objects *obj, int abc)
+{
+	t_vec3f		diff;
+	t_vec3f		vert;
+	float		test;
+
+	if (abc == 0)
+		vert = obj->origin;
+	else if (abc == 1)
+		vert = tri->pb;
+	else
+		vert = tri->pc;
+	diff = v_sub_v(hit_info.position, vert);
+	test = v_dot(tri->normal, v_cross(tri->edge[abc], diff));
+	return (test >= 0);
+}
+
+t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
+{
+	t_hit_info	h;
+	float		pl;
+
+	h.distance = -1.0f;
+	pl = v_dot(tri->normal, ray.direction);
+	if (fabs(pl) < 1e-6)
+		return (h);
+	h.distance = -(v_dot(tri->normal, ray.origin) + tri->traverse) / pl;
+	if (h.distance < 1e-6)
+		return (h);
+	h.position = v_add_v(ray.origin, v_mul_f(ray.direction, h.distance));
+	if (!triangle_test(h, tri, obj, 0)
+		|| !triangle_test(h, tri, obj, 1)
+		|| !triangle_test(h, tri, obj, 2))
+	{
+		h.distance = -1.0f;
+		return (h);
+	}
+	h.normal = tri->normal;
+	if (pl > 0)
+		h.normal = v_mul_f(h.normal, -1);
+	return (h);
+}
+
 
 t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 {
@@ -202,8 +244,10 @@ t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 		return (hit_quad(ray, obj, obj->quad));
 	else if (obj->type == OBJ_ELLIP)
 		return (hit_ellipse(ray, obj, obj->ellipse));
-	else if (obj->type == OBJ_PORTAL)
+	else if (obj->type == OBJ_PORTA)
 		return (hit_quad(ray, obj, &obj->portal->quad));
+	else if (obj->type == OBJ_TRIAN)
+		return (hit_triangle(ray, obj, obj->triangle));
 	hit_info.distance = -1.0f;
 	return (hit_info);
 }
