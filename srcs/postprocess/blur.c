@@ -47,37 +47,45 @@ void	fill_kernel(int blur_size, float kernel[10][10])
 	}
 }
 
-t_vec3f	**gaussian_blur(t_vec3f **im, t_vec2f resolution, int blur_size)
+t_vec3f	apply_gaussian(int t[5], t_vec2f r, \
+				t_vec3f **im, float ke[10][10])
 {
-	int		k_m;
-	float	ke[10][10];
-	int		tab[4];
-	t_vec3f	**blurred_im;
 	t_vec3f	s;
 
-	k_m = blur_size / 2;
+	s = (t_vec3f){0, 0, 0};
+	while (++t[2] <= t[4])
+	{
+		t[3] = -t[4] - 1;
+		while (++t[3] <= t[4])
+			if (t[0] + t[2] >= 0 && t[0] + t[2] < r.y \
+					&& t[1] + t[3] >= 0 \
+					&& t[1] + t[3] < r.x)
+				s = v_add_v(s, v_mul_f(im[t[0] + t[2]][t[1] + t[3]], \
+						ke[t[2] + t[4]][t[3] + t[4]]));
+	}
+	return (s);
+}
+
+t_vec3f	**gaussian_blur(t_vec3f **im, t_vec2f res, int blur_size)
+{
+	float	ke[10][10];
+	int		tab[5];
+	t_vec3f	**blurred_im;
+
+	tab[4] = blur_size / 2;
 	fill_kernel(blur_size, ke);
-	blurred_im = init_img(NULL, resolution.x, resolution.y);
+	blurred_im = init_img(NULL, res.x, res.y);
 	tab[0] = -1;
-	while (++tab[0] < resolution.y)
+	while (++tab[0] < res.y)
 	{
 		tab[1] = -1;
-		while (++tab[1] < resolution.x)
+		while (++tab[1] < res.x)
 		{
-			s = (t_vec3f){0, 0, 0};
-			tab[2] = -k_m - 1;
-			while (++tab[2] <= k_m)
-			{
-				tab[3] = -k_m - 1;
-				while (++tab[3] <= k_m)
-					if (tab[0] + tab[2] >= 0 && tab[0] + tab[2] < resolution.y && tab[1] + tab[3] >= 0 \
-							&& tab[1] + tab[3] < resolution.x)
-						s = v_add_v(s, v_mul_f(im[tab[0] + tab[2]][tab[1] + tab[3]], ke[tab[2] + k_m][tab[3] + k_m]));
-			}
-			blurred_im[tab[0]][tab[1]] = s;
+			tab[2] = -tab[4] - 1;
+			blurred_im[tab[0]][tab[1]] = apply_gaussian(tab, res, im, ke);
 		}
 	}
-	dup_img(im, blurred_im, resolution);
+	dup_img(im, blurred_im, res);
 	ft_free_tab((void **)blurred_im);
 	return (im);
 }
