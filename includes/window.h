@@ -34,6 +34,10 @@ void			create_window(t_scene *scene, int headless);
 void			put_pixel(t_data *data, int x, int y, int color);
 unsigned int	get_pixel(t_data *img, int x, int y);
 
+void			move_camera(t_scene *scene, t_vec3f movement);
+int				key_move_hook(int keycode, t_scene *scene);
+void			key_settings_hook(int keycode, t_scene *scene);
+
 int				key_hook(int keycode, t_scene *scene);
 int				mouse_hook_move(int x, int y, t_scene *scene);
 int				mouse_hook_press(int button, int x, int y, t_scene *scene);

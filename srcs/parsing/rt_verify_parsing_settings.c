@@ -88,7 +88,7 @@ int	rt_verify_bloom(t_scene *scene, char *line)
 		return (rt_return(split));
 	if (rt_range_atoi(split[2], 0, 10) == -1)
 		return (rt_return(split));
-	if (rt_range_atoi(split[3], 0, 13) == -1)
+	if (rt_range_atoi(split[3], 0, 10) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);

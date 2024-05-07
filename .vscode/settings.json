@@ -29,6 +29,7 @@
 		"time.h": "c",
 		"bvh.h": "c",
 		"client.h": "c",
-		"server.h": "c"
+		"server.h": "c",
+		"ranges": "c"
 	}
 }

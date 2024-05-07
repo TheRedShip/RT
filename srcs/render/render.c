@@ -54,11 +54,10 @@ t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 	{
 		hit_info = trace_ray(scene, ray);
 		if (hit_info.distance < 0.0f)
-		{
 			l_c[0] = v_add_v(l_c[0], v_mul_f(scene->ambient_light->color,
 						scene->ambient_light->ratio));
+		if (hit_info.distance < 0.0f)
 			break ;
-		}
 		ray = new_ray(hit_info, ray, thread, &is_specular);
 		calcul_light(hit_info, scene, &l_c[0], &l_c[1], is_specular);
 		if (hit_info.obj->material.emission_power > 0.0f)
