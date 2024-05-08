@@ -39,7 +39,7 @@ t_material	init_material(void);
 t_texture	init_texture(t_scene *scene, char *path);
 t_hit_info	hit_objects(t_ray ray, t_objects *obj);
 
+void		rt_lstobj_addback(t_objects **lst, t_objects *new);
 t_objects	*rt_add_objects(t_scene *scene, char *type);
-t_objects	*rt_objlast(t_objects *lst);
 
 #endif

@@ -39,21 +39,21 @@ t_hit_info	basic_trace_ray(t_scene *scene, t_ray ray)
 
 t_hit_info	closest_hit_in_bvh(t_bvh *bvh, t_ray ray)
 {
-	int			i;
 	t_hit_info	hit_info;
 	t_hit_info	tmp_hit;
+	t_list		*obj;
 
 	hit_info.distance = -1.0f;
-	i = 0;
-	while (i < bvh->obj_count)
+	obj = bvh->objects;
+	while (obj)
 	{
-		tmp_hit = hit_objects(ray, bvh->objects[i]);
+		tmp_hit = hit_objects(ray, (t_objects *)obj->content);
 		if (tmp_hit.distance >= 0 && (tmp_hit.distance < hit_info.distance || hit_info.distance < 0))
 		{
 			hit_info = tmp_hit;
-			hit_info.obj = bvh->objects[i];
+			hit_info.obj = (t_objects *)obj->content;
 		}
-		i++;
+		obj = obj->next;
 	}
 	return (hit_info);
 }

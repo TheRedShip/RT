@@ -24,12 +24,13 @@
 # include <math.h>
 # include <pthread.h>
 
+# include "libft.h"
+
 # include "vector.h"
 # include "scene_structures.h"
 # include "bvh.h"
 # include "postprocess.h"
 # include "mlx.h"
-# include "libft.h"
 # include "objects.h"
 # include "parsing.h"
 # include "window.h"

@@ -49,21 +49,6 @@ t_material	init_material(void)
 	return (mat);
 }
 
-void	rt_set_objects_to_scene(t_scene *scene, t_objects *obj)
-{
-	t_objects	*tmp;
-
-	if (!scene->objects)
-		scene->objects = obj;
-	else
-	{
-		tmp = scene->objects;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = obj;
-	}
-}
-
 t_objects	*rt_add_objects(t_scene *scene, char *type)
 {
 	int			i;
@@ -77,7 +62,7 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 	while (type_list_str[++i] != NULL && ft_strncmp(type, type_list_str[i], 2))
 		;
 	*objects = (t_objects){.type = i, .material = init_material()};
-	rt_set_objects_to_scene(scene, objects);
+	rt_lstobj_addback(&scene->objects, objects);
 	if (i == OBJ_SPHER)
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
 	else if (i == OBJ_PLANE)
@@ -95,11 +80,3 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 	return (objects);
 }
 
-t_objects	*rt_objlast(t_objects *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}

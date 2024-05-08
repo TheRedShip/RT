@@ -16,6 +16,7 @@
 # include "minirt.h"
 
 # define MAX_OBJECTS 10
+# define MAX_RECURSIVE 40
 
 typedef struct	s_ray	t_ray;
 
@@ -32,7 +33,7 @@ typedef struct	s_bvh
 	int				obj_count;
 	t_boundary		boundary;
 	struct s_bvh	*children[2];
-	t_objects		*objects[MAX_OBJECTS];
+	t_list			*objects;
 }				t_bvh;
 
 int			boxIntersection(t_ray ray, t_vec3f origin, t_vec3f rad);

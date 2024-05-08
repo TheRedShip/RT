@@ -103,6 +103,7 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
+				objects/rt_lstobj.c					
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
@@ -216,8 +217,6 @@ fclean: dclean
 
 mfclean: dclean
 	@$(RM) $(NAME)
-	@killall convert 2>/dev/null > /dev/null|| true && \
-	sleep 0.5 && rm -rf $(ASSETS_DIR)&
 
 mre:
 	@$(MAKE) mfclean

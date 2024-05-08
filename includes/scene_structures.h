@@ -202,6 +202,7 @@ typedef struct s_objects
 	t_cylinder			*cylinder;
 	t_material			material;
 	struct s_objects	*next;
+	struct s_objects	*next_bvh;
 }				t_objects;
 
 #endif
