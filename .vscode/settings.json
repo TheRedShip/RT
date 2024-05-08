@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"*.cs": "csharp",
-		"objects.h": "c",
-		"minirt.h": "c"
-	}
-}
