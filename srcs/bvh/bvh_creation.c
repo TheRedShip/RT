@@ -14,9 +14,6 @@
 
 t_bvh	*create_bvh_node(t_vec3f origin, t_vec3f size)
 {
-	static int id = 0;
-	id++;
-	printf("create bvh node %d\n", id);
 	t_bvh	*bvh;
 
 	bvh = ft_calloc(1, sizeof(t_bvh));
@@ -157,50 +154,6 @@ int	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
 	insert_bvh(bvh->children[1], object, depth + 1);
 	return (1);
 }
-
-// t_hit_info	closest_hit_in_bvh_bis(t_bvh *bvh, t_ray ray)
-// {
-// 	int			i;
-// 	t_hit_info	hit_info;
-// 	t_hit_info	tmp_hit;
-
-// 	hit_info.distance = -1.0f;
-// 	i = 0;
-// 	while (i < bvh->obj_count)
-// 	{
-// 		tmp_hit = hit_objects(ray, bvh->objects[i]);
-// 		if (tmp_hit.distance >= 0 && (tmp_hit.distance < hit_info.distance || hit_info.distance < 0))
-// 		{
-// 			hit_info = tmp_hit;
-// 			hit_info.obj = bvh->objects[i];
-// 		}
-// 		i++;
-// 	}
-// 	return (hit_info);
-// }
-
-// t_hit_info	bvh_trace_ray_bis(t_bvh *bvh, t_ray ray)
-// {
-// 	t_hit_info	hit_info;
-// 	t_hit_info	hit_0;
-// 	t_hit_info	hit_1;
-
-// 	hit_info.distance = -1.0f;
-// 	if (!boxIntersection(ray, bvh->boundary.origin, bvh->boundary.size))
-// 		return (hit_info);
-// 	if (bvh->leaf)
-// 		return (closest_hit_in_bvh_bis(bvh, ray));
-// 	if (bvh->divided)
-// 	{
-// 		hit_0 = bvh_trace_ray_bis(bvh->children[0], ray);
-// 		hit_1 = bvh_trace_ray_bis(bvh->children[1], ray);
-// 		if (hit_0.distance >= 0.0f && (hit_1.distance < 0.0f || hit_0.distance <= hit_1.distance))
-// 			return (hit_0);
-// 		if (hit_1.distance >= 0.0f && (hit_0.distance < 0.0f || hit_1.distance < hit_0.distance))
-// 			return (hit_1);
-// 	}
-// 	return (hit_info);
-// }
 
 void		create_bvh(t_scene *scene)
 {
