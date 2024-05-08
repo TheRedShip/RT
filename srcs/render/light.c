@@ -163,7 +163,9 @@ void	calcul_light(t_hit_info hit_info, t_scene *scene, t_vec3f *light, t_vec3f *
 		if (shadow_hit_info.distance > 0.0f && shadow_hit_info.distance < v_length(v_sub_v(scene->lights->origin, hit_info.position)))
 			diffuse_ratio = 0.0f;
 	}
-	*light = v_add_v(*light, v_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
-	*light = v_add_v(*light, v_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
+	if (diffuse_ratio > 0.0f && scene->lights->ratio > 0.0f)
+		*light = v_add_v(*light, v_mul_f(scene->lights->color, diffuse_ratio * scene->lights->ratio));
+	if (hit_info.obj->material.emission_power > 0.0f)
+		*light = v_add_v(*light, v_mul_f(hit_info.obj->material.color, hit_info.obj->material.emission_power));
 	calcul_color(contribution, hit_info, is_specular);
 }
