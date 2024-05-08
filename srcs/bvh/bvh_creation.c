@@ -14,6 +14,9 @@
 
 t_bvh	*create_bvh_node(t_vec3f origin, t_vec3f size)
 {
+	static	int		id = 0;
+	id++;
+	printf("create bvh node %d\n", id);
 	t_bvh	*bvh;
 
 	bvh = ft_calloc(1, sizeof(t_bvh));
