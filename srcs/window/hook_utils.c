@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:49:11 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/07 23:34:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/08 20:42:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	key_settings_hook(int keycode, t_scene *scene)
 	}
 	else if (keycode == KEY_ALIA)
 	{
+		scene->mlx->frame_index = 1;
 		scene->mlx->antialiasing = !scene->mlx->antialiasing;
 		printf("miniRT : antialiasing %d      \n", scene->mlx->antialiasing);
 	}
