@@ -15,8 +15,8 @@
 
 # include "minirt.h"
 
-# define MAX_OBJECTS 32
-# define MAX_RECURSIVE 100
+# define MAX_OBJECTS 64
+# define MAX_RECURSIVE 200
 
 typedef struct	s_ray	t_ray;
 

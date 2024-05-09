@@ -33,7 +33,7 @@ int	rt_parse_camera(char *line, t_scene *scene)
 	if (!split)
 		return (0);
 	scene->camera->origin = rt_atof3(split[1], -1000, 1000);
-	scene->camera->direction = rt_atof3(split[2], -1, 1);
+	scene->camera->direction = rt_atof3(split[2], -2, 2);
 	scene->camera->direction.z = scene->camera->direction.x;
 	scene->camera->direction.x = scene->camera->direction.y;
 	scene->camera->direction.y = scene->camera->direction.z;
