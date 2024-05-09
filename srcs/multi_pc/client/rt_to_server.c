@@ -89,6 +89,8 @@ void	wait_for_server(t_scene *scene)
 		fd = open_client_socket(scene->server.ip, scene->server.port);
 	}
 	close(fd);
+	free(scene->name);
+	scene->name = NULL;
 }
 
 int	send_map(t_scene *scene, t_vec3f **map)
