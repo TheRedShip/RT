@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/10 00:10:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/10 01:13:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	wait_for_server(t_scene *scene)
 	}
 	close(fd);
 	free(scene->name);
-	scene->name = 0;
+	scene->name = NULL;
 }
 
 int	send_map(t_scene *scene, t_vec3f **map)
