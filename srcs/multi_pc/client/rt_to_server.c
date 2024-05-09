@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_to_server.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/08 17:42:14 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/10 00:10:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	change_scene(t_scene *scene, char *scene_name)
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
 	rt_parse(scene_name, scene);
+	create_bvh(scene);
 	link_portals(scene);
 	free(scene_name);
 	printf("\nParsing successful\n");
@@ -89,6 +90,8 @@ void	wait_for_server(t_scene *scene)
 		fd = open_client_socket(scene->server.ip, scene->server.port);
 	}
 	close(fd);
+	free(scene->name);
+	scene->name = 0;
 }
 
 int	send_map(t_scene *scene, t_vec3f **map)

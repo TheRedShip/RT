@@ -72,3 +72,16 @@ int	rt_parse_bloom(char *line, t_scene *scene)
 	ft_free_tab((void **)(split));
 	return (1);
 }
+
+int	rt_parse_kdtree(char *line, t_scene *scene)
+{
+	char	**split;
+
+	split = ft_split(line, '\t');
+	if (!split)
+		return (0);
+	scene->kdtree->is_bvh = 1;
+	scene->kdtree->max_objects = ft_atoi(split[1]);
+	ft_free_tab((void **)(split));
+	return (1);
+}

@@ -83,7 +83,7 @@ t_hit_info	bvh_trace_ray(t_bvh *bvh, t_ray ray)
 
 t_hit_info	trace_ray(t_scene *scene, t_ray ray)
 {
-	if (scene->mlx->is_bvh)
+	if (scene->kdtree->is_bvh)
 		return (bvh_trace_ray(scene->bvh, ray));
 	return (basic_trace_ray(scene, ray));
 }

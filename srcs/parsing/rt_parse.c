@@ -46,11 +46,8 @@ int	rt_verify_parsing(char *line, t_scene *scene)
 		return (rt_parse_light(line, scene));
 	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(scene, line))
 		return (rt_parse_bloom(line, scene));
-	else if (ft_strncmp(line, "K", 1) == -0)
-	{
-		scene->mlx->is_bvh = 1;
-		return (1);
-	}
+	else if (ft_strncmp(line, "K", 1) == 0 && rt_verify_kdtree(scene, line))
+		return (rt_parse_kdtree(line, scene));
 	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
 		return (rt_parse_sphere(line, scene));
 	else if (ft_strncmp(line, "pl\t", 3) == 0 && rt_verify_plane(line))

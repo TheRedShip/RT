@@ -17,6 +17,7 @@
 
 typedef struct s_objects	t_objects;
 typedef struct s_bvh		t_bvh;
+typedef struct s_kd_tree	t_kd_tree;
 
 typedef struct s_camera
 {
@@ -50,7 +51,6 @@ typedef struct s_mlx
 	void	*mlx;
 	void	*win;
 	int		is_acc;
-	int		is_bvh;
 	int		is_bloom;
 	int		frame_index;
 	int		antialiasing;
@@ -96,16 +96,17 @@ typedef struct s_server
 
 typedef struct s_scene
 {
+	char			*name;
 	t_mouse			mouse;
+	t_server		server;
 	t_bvh			*bvh;
 	t_mlx			*mlx;
 	t_bloom			*bloom;
+	t_kd_tree		*kdtree;
 	t_objects		*objects;
 	t_light			*lights;
 	t_camera		*camera;
 	t_ambient_light	*ambient_light;
-	t_server		server;
-	char			*name;
 }				t_scene;
 
 typedef struct s_threads

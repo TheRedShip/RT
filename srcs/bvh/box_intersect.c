@@ -12,11 +12,13 @@
 
 #include "minirt.h"
 
-float step(float edge, float x) {
+float step(float edge, float x)
+{
     return x < edge ? 0.0 : 1.0;
 }
 
-t_vec3f		step_v(t_vec3f edge, t_vec3f x) {
+t_vec3f		step_v(t_vec3f edge, t_vec3f x)
+{
     return (t_vec3f){step(edge.x, x.x), step(edge.y, x.y), step(edge.z, x.z)};
 }
 

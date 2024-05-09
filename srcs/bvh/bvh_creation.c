@@ -14,9 +14,6 @@
 
 t_bvh	*create_bvh_node(t_vec3f origin, t_vec3f size)
 {
-	static	int		id = 0;
-	id++;
-	printf("create bvh node %d\n", id);
 	t_bvh	*bvh;
 
 	bvh = ft_calloc(1, sizeof(t_bvh));
@@ -85,6 +82,7 @@ void	show_boundary_objects(t_scene *scene)
 		obj = obj->next;
 	}
 }
+
 void		show_bvh(t_scene *scene, t_bvh *bvh, t_vec3f color)
 {
 	// if (bvh->leaf)
@@ -122,16 +120,18 @@ void		sub_divide(t_bvh *bvh, int depth)
 	bvh->children[0] = create_bvh_node(origin, half);
 }
 
-int	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
+int	insert_bvh(t_bvh *bvh, t_objects *object, int depth, t_scene *scene)
 {
 	t_list	*tmp;
 
+	if (depth > MAX_RECURSIVE)
+		printf("Error: kd_tree: not enough objects per subdivision\n");
+	if (depth > MAX_RECURSIVE)
+		rt_free_scene(scene, 1);
 	if (!boundary_intersect(bvh->boundary, object))
 		return (0);
-	if (depth > 0 && (bvh->obj_count < MAX_OBJECTS || depth > MAX_RECURSIVE))
+	if (depth > 0 && (bvh->obj_count < scene->kdtree->max_objects))
 	{
-		if (depth > MAX_RECURSIVE)
-			printf("max recursive\n");
 		bvh->leaf = 1;
 		ft_lstadd_back(&bvh->objects, ft_lstnew((void *)object));
 		bvh->obj_count++;
@@ -142,40 +142,38 @@ int	insert_bvh(t_bvh *bvh, t_objects *object, int depth)
 		sub_divide(bvh, depth);
 		bvh->divided = 1;
 	}
-	if (bvh->obj_count >= MAX_OBJECTS && bvh->leaf)
+	if (bvh->obj_count >= scene->kdtree->max_objects && bvh->leaf)
 	{
 		bvh->leaf = 0;
 		tmp = bvh->objects;
 		while (tmp)
 		{
-			insert_bvh(bvh->children[0], (t_objects *)tmp->content, depth + 1);
-			insert_bvh(bvh->children[1], (t_objects *)tmp->content, depth + 1);
+			insert_bvh(bvh->children[0], (t_objects *)tmp->content, depth + 1, scene);
+			insert_bvh(bvh->children[1], (t_objects *)tmp->content, depth + 1, scene);
 			tmp = tmp->next;
 		}
 	}
-	insert_bvh(bvh->children[0], object, depth + 1);
-	insert_bvh(bvh->children[1], object, depth + 1);
+	insert_bvh(bvh->children[0], object, depth + 1, scene);
+	insert_bvh(bvh->children[1], object, depth + 1, scene);
 	return (1);
 }
 
 void		create_bvh(t_scene *scene)
 {
-	t_bvh	*bvh;
 
-	bvh = ft_calloc(1, sizeof(t_bvh));
-	if (!bvh)
+	scene->bvh = ft_calloc(1, sizeof(t_bvh));
+	if (!scene->bvh)
 		rt_free_scene(scene, 1);
-	bvh->boundary.origin = (t_vec3f){-400, -400, -400};
-	bvh->boundary.size = (t_vec3f){800, 800, 800};
+	scene->bvh->boundary.origin = (t_vec3f){-400, -400, -400};
+	scene->bvh->boundary.size = (t_vec3f){800, 800, 800};
 
 	t_objects *obj = scene->objects;
 	while (obj)
 	{
 		if (obj->type != OBJ_PLANE)
-			insert_bvh(bvh, obj, 0);
+			insert_bvh(scene->bvh, obj, 0, scene);
 		obj = obj->next;
 	}
-	scene->bvh = bvh;
 
 	// show_boundary_objects(scene);
 	// t_ray ray = (t_ray){(t_vec3f){-0.5, -3, 2},(t_vec3f){0, 3, -1}};

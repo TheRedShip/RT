@@ -93,3 +93,19 @@ int	rt_verify_bloom(t_scene *scene, char *line)
 	ft_free_tab((void **)(split));
 	return (1);
 }
+
+int	rt_verify_kdtree(t_scene *scene, char *line)
+{
+	char		**split;
+
+	if (scene->kdtree->has_seen)
+		return (0);
+	scene->kdtree->has_seen = 1;
+	split = ft_split(line, '\t');
+	if (!split || ft_tab_len(split) != 2)
+		return (rt_return(split));
+	if (rt_range_atoi(split[1], 4, 1000) == -1)
+		return (rt_return(split));
+	ft_free_tab((void **)(split));
+	return (1);
+}

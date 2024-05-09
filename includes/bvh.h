@@ -15,18 +15,24 @@
 
 # include "minirt.h"
 
-# define MAX_OBJECTS 45
-# define MAX_RECURSIVE 100
+# define MAX_RECURSIVE 200
 
-typedef struct	s_ray	t_ray;
+typedef struct s_ray	t_ray;
 
-typedef struct	s_boundary
+typedef struct s_boundary
 {
 	t_vec3f		origin;
 	t_vec3f		size;
 }				t_boundary;
 
-typedef struct	s_bvh
+typedef struct s_kd_tree
+{
+	int		is_bvh;
+	int		has_seen;
+	int		max_objects;
+}				t_kd_tree;
+
+typedef struct s_bvh
 {
 	int				leaf;
 	int				divided;

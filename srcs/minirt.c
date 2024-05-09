@@ -36,6 +36,29 @@ void	destroy_mlx(t_scene *scene)
 	free(scene->mlx);
 }
 
+void	rt_free_bvh(t_bvh *bvh)
+{
+	t_list	*tmp;
+
+	if (!bvh)
+		return ;
+	if (bvh->divided)
+	{
+		rt_free_bvh(bvh->children[1]);
+		rt_free_bvh(bvh->children[0]);
+	}
+	if (bvh->obj_count > 0)
+	{
+		while (bvh->objects)
+		{
+			tmp = bvh->objects;
+			bvh->objects = bvh->objects->next;
+			free(tmp);
+		}
+	}
+	free(bvh);
+}
+
 int	rt_free_scene(t_scene *scene, int ex)
 {
 	t_objects	*tmp;
@@ -43,8 +66,10 @@ int	rt_free_scene(t_scene *scene, int ex)
 	free(scene->ambient_light);
 	free(scene->bloom);
 	free(scene->camera);
+	free(scene->kdtree);
 	free(scene->lights);
 	free(scene->name);
+	rt_free_bvh(scene->bvh);
 	while (scene->objects)
 	{
 		tmp = scene->objects;
@@ -57,6 +82,7 @@ int	rt_free_scene(t_scene *scene, int ex)
 		free(tmp->ellipse);
 		free(tmp->quad);
 		free(tmp->portal);
+		free(tmp->triangle);
 		free(tmp);
 	}
 	if (ex)
@@ -79,18 +105,18 @@ t_scene	*init_scene(char *name, t_scene *scene)
 	scene->lights = ft_calloc(1, sizeof(t_light));
 	scene->bloom = ft_calloc(1, sizeof(t_bloom));
 	scene->mlx = ft_calloc(1, sizeof(t_mlx));
+	scene->kdtree = ft_calloc(1, sizeof(t_kd_tree));
 	scene->name = ft_strdup(name);
 	scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->final_img = init_img(scene, WIDTH, HEIGHT);
 	scene->mlx->postpro_img = init_img(scene, WIDTH, HEIGHT);
 	scene->objects = NULL;
 	if (!scene->ambient_light || !scene->camera || !scene->lights || \
-		!scene->mlx || !scene->bloom || !scene->name)
+		!scene->mlx || !scene->bloom || !scene->name || !scene->kdtree)
 	{
 		printf("Error: Memory allocation failed\n");
 		rt_free_scene(scene, 1);
 	}
-	scene->mlx->is_bvh = 0;
 	scene->mlx->is_acc = 1;
 	scene->mlx->is_bloom = 0;
 	scene->mlx->frame_index = 1;
@@ -149,7 +175,8 @@ int	main(int argc, char **argv)
 		return (1);
 	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
 	rt_parse(argv[1], scene);
-	create_bvh(scene);
+	if (scene->kdtree->is_bvh)
+		create_bvh(scene);
 	link_portals(scene);
 	printf("Parsing successful\n");
 	if (argc == 4 && !ft_strcmp(argv[2], "server"))
