@@ -52,7 +52,6 @@ int	rt_verify_portal(char *line)
 	return (1);
 }
 
-
 int	rt_verify_cube(char *line)
 {
 	char		**split;

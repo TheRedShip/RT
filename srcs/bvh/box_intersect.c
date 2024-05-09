@@ -12,41 +12,51 @@
 
 #include "minirt.h"
 
-float step(float edge, float x)
+int	box_intersection(t_ray ray, t_vec3f origin, t_vec3f rad)
 {
-    return x < edge ? 0.0 : 1.0;
-}
+	t_vec3f	t[2];
+	t_vec3f	m;
+	t_vec3f	n;
+	t_vec3f	k;
+	float	t_f;
 
-t_vec3f		step_v(t_vec3f edge, t_vec3f x)
-{
-    return (t_vec3f){step(edge.x, x.x), step(edge.y, x.y), step(edge.z, x.z)};
-}
-
-int	boxIntersection(t_ray ray, t_vec3f origin, t_vec3f rad) 
-{
 	ray.origin = v_sub_v(ray.origin, origin);
-    t_vec3f m = (t_vec3f){1.0/ray.direction.x, 1.0/ray.direction.y, 1.0/ray.direction.z};
-    t_vec3f n = v_mul_v(m, ray.origin);
-    t_vec3f k = (t_vec3f){fabs(m.x) * rad.x, fabs(m.y) * rad.y, fabs(m.z) * rad.z};
-    t_vec3f t1 = v_sub_v(v_mul_f(n, -1.0), k);
-    t_vec3f t2 = v_add_v(v_mul_f(n, -1.0), k);
+	m = (t_vec3f){1.0 / ray.direction.x, \
+					1.0 / ray.direction.y, \
+					1.0 / ray.direction.z};
+	n = v_mul_f(v_mul_v(m, ray.origin), -1.0f);
+	k = (t_vec3f){fabs(m.x) * rad.x, fabs(m.y) * rad.y, fabs(m.z) * rad.z};
+	t[0] = v_sub_v(n, k);
+	t[1] = v_add_v(n, k);
 	ray.origin = v_add_v(ray.origin, origin);
-
-    float tN = fmax( fmax( t1.x, t1.y ), t1.z );
-    float tF = fmin( fmin( t2.x, t2.y ), t2.z );
-	
-    if(tN>tF || tF<0.0)
+	t_f = fmin(fmin(t[1].x, t[1].y), t[1].z);
+	if (fmax(fmax(t[0].x, t[0].y), t[0].z) > t_f || t_f < 0.0)
 		return (0);
 	return (1);
-	// printf("%f %f\n", tN, tF);
-	// return (1);
+}
 
-    // hit_info.normal = v_mul_f((t_vec3f){sign(ray.direction.x), sign(ray.direction.y), sign(ray.direction.z)}, -1.0f);
-	// hit_info.normal = v_mul_v(hit_info.normal, step_v((t_vec3f){t1.y, t1.z, t1.x}, t1));
-	// hit_info.normal = v_mul_v(hit_info.normal, step_v((t_vec3f){t1.z, t1.y, t1.x}, t1));
-	// hit_info.distance = tN;
-	// if (hit_info.distance < 0.0f)
-	// 	hit_info.distance = tF;
-	// hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
-	// return (hit_info);
+int	boundary_intersect(t_boundary boundary, t_objects *object)
+{
+	float		tab1[3];
+	float		tab2[3];
+	float		tab3[3];
+	float		tab4[3];
+	t_boundary	obj_boundary;
+
+	obj_boundary = get_boundary(object);
+	tab1[0] = boundary.origin.x;
+	tab1[1] = boundary.origin.y;
+	tab1[2] = boundary.origin.z;
+	tab2[0] = boundary.origin.x + boundary.size.x;
+	tab2[1] = boundary.origin.y + boundary.size.y;
+	tab2[2] = boundary.origin.z + boundary.size.z;
+	tab3[0] = obj_boundary.origin.x;
+	tab3[1] = obj_boundary.origin.y;
+	tab3[2] = obj_boundary.origin.z;
+	tab4[0] = obj_boundary.origin.x + obj_boundary.size.x;
+	tab4[1] = obj_boundary.origin.y + obj_boundary.size.y;
+	tab4[2] = obj_boundary.origin.z + obj_boundary.size.z;
+	return (tab1[0] <= tab4[0] && tab2[0] >= tab3[0] && \
+			tab1[1] <= tab4[1] && tab2[1] >= tab3[1] && \
+			tab1[2] <= tab4[2] && tab2[2] >= tab3[2]);
 }

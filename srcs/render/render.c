@@ -65,7 +65,7 @@ t_hit_info	bvh_trace_ray(t_bvh *bvh, t_ray ray)
 	t_hit_info	hit_1;
 
 	hit_info.distance = -1.0f;
-	if (!boxIntersection(ray, bvh->boundary.origin, bvh->boundary.size))
+	if (!box_intersection(ray, bvh->boundary.origin, bvh->boundary.size))
 		return (hit_info);
 	if (bvh->leaf)
 		return (closest_hit_in_bvh(bvh, ray));

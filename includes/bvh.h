@@ -42,8 +42,11 @@ typedef struct s_bvh
 	t_list			*objects;
 }				t_bvh;
 
-int			boxIntersection(t_ray ray, t_vec3f origin, t_vec3f rad);
-void		create_bvh(t_scene *scene);
 t_boundary	get_boundary(t_objects *object);
+
+int			boundary_intersect(t_boundary boundary, t_objects *object);
+int			box_intersection(t_ray ray, t_vec3f origin, t_vec3f rad);
+
+void		create_bvh(t_scene *scene);
 
 #endif
