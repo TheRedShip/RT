@@ -175,10 +175,11 @@ int	main(int argc, char **argv)
 		return (1);
 	create_window(scene, argc >= 3 && ft_strcmp(argv[2], "server"));
 	rt_parse(argv[1], scene);
+	printf("Parsing successful\n");
 	if (scene->kdtree->is_bvh)
 		create_bvh(scene);
+	printf("Parsing complete\n");
 	link_portals(scene);
-	printf("Parsing successful\n");
 	if (argc == 4 && !ft_strcmp(argv[2], "server"))
 		return (start_server(scene, argv[3]));
 	if (argc == 3 && !ft_strcmp(argv[2], "server"))

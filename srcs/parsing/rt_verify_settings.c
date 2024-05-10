@@ -104,7 +104,7 @@ int	rt_verify_kdtree(t_scene *scene, char *line)
 	split = ft_split(line, '\t');
 	if (!split || ft_tab_len(split) != 2)
 		return (rt_return(split));
-	if (rt_range_atoi(split[1], 4, 1000) == -1)
+	if (rt_range_atoi(split[1], 4, 5000) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);

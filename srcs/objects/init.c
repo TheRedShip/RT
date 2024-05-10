@@ -62,7 +62,11 @@ t_objects	*rt_add_objects(t_scene *scene, char *type)
 	while (type_list_str[++i] != NULL && ft_strncmp(type, type_list_str[i], 2))
 		;
 	*objects = (t_objects){.type = i, .material = init_material()};
-	rt_lstobj_addback(&scene->objects, objects);
+	if (!scene->objects)
+		scene->objects = objects;
+	else
+		scene->last_objects->next = objects;
+	scene->last_objects = objects;
 	if (i == OBJ_SPHER)
 		objects->sphere = ft_calloc(1, sizeof(t_sphere));
 	else if (i == OBJ_PLANE)

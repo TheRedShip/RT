@@ -118,7 +118,12 @@ int	rt_parse_triangle(char *line, t_scene *scene)
 	tri->edge[2] = v_sub_v(objects->origin, tri->pc);
 	tri->normal = normalize(v_cross(tri->edge[2], tri->edge[0]));
 	tri->traverse = -v_dot(tri->normal, objects->origin);
-	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 2000.0f), 255.0f);
+	if (objects->material.color.x > 1.0f || objects->material.color.y > 1.0f || \
+		objects->material.color.z > 1.0f)
+		objects->material.emission_power = (objects->material.color.x + \
+											objects->material.color.y + \
+											objects->material.color.z) / 3.0f;
 	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
 		return (rt_return(s));
 	ft_free_tab((void **)(s));

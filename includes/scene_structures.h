@@ -104,6 +104,7 @@ typedef struct s_scene
 	t_bloom			*bloom;
 	t_kd_tree		*kdtree;
 	t_objects		*objects;
+	t_objects		*last_objects;
 	t_light			*lights;
 	t_camera		*camera;
 	t_ambient_light	*ambient_light;

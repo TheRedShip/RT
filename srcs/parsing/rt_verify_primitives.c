@@ -109,7 +109,7 @@ int	rt_verify_triangle(char *line)
 		return (rt_return(split));
 	if (rt_atof3(split[3], -1000.0, 1000.0).x == -4242)
 		return (rt_return(split));
-	if (rt_atof3(split[4], 0, 255).x == -4242)
+	if (rt_atof3(split[4], 0, 2000).x == -4242)
 		return (rt_return(split));
 	if (rt_verify_material(split[5]) == 0)
 		return (rt_return(split));

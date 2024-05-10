@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/05/08 16:09:09 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/10 16:42:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ t_list	*ft_lstget_index(t_list *lst, int index);
 
 /* GNL TLST ***************************************************************** */
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
 typedef struct s_slist
