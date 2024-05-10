@@ -42,7 +42,7 @@ int	rt_verify_camera(t_scene *scene, char *line)
 		return (rt_return(split));
 	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
 		return (rt_return(split));
-	if (rt_atof3(split[2], -2.0, 2.0).x == -4242)
+	if (rt_atof3(split[2], -3.14, 3.14).x == -4242)
 		return (rt_return(split));
 	if (rt_range_atoi(split[3], 0, 180) == -1)
 		return (rt_return(split));
@@ -60,15 +60,13 @@ int	rt_verify_light(t_scene *scene, char *line)
 		return (0);
 	scene->lights->has_seen = 1;
 	split = ft_split(line, '\t');
-	if (!split || ft_tab_len(split) != 5)
+	if (!split || ft_tab_len(split) != 4)
 		return (rt_return(split));
 	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
 		return (rt_return(split));
 	if (rt_range_atof(split[2], 0.0, 1.0) == -1)
 		return (rt_return(split));
 	if (rt_atof3(split[3], 0, 255).x == -4242)
-		return (rt_return(split));
-	if (rt_range_atoi(split[4], 0, 1) == -1)
 		return (rt_return(split));
 	ft_free_tab((void **)(split));
 	return (1);

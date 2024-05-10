@@ -33,7 +33,7 @@ int	rt_parse_camera(char *line, t_scene *scene)
 	if (!split)
 		return (0);
 	scene->camera->origin = rt_atof3(split[1], -1000, 1000);
-	scene->camera->direction = rt_atof3(split[2], -2, 2);
+	scene->camera->direction = rt_atof3(split[2], -3.14, 3.14);
 	scene->camera->direction.z = scene->camera->direction.x;
 	scene->camera->direction.x = scene->camera->direction.y;
 	scene->camera->direction.y = scene->camera->direction.z;
@@ -54,7 +54,6 @@ int	rt_parse_light(char *line, t_scene *scene)
 	scene->lights->origin = rt_atof3(split[1], -1000, 1000);
 	scene->lights->ratio = ft_atof(split[2]);
 	scene->lights->color = v_div_f(rt_atof3(split[3], 0, 255), 255);
-	scene->lights->hard = ft_atoi(split[4]);
 	ft_free_tab((void **)(split));
 	return (1);
 }

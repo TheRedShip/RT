@@ -77,7 +77,6 @@ typedef struct s_bloom
 typedef struct s_light
 {
 	int			has_seen;
-	int			hard;
 	float		ratio;
 	t_vec3f		color;
 	t_vec3f		origin;

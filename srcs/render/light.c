@@ -151,22 +151,23 @@ void	calcul_light(t_hit_info h, t_scene *s, t_vec3f *l, t_vec3f *contribution, i
 	t_ray		ray;
 	float		dr;
 
+	dr = 0.0f;
 	l_direction = normalize(v_sub_v(h.position, s->lights->origin));
-	dr = v_dot(h.normal, v_mul_f(l_direction, -1.0f));
-	if (dr < 0.0f)
-		dr = 0.0f;
-	if (s->lights->hard == 1 && s->lights->ratio > 0.0f)
+	if (s->lights->ratio > 0.0f)
 	{
 		ray.origin = v_add_v(h.position, v_mul_f(h.normal, 0.0001f));
 		ray.direction = v_mul_f(l_direction, -1.0f);
 		shadow_h = trace_ray(s, ray);
-		if (shadow_h.distance > 0.0f && shadow_h.distance < \
-				v_length(v_sub_v(s->lights->origin, h.position)))
+		if (!(shadow_h.distance > 0.0f && shadow_h.distance < \
+				v_length(v_sub_v(s->lights->origin, h.position))))
+			dr = v_dot(h.normal, v_mul_f(l_direction, -1.0f));
+		if (dr < 0.0f)
 			dr = 0.0f;
 	}
 	if (dr > 0.0f && s->lights->ratio > 0.0f)
 		*l = v_add_v(*l, v_mul_f(s->lights->color, dr * s->lights->ratio));
-	if (h.obj->material.emission_power > 0.0f)
+	if (h.obj->material.emission_power > 0.0f || h.obj->material.color.x > 1.0f
+		|| h.obj->material.color.y > 1.0f || h.obj->material.color.z > 1.0f)
 		*l = v_add_v(*l, v_mul_f(h.obj->material.color, \
 				h.obj->material.emission_power));
 	calcul_color(contribution, h, is_specular);

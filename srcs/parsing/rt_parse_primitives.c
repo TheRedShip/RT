@@ -23,7 +23,7 @@ int	rt_parse_sphere(char *line, t_scene *scene)
 	o = rt_add_objects(scene, "sp");
 	o->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	o->sphere->diameter = ft_atof(s[2]);
-	o->material.color = v_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	o->material.color = v_div_f(rt_atof3(s[3], 0.0f, 4000.0f), 255.0f);
 	if (rt_parse_material(scene, s[4], &(o->material)) == -1)
 		return (rt_return(s));
 	if (ft_tab_len(s) == 6)
@@ -48,7 +48,7 @@ int	rt_parse_plane(char *line, t_scene *scene)
 	objects = rt_add_objects(scene, "pl");
 	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	objects->plane->normal = rt_atof3(s[2], -1.0, 1.0);
-	objects->material.color = v_div_f(rt_atof3(s[3], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[3], 0.0f, 4000.0f), 255.0f);
 	if (rt_parse_material(scene, s[4], &(objects->material)) == -1)
 		return (rt_return(s));
 	ft_free_tab((void **)(s));
@@ -68,7 +68,12 @@ int	rt_parse_cylinder(char *line, t_scene *scene)
 	objects->cylinder->orientation = rt_atof3(s[2], -1.0, 1.0);
 	objects->cylinder->diameter = ft_atof(s[3]);
 	objects->cylinder->height = ft_atof(s[4]);
-	objects->material.color = v_div_f(rt_atof3(s[5], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[5], 0.0f, 4000.0f), 255.0f);
+	if (objects->material.color.x > 1.0f || objects->material.color.y > 1.0f || \
+		objects->material.color.z > 1.0f)
+		objects->material.emission_power = (objects->material.color.x + \
+											objects->material.color.y + \
+											objects->material.color.z) / 3.0f;
 	if (rt_parse_material(scene, s[6], &(objects->material)) == -1)
 		return (rt_return(s));
 	ft_free_tab((void **)(s));
@@ -87,7 +92,7 @@ int	rt_parse_quad(char *line, t_scene *scene)
 	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	objects->quad->right_corner = rt_atof3(s[2], -1000.0, 1000.0);
 	objects->quad->up_corner = rt_atof3(s[3], -1000.0, 1000.0);
-	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 255.0f), 255.0f);
+	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 4000.0f), 255.0f);
 	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
 		return (rt_return(s));
 	objects->quad->normal = normalize(v_cross(objects->quad->up_corner, \
@@ -118,12 +123,7 @@ int	rt_parse_triangle(char *line, t_scene *scene)
 	tri->edge[2] = v_sub_v(objects->origin, tri->pc);
 	tri->normal = normalize(v_cross(tri->edge[2], tri->edge[0]));
 	tri->traverse = -v_dot(tri->normal, objects->origin);
-	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 2000.0f), 255.0f);
-	if (objects->material.color.x > 1.0f || objects->material.color.y > 1.0f || \
-		objects->material.color.z > 1.0f)
-		objects->material.emission_power = (objects->material.color.x + \
-											objects->material.color.y + \
-											objects->material.color.z) / 3.0f;
+	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 4000.0f), 255.0f);
 	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
 		return (rt_return(s));
 	ft_free_tab((void **)(s));
