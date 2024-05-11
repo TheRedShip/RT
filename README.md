@@ -2,6 +2,8 @@
 My first RayTracer
 
 First work show off
+![screenshot](images/horse.png)
+![screenshot](images/light_saber.png)
 ![screenshot](images/stairs.png)
 ![screenshot](images/portal.png)
 ![screenshot](images/portal_light.png)
