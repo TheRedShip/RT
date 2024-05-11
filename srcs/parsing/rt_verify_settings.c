@@ -42,7 +42,7 @@ int	rt_verify_camera(t_scene *scene, char *line)
 		return (rt_return(split));
 	if (rt_atof3(split[1], -1000.0, 1000.00).x == -4242)
 		return (rt_return(split));
-	if (rt_atof3(split[2], -3.14, 3.14).x == -4242)
+	if (rt_atof3(split[2], -1.0f, 1.0f).x == -4242)
 		return (rt_return(split));
 	if (rt_range_atoi(split[3], 0, 180) == -1)
 		return (rt_return(split));

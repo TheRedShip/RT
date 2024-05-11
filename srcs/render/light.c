@@ -166,8 +166,7 @@ void	calcul_light(t_hit_info h, t_scene *s, t_vec3f *l, t_vec3f *contribution, i
 	}
 	if (dr > 0.0f && s->lights->ratio > 0.0f)
 		*l = v_add_v(*l, v_mul_f(s->lights->color, dr * s->lights->ratio));
-	if (h.obj->material.emission_power > 0.0f || h.obj->material.color.x > 1.0f
-		|| h.obj->material.color.y > 1.0f || h.obj->material.color.z > 1.0f)
+	if (h.obj->material.emission_power > 0.0f)
 		*l = v_add_v(*l, v_mul_f(h.obj->material.color, \
 				h.obj->material.emission_power));
 	calcul_color(contribution, h, is_specular);
