@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 19:41:03 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 22:26:52 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,16 @@ int				start_server(t_scene *scene, char *port_str);
 pthread_t		init_server_hooks(t_scene *scene);
 int				get_stopped(t_scene *scene);
 void			reset_img(t_vec3f **img);
+long unsigned	get_avg_time(t_scene *scene);
+float			get_avg_speed(t_scene *scene);
+void			set_stopped(t_scene *scene);
+int				mouse_hook_move_server(int x, int y, t_scene *scene);
+int				mouse_hook_release_server(int button, int x, int y, \
+					t_scene *scene);
+int				mouse_hook_press_server(int button, int x, int y, \
+					t_scene *scene);
+int				server_loop_hook(void *data);
+int				server_key_hook(int key, void *data);
+void			*handle_client(void *data_ptr);
 
 #endif

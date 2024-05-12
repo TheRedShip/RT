@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:10:50 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 19:40:48 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/12 21:37:54 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,30 @@ int	add_buffer(t_buffer **buffer)
 		(*buffer)->next = new;
 	*buffer = new;
 	return (1);
+}
+
+char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
+{
+	char	*res;
+	long	len;
+
+	len = get_buffer_str_len(buffer);
+	if (scene)
+	{
+		pthread_mutex_lock(&scene->server.mutex);
+		scene->server.acc_block_received += (len / 1000);
+		pthread_mutex_unlock(&scene->server.mutex);
+	}
+	if (expect_size && len != ((long)(WIDTH * HEIGHT * sizeof(t_vec3f)) + 1))
+	{
+		free_buffer(buffer);
+		return (0);
+	}
+	res = malloc(len);
+	if (!res)
+		fprintf(stderr, "malloc failed\n");
+	if (res)
+		copy_buffer(res, buffer);
+	free_buffer(buffer);
+	return (res);
 }

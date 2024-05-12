@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:01:18 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/06 19:41:02 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/12 22:15:56 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,11 @@ int	get_stopped(t_scene *scene)
 	res = scene->server.stop;
 	pthread_mutex_unlock(&scene->server.mutex);
 	return (res);
+}
+
+void	set_stopped(t_scene *scene)
+{
+	pthread_mutex_lock(&scene->server.mutex);
+	scene->server.stop = 1;
+	pthread_mutex_unlock(&scene->server.mutex);
 }

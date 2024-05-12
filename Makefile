@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/05/12 18:19:22 by tomoron          ###   ########.fr        #
+#    Updated: 2024/05/12 22:23:20 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,18 +127,23 @@ SRC_POSTPRO :=	postprocess/bloom.c					\
 				postprocess/img_utils.c				\
 				postprocess/sample.c			
 
-SRC_BVH		:=	bvh/boundary.c							\
-				bvh/box_intersect.c						\
-				bvh/bvh_creation.c						\
+SRC_BVH		:=	bvh/boundary.c						\
+				bvh/box_intersect.c					\
+				bvh/bvh_creation.c					\
 
 SRC_CLUST_S	:=	clusterizer/server/server.c			\
 				clusterizer/server/handle_clients.c	\
 				clusterizer/server/lst_buffer.c		\
-				clusterizer/server/lst_threads.c		\
-				clusterizer/server/hooks.c				\
-				clusterizer/server/mutex.c
+				clusterizer/server/lst_threads.c	\
+				clusterizer/server/hooks.c			\
+				clusterizer/server/hooks_utils.c	\
+				clusterizer/server/mutex.c			\
+				clusterizer/server/display_info.c	\
+				clusterizer/server/wait_clients.c	\
 
-SRC_CLUST_C :=	clusterizer/client/rt_to_server.c		
+SRC_CLUST_C :=	clusterizer/client/rt_to_server.c	\
+				clusterizer/client/server_data.c	\
+				clusterizer/client/socket.c
 
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\

@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:35:16 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/12 19:48:39 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 20:59:58 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,6 @@ void	rt_render_image(t_scene *scene, t_vec3f **image)
 	}
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win,
 		scene->mlx->img.img, 0, 0);
-}
-
-void	render_server(t_scene *scene)
-{
-	if (!send_img(scene, scene->mlx->acc_img))
-	{
-		printf("\nwaiting for server...\n");
-		wait_for_server(scene);
-		printf("server back\n");
-	}
 }
 
 int	rt_render_scene(t_scene *scene)
