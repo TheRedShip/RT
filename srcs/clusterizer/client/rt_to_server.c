@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 19:45:37 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 20:02:03 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,8 @@ void	change_scene(t_scene *scene, char *scene_name)
 	scene->server.nb_acc = 1;
 	rt_parse(scene_name, scene);
 	link_portals(scene);
-	printf("\nParsing successful\n");
 	if (scene->kdtree->is_bvh)
 		create_bvh(scene);
-	printf("Parsing complete\n");
 }
 
 int	check_scene_data(int dest_fd, t_scene *scene, int force)
