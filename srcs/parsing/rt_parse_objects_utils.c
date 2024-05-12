@@ -29,47 +29,32 @@ int	rt_parse_material(t_scene *scene, char *str, t_material *material)
 	return (1);
 }
 
-void	setup_quad(t_objects *objects[6], char **s, int j)
+void	setup_quad(t_objects *o[6], char **s, int j)
 {
-	objects[j]->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	o[j]->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	o[j]->quad->right_corner = (t_vec3f){0, ft_atof(s[3]), 0};
+	o[j]->quad->up_corner = (t_vec3f){ft_atof(s[2]), 0, 0};
 	if (j == 0)
-	{
-		objects[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
-		objects[j]->quad->right_corner = (t_vec3f){ft_atof(s[2]), 0, 0};
-	}
-	else if (j == 1)
-	{
-		objects[j]->quad->up_corner = (t_vec3f){ft_atof(s[2]), 0, 0};
-		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(s[3]), 0};
-	}
-	else if (j == 2)
-	{
-		objects[j]->origin = v_add_v(objects[j]->origin, \
-							(t_vec3f){0, 0, -ft_atof(s[2])});
-		objects[j]->quad->up_corner = (t_vec3f){0, 0, ft_atof(s[2])};
-		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(s[3]), 0};
-	}
-	else if (j == 3)
-	{
-		objects[j]->origin = v_add_v(objects[j]->origin, \
-							(t_vec3f){ft_atof(s[2]), 0, 0});
-		objects[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
-		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(s[3]), 0};
-	}
-	else if (j == 4)
-	{
-		objects[j]->origin = v_add_v(objects[j]->origin, \
-							(t_vec3f){ft_atof(s[2]), 0, -ft_atof(s[2])});
-		objects[j]->quad->up_corner = (t_vec3f){-ft_atof(s[2]), 0, 0};
-		objects[j]->quad->right_corner = (t_vec3f){0, ft_atof(s[3]), 0};
-	}
-	else if (j == 5)
-	{
-		objects[j]->origin = v_add_v(objects[j]->origin, \
-							(t_vec3f){0, ft_atof(s[3]), 0});
-		objects[j]->quad->up_corner = (t_vec3f){ft_atof(s[2]), 0, 0};
-		objects[j]->quad->right_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
-	}
+		o[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
+	if (j == 0)
+		o[j]->quad->right_corner = (t_vec3f){ft_atof(s[2]), 0, 0};
+	if (j == 2)
+		o[j]->origin = v_add_v(o[j]->origin, (t_vec3f){0, 0, -ft_atof(s[2])});
+	if (j == 2)
+		o[j]->quad->up_corner = (t_vec3f){0, 0, ft_atof(s[2])};
+	if (j == 3)
+		o[j]->origin = v_add_v(o[j]->origin, (t_vec3f){ft_atof(s[2]), 0, 0});
+	if (j == 3)
+		o[j]->quad->up_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
+	if (j == 4)
+		o[j]->origin = v_add_v(o[j]->origin, \
+					(t_vec3f){ft_atof(s[2]), 0, -ft_atof(s[2])});
+	if (j == 4)
+		o[j]->quad->up_corner = (t_vec3f){-ft_atof(s[2]), 0, 0};
+	if (j == 5)
+		o[j]->origin = v_add_v(o[j]->origin, (t_vec3f){0, ft_atof(s[3]), 0});
+	if (j == 5)
+		o[j]->quad->right_corner = (t_vec3f){0, 0, -ft_atof(s[2])};
 }
 
 void	calculate_up_right(t_vec3f normal, t_vec3f *up, t_vec3f *right)

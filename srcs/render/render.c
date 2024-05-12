@@ -14,7 +14,7 @@
 
 t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
-	t_hit_info	hit_info;
+	t_hit_info	hit;
 	t_vec3f		l_c[2];
 	t_ray		ray;
 	int			is_specular;
@@ -27,15 +27,15 @@ t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 	i = -1;
 	while (++i < (!scene->mouse.is_pressed * (scene->camera->bounce - 2)) + 2)
 	{
-		hit_info = trace_ray(scene, ray);
-		if (hit_info.distance < 0.0f)
+		hit = trace_ray(scene, ray);
+		if (hit.distance < 0.0f)
 			l_c[0] = v_add_v(l_c[0], v_mul_f(scene->ambient_light->color,
 						scene->ambient_light->ratio));
-		if (hit_info.distance < 0.0f)
+		if (hit.distance < 0.0f)
 			break ;
-		ray = new_ray(hit_info, ray, thread, &is_specular);
-		calcul_light(hit_info, scene, &l_c[0], &l_c[1], is_specular);
-		if (hit_info.obj->material.emission_power > 0.0f)
+		ray = new_ray(hit, ray, thread, &is_specular);
+		calcul_light(hit, scene, (t_vec3f *[2]){&l_c[0], &l_c[1]}, is_specular);
+		if (hit.obj->material.emission_power > 0.0f)
 			break ;
 	}
 	return (v_mul_v(l_c[0], l_c[1]));
@@ -100,12 +100,8 @@ void	render_server(t_scene *scene)
 	}
 }
 
-int	rt_render_scene(t_scene *scene)
+void	rt_init_render(t_scene *scene)
 {
-	int			i;
-	u_int64_t	start;
-	t_threads	threads[THREADS];
-
 	if (scene->mlx->frame_index == 1)
 	{
 		ft_free_tab((void **)(scene->mlx->acc_img));
@@ -117,7 +113,16 @@ int	rt_render_scene(t_scene *scene)
 		scene->camera->rotation_matrix_x);
 	apply_rotation_matrix_y(scene->camera->direction.y,
 		scene->camera->rotation_matrix_y);
-	start = get_time();
+}
+
+int	rt_render_scene(t_scene *scene)
+{
+	int			i;
+	u_int64_t	t;
+	t_threads	threads[THREADS];
+
+	rt_init_render(scene);
+	t = get_time();
 	i = -1;
 	while (++i < THREADS)
 	{
@@ -125,17 +130,15 @@ int	rt_render_scene(t_scene *scene)
 		threads[i].scene = scene;
 		pthread_create(&(threads[i].thread), NULL, draw, (threads + i));
 	}
-	i = -1;
-	while (++i < THREADS)
+	while (--i >= 0)
 		pthread_join(threads[i].thread, NULL);
 	if (scene->server.ip)
 		render_server(scene);
 	else
 		rt_render_image(scene, bloom(scene, scene->mlx->final_img));
-	if(scene->server.ip)
+	if (scene->server.ip)
 		printf("Send time : %lu ms, ", scene->server.send_time);
-	printf("Rendering scene : %lu ms %d            \r", get_time() - start,
-		scene->mlx->frame_index);
+	printf("Rendering : %lu ms %d\r", get_time() - t, scene->mlx->frame_index);
 	fflush(stdout);
 	scene->mlx->frame_index = scene->mlx->frame_index * scene->mlx->is_acc + 1;
 	return (0);

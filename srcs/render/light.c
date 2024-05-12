@@ -51,7 +51,7 @@ void	calcul_color(t_vec3f *color, t_hit_info hit, int is_spec)
 		*color = v_mul_v(*color, get_texture_color(hit, is_spec));
 }
 
-void	calcul_light(t_hit_info h, t_scene *s, t_vec3f *l, t_vec3f *color, int is_specular)
+void	calcul_light(t_hit_info h, t_scene *s, t_vec3f *l_c[2], int is_specular)
 {
 	t_hit_info	shadow_h;
 	t_vec3f		l_direction;
@@ -72,9 +72,10 @@ void	calcul_light(t_hit_info h, t_scene *s, t_vec3f *l, t_vec3f *color, int is_s
 			dr = 0.0f;
 	}
 	if (dr > 0.0f && s->lights->ratio > 0.0f)
-		*l = v_add_v(*l, v_mul_f(s->lights->color, dr * s->lights->ratio));
+		*l_c[0] = v_add_v(*l_c[0], \
+				v_mul_f(s->lights->color, dr * s->lights->ratio));
 	if (h.obj->material.emission_power > 0.0f)
-		*l = v_add_v(*l, v_mul_f(h.obj->material.color, \
-				h.obj->material.emission_power));
-	calcul_color(color, h, is_specular);
+		*l_c[0] = v_add_v(*l_c[0], \
+				v_mul_f(h.obj->material.color, h.obj->material.emission_power));
+	calcul_color(l_c[1], h, is_specular);
 }
