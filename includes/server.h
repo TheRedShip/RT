@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/11 17:47:54 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:41:03 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define SOCKET_BUFFER_SIZE 100000
 # define MAX_BUFFER 5000
-# define BLOCK_SIZE 1000
+# define MAX_SEND_TIME 500
 
 typedef struct s_srv_threads
 {
@@ -54,5 +54,6 @@ void			wait_threads(t_srv_threads *thrds);
 int				start_server(t_scene *scene, char *port_str);
 pthread_t		init_server_hooks(t_scene *scene);
 int				get_stopped(t_scene *scene);
+void			reset_img(t_vec3f **img);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/05/01 17:03:04 by tomoron          ###   ########.fr        #
+#    Updated: 2024/05/12 18:19:22 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,20 +130,20 @@ SRC_BVH		:=	bvh/boundary.c							\
 				bvh/box_intersect.c						\
 				bvh/bvh_creation.c						\
 
-SRC_MULTI_S	:=	multi_pc/server/server.c			\
-				multi_pc/server/handle_clients.c	\
-				multi_pc/server/lst_buffer.c		\
-				multi_pc/server/lst_threads.c		\
-				multi_pc/server/hooks.c				\
-				multi_pc/server/mutex.c
+SRC_CLUST_S	:=	clusterizer/server/server.c			\
+				clusterizer/server/handle_clients.c	\
+				clusterizer/server/lst_buffer.c		\
+				clusterizer/server/lst_threads.c		\
+				clusterizer/server/hooks.c				\
+				clusterizer/server/mutex.c
 
-SRC_MULTI_C :=	multi_pc/client/rt_to_server.c		
+SRC_CLUST_C :=	clusterizer/client/rt_to_server.c		
 
 
 ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_WINDOW) $(SRC_RENDER)			\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
-				$(SRC_MULTI_S) $(SRC_MULTI_C)		\
+				$(SRC_CLUST_S) $(SRC_CLUST_C)		\
 				$(SRC_BVH)							\
 				minirt.c
 				

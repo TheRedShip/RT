@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:35:16 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/11 16:12:01 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 18:55:54 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,8 @@ int	rt_render_scene(t_scene *scene)
 	else
 		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win,
 			scene->mlx->img.img, 0, 0);
+	if(scene->server.ip)
+		printf("Send time : %lu ms, ", scene->server.send_time);
 	printf("Rendering scene : %lu ms %d            \r", get_time() - start,
 		scene->mlx->frame_index);
 	fflush(stdout);

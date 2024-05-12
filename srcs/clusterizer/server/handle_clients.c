@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 15:46:08 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:36:02 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
 	int		len;
 
 	len = get_buffer_str_len(buffer);
-	printf("len : %d\n", len);
 	if(scene)
 	{
 		pthread_mutex_lock(&scene->server.mutex);
 		scene->server.acc_block_received += (len / 1000);
 		pthread_mutex_unlock(&scene->server.mutex);
 	}
-	if (expect_size && len != (unsigned)(WIDTH * HEIGHT * sizeof(t_vec3f)))
+	if (expect_size && len != ((unsigned)(WIDTH * HEIGHT * sizeof(t_vec3f)) + 1))
 	{
 		free_buffer(buffer);
 		return (0);
@@ -140,10 +139,10 @@ void	*handle_client(void *data)
 	pthread_mutex_lock(&scene->server.mutex);
 	if (!scene->server.stop && client_data)
 	{
-		add_to_acc_img((t_vec3f *)client_data, scene);
+		add_to_acc_img((t_vec3f *)(client_data + 1), scene);
 		if (scene->mlx->is_acc)
-			scene->mlx->frame_index++;
-		if (scene->mlx->frame_index == 3)
+			scene->mlx->frame_index+= *(uint8_t *)client_data;
+		if (scene->mlx->frame_index <=  3)
 		{
 			scene->server.acc_start_time = get_time();
 			scene->server.acc_block_received = 0;

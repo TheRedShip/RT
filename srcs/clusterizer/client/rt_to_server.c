@@ -6,23 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 14:29:17 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:09:00 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void print_binary(void *ptr, int num_bytes) {
-    unsigned char *byte_ptr = (unsigned char *)ptr;
-    
-    for (int i = num_bytes - 1; i >= 0; i--) {
-        for (int j = 7; j >= 0; j--) {
-            printf("%d", (byte_ptr[i] >> j) & 1);
-        }
-        printf(" ");
-    }
-    printf("\n");
-}
 
 int	open_client_socket(char *ip, uint16_t port)
 {
@@ -69,7 +57,6 @@ char	*get_scene_name(int fd)
 		msg_len += read_len;
 		buffer->len = read_len;
 		i = 0;
-		printf("msg_len : %d\ncam data len : %lu\n",msg_len,sizeof(t_vec3f) * 2); 
 		while (i < read_len && msg_len > (int)sizeof(t_vec3f) * 2)
 		{
 			if (!buffer->str[i])
@@ -86,7 +73,7 @@ void change_scene(t_scene *scene, char *scene_name)
 	init_scene(scene_name, scene);
 	create_window(scene, 1);
 	scene->objects = 0;
-	scene->mlx->is_acc = 0;
+	scene->server.nb_acc = 1;
 	rt_parse(scene_name, scene);
 	link_portals(scene);
 	printf("\nParsing successful\n");
@@ -114,6 +101,7 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 	if(ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
 	{
 		ft_memcpy(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2);
+		scene->server.nb_acc = 1;
 		return(0);
 	}
 	free(ptr);
@@ -136,18 +124,18 @@ void	wait_for_server(t_scene *scene)
 
 int	send_img(t_scene *scene, t_vec3f **img)
 {
-	int		dest_fd;
-	int		i;
+	int			dest_fd;
+	int			i;
 
+	if(scene->mlx->frame_index < scene->server.nb_acc)
+		return(1);
+	scene->server.send_time = get_time();
 	dest_fd = open_client_socket(scene->server.ip, scene->server.port);
 	if (dest_fd < 0)
 		return (0);
 	if(!check_scene_data(dest_fd, scene, 0))
-	{
-		close(dest_fd);
-		printf("changed \n");
-		return (1);
-	}
+		return(close(dest_fd) + 1);
+	write(dest_fd, &scene->server.nb_acc, 1);
 	i = 0;
 	while (i < HEIGHT)
 	{
@@ -159,6 +147,13 @@ int	send_img(t_scene *scene, t_vec3f **img)
 		i++;
 	}
 	close(dest_fd);
+	scene->mlx->frame_index = 0;
+	scene->server.send_time = get_time() - scene->server.send_time;
+	if(scene->server.send_time >= MAX_SEND_TIME)
+	{
+		scene->server.nb_acc++;
+		printf("\nnetwork bottleneck detected, increasing number of images to %d\n", scene->server.nb_acc);
+	}
 	return (1);
 }
 
@@ -175,7 +170,7 @@ void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 	}
 	scene->server.ip = ip;
 	scene->server.port = port;
-	scene->mlx->is_acc = 0;
+	scene->server.nb_acc = 1;
 	while (1)
 		rt_render_scene((void *)scene);
 }

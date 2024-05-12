@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:14:33 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/07 17:56:09 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 18:01:50 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ typedef struct s_server
 	uint16_t		port;
 	uint64_t		acc_start_time;
 	uint64_t		acc_block_received;
+	uint64_t		send_time;
+	uint8_t			nb_acc;
 	pthread_mutex_t	mutex;
 }	t_server;
 
