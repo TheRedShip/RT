@@ -38,10 +38,10 @@
 # include "server.h"
 # include "client.h"
 
-t_vec3f	**init_img(t_scene *scene, int width, int height);
+u_int64_t	get_time(void);
+
 int		rt_free_scene(t_scene *scene, int ex);
-void	destroy_mlx(t_scene *scene);
-void	link_portals(t_scene *scene);
+
 t_scene	*init_scene(char *name, t_scene *scene);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 19:09:00 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:45:37 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,15 @@ char	*get_scene_name(int fd)
 		read_len = read(fd, buffer->str, SOCKET_BUFFER_SIZE);
 		msg_len += read_len;
 		buffer->len = read_len;
-		i = 0;
-		while (i < read_len && msg_len > (int)sizeof(t_vec3f) * 2)
-		{
+		i = -1;
+		while (++i < read_len && msg_len > (int) sizeof(t_vec3f) * 2)
 			if (!buffer->str[i])
 				read_len = 0;
-			i++;
-		}
 	}
 	return (buffer_to_str(buffer, 0, 0));
 }
 
-void change_scene(t_scene *scene, char *scene_name)
+void	change_scene(t_scene *scene, char *scene_name)
 {
 	rt_free_scene(scene, 0);
 	init_scene(scene_name, scene);
@@ -84,8 +81,8 @@ void change_scene(t_scene *scene, char *scene_name)
 
 int	check_scene_data(int dest_fd, t_scene *scene, int force)
 {
-	char *srv_data;
-	char *ptr;
+	char	*srv_data;
+	char	*ptr;
 
 	srv_data = get_scene_name(dest_fd);
 	if (!srv_data)
@@ -96,16 +93,16 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 	{
 		printf("\nchanging to map %s\n", srv_data);
 		change_scene(scene, srv_data);
-		return(0);
+		return (0);
 	}
-	if(ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
+	if (ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
 	{
 		ft_memcpy(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2);
 		scene->server.nb_acc = 1;
 		return(0);
 	}
 	free(ptr);
-	return(1);
+	return (1);
 }
 
 void	wait_for_server(t_scene *scene)

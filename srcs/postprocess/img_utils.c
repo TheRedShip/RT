@@ -12,6 +12,25 @@
 
 #include "minirt.h"
 
+t_vec3f	**init_img(t_scene *scene, int width, int height)
+{
+	t_vec3f	**acc_img;
+	int		i;
+
+	acc_img = ft_calloc(height + 1, sizeof(t_vec3f *));
+	if (!acc_img)
+		rt_free_scene(scene, 1);
+	i = 0;
+	while (i < height)
+	{
+		acc_img[i] = ft_calloc(width + 1, sizeof(t_vec3f));
+		if (!acc_img[i])
+			rt_free_scene(scene, 1);
+		i++;
+	}
+	return (acc_img);
+}
+
 t_vec3f	**add_img(t_vec3f **treshold, t_vec3f **image)
 {
 	int	pos[2];

@@ -103,7 +103,8 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
-				objects/rt_lstobj.c					
+				objects/rt_lstobj.c					\
+				objects/texture_obj.c	
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\
@@ -111,10 +112,10 @@ SRC_WINDOW	:=	window/window.c						\
 
 SRC_RENDER	:=	render/render.c						\
 				render/utils.c						\
-				render/image.c						\
 				render/matrix.c						\
 				render/scatter.c					\
-				render/light.c
+				render/light.c						\
+				render/trace_ray.c
 
 SRC_VECTOR	:=	vector/vec_num3f.c					\
 				vector/vec_vec3f.c					\
@@ -145,7 +146,7 @@ ALL_SRCS	:=	$(SRC_PARSING) $(SRC_OBJECTS)		\
 				$(SRC_VECTOR) $(SRC_POSTPRO)		\
 				$(SRC_CLUST_S) $(SRC_CLUST_C)		\
 				$(SRC_BVH)							\
-				minirt.c
+				minirt.c free.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
 

@@ -48,10 +48,20 @@ float	ft_random(int i, int min, int max)
 		(2147483647.) * (max - min));
 }
 
-u_int64_t	get_time(void)
+t_vec2f	get_uv(t_threads *thread, float x, float y)
 {
-	struct timeval	tv;
+	static float	aspect_ratio = (float)WIDTH / (float)HEIGHT;
+	t_vec2f			uv;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
+	if (thread && thread->scene->mlx->antialiasing)
+	{
+		x += (float)(ft_random(thread->id, -1, 1));
+		y += (float)(ft_random(thread->id, -1, 1));
+	}
+	uv = (t_vec2f){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
+	uv.x = uv.x * 2.0f - 1.0f;
+	uv.y = uv.y * 2.0f - 1.0f;
+	uv.y = -uv.y;
+	uv.x *= aspect_ratio;
+	return (uv);
 }

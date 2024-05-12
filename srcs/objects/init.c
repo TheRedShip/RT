@@ -49,38 +49,41 @@ t_material	init_material(void)
 	return (mat);
 }
 
+void	allocate_object(t_scene *scene, t_objects *obj, int type)
+{
+	if (type == OBJ_SPHER)
+		obj->sphere = ft_calloc(1, sizeof(t_sphere));
+	else if (type == OBJ_PLANE)
+		obj->plane = ft_calloc(1, sizeof(t_plane));
+	else if (type == OBJ_CYLIN)
+		obj->cylinder = ft_calloc(1, sizeof(t_cylinder));
+	else if (type == OBJ_QUADS)
+		obj->quad = ft_calloc(1, sizeof(t_quad));
+	else if (type == OBJ_ELLIP)
+		obj->ellipse = ft_calloc(1, sizeof(t_ellipse));
+	else if (type == OBJ_PORTA)
+		obj->portal = ft_calloc(1, sizeof(t_portal));
+	else if (type == OBJ_TRIAN)
+		obj->triangle = ft_calloc(1, sizeof(t_triangle));
+	if (!(obj->sphere || obj->plane || obj->cylinder || obj->quad \
+		|| obj->ellipse || obj->portal || obj->triangle))
+		rt_free_scene(scene, 1);
+}
+
 t_objects	*rt_add_objects(t_scene *scene, char *type)
 {
 	int			i;
 	t_objects	*objects;
-	static char	*type_list_str[8] = {"sp", "pl", "cy", "qd", "el", "po", "tr", NULL};
+	static char	*types[8] = {"sp", "pl", "cy", "qd", "el", "po", "tr", NULL};
 
 	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
 		rt_free_scene(scene, 1);
 	i = -1;
-	while (type_list_str[++i] != NULL && ft_strncmp(type, type_list_str[i], 2))
+	while (types[++i] != NULL && ft_strncmp(type, types[i], 2))
 		;
 	*objects = (t_objects){.type = i, .material = init_material()};
-	if (!scene->objects)
-		scene->objects = objects;
-	else
-		scene->last_objects->next = objects;
-	scene->last_objects = objects;
-	if (i == OBJ_SPHER)
-		objects->sphere = ft_calloc(1, sizeof(t_sphere));
-	else if (i == OBJ_PLANE)
-		objects->plane = ft_calloc(1, sizeof(t_plane));
-	else if (i == OBJ_CYLIN)
-		objects->cylinder = ft_calloc(1, sizeof(t_cylinder));
-	else if (i == OBJ_QUADS)
-		objects->quad = ft_calloc(1, sizeof(t_quad));
-	else if (i == OBJ_ELLIP)
-		objects->ellipse = ft_calloc(1, sizeof(t_ellipse));
-	else if (i == OBJ_PORTA)
-		objects->portal = ft_calloc(1, sizeof(t_portal));
-	else if (i == OBJ_TRIAN)
-		objects->triangle = ft_calloc(1, sizeof(t_triangle));
+	rt_add_objlst(scene, objects);
+	allocate_object(scene, objects, i);
 	return (objects);
 }
-

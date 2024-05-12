@@ -107,4 +107,5 @@ void	create_bvh(t_scene *scene)
 			insert_bvh(scene->bvh, obj, 0, scene);
 		obj = obj->next;
 	}
+	printf("KD-Tree created\n");
 }
