@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sort_strs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:51:35 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 18:54:59 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:05:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+void	ft_swap(float *a, float *b, int condition)
+{
+	float	tmp;
+
+	if (condition)
+	{
+		tmp = *a;
+		*a = *b;
+		*b = tmp;
+	}
+}
 
 void	ft_swap_strs(char **a, char **b)
 {

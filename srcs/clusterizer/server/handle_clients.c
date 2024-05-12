@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 19:46:11 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 20:58:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	send_data_to_client(int client_fd, t_scene *scene)
 	return (ret > 0);
 }
 
-char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
+char	*buffer_to_str(t_buffer *buffer, int want_size, t_scene *scene)
 {
 	char	*res;
 	int		len;
@@ -35,7 +35,7 @@ char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
 		scene->server.acc_block_received += (len / 1000);
 		pthread_mutex_unlock(&scene->server.mutex);
 	}
-	if (expect_size && len != ((unsigned)(WIDTH * HEIGHT * sizeof(t_vec3f)) + 1))
+	if (want_size && len != ((unsigned)(WIDTH * HEIGHT * sizeof(t_vec3f)) + 1))
 	{
 		free_buffer(buffer);
 		return (0);
@@ -141,8 +141,8 @@ void	*handle_client(void *data)
 	{
 		add_to_acc_img((t_vec3f *)(client_data + 1), scene);
 		if (scene->mlx->is_acc)
-			scene->mlx->frame_index+= *(uint8_t *)client_data;
-		if (scene->mlx->frame_index <=  3)
+			scene->mlx->frame_index += *(uint8_t *)client_data;
+		if (scene->mlx->frame_index <= 3)
 		{
 			scene->server.acc_start_time = get_time();
 			scene->server.acc_block_received = 0;
