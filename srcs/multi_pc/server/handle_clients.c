@@ -6,11 +6,22 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/07 21:54:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 15:46:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	send_data_to_client(int client_fd, t_scene *scene)
+{
+	int ret;
+
+	ret = write(client_fd, &scene->camera->origin, sizeof(t_vec3f) * 2);
+	if(ret < 0)
+		return(0);
+	ret = write(client_fd, scene->name, ft_strlen(scene->name) + 1);
+	return(ret > 0);
+}
 
 char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
 {
@@ -18,6 +29,7 @@ char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
 	int		len;
 
 	len = get_buffer_str_len(buffer);
+	printf("len : %d\n", len);
 	if(scene)
 	{
 		pthread_mutex_lock(&scene->server.mutex);
@@ -117,7 +129,12 @@ void	*handle_client(void *data)
 	patate = data;
 	client_fd = patate->fd;
 	scene = patate->scene;
-	write(client_fd, scene->name, ft_strlen(scene->name) + 1);
+	if(!send_data_to_client(client_fd, scene))
+	{
+		close(client_fd);
+		printf("stopped\n");
+		return (0);
+	}
 	client_data = get_client_data(scene, client_fd);
 	close(client_fd);
 	pthread_mutex_lock(&scene->server.mutex);

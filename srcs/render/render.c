@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:35:16 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/07 15:35:16 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/11 16:12:01 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int	rt_render_scene(t_scene *scene)
 		rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
 	if (scene->server.ip)
 	{
-		if (!send_map(scene, scene->mlx->acc_img))
+		if (!send_img(scene, scene->mlx->acc_img))
 		{
 			printf("\nwaiting for server...\n");
 			wait_for_server(scene);

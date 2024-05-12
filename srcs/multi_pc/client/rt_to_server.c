@@ -6,11 +6,23 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/10 01:14:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 14:29:17 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void print_binary(void *ptr, int num_bytes) {
+    unsigned char *byte_ptr = (unsigned char *)ptr;
+    
+    for (int i = num_bytes - 1; i >= 0; i--) {
+        for (int j = 7; j >= 0; j--) {
+            printf("%d", (byte_ptr[i] >> j) & 1);
+        }
+        printf(" ");
+    }
+    printf("\n");
+}
 
 int	open_client_socket(char *ip, uint16_t port)
 {
@@ -39,9 +51,11 @@ char	*get_scene_name(int fd)
 {
 	int			i;
 	int			read_len;
+	int			msg_len;
 	t_buffer	*buffer;
 
 	buffer = 0;
+	msg_len = 0;
 	read_len = 1;
 	while (read_len)
 	{
@@ -52,9 +66,11 @@ char	*get_scene_name(int fd)
 			return (0);
 		}
 		read_len = read(fd, buffer->str, SOCKET_BUFFER_SIZE);
+		msg_len += read_len;
 		buffer->len = read_len;
 		i = 0;
-		while (i < read_len)
+		printf("msg_len : %d\ncam data len : %lu\n",msg_len,sizeof(t_vec3f) * 2); 
+		while (i < read_len && msg_len > (int)sizeof(t_vec3f) * 2)
 		{
 			if (!buffer->str[i])
 				read_len = 0;
@@ -64,7 +80,7 @@ char	*get_scene_name(int fd)
 	return (buffer_to_str(buffer, 0, 0));
 }
 
-int	change_scene(t_scene *scene, char *scene_name)
+void change_scene(t_scene *scene, char *scene_name)
 {
 	rt_free_scene(scene, 0);
 	init_scene(scene_name, scene);
@@ -72,11 +88,36 @@ int	change_scene(t_scene *scene, char *scene_name)
 	scene->objects = 0;
 	scene->mlx->is_acc = 0;
 	rt_parse(scene_name, scene);
-	create_bvh(scene);
 	link_portals(scene);
-	free(scene_name);
 	printf("\nParsing successful\n");
-	return (1);
+	if (scene->kdtree->is_bvh)
+		create_bvh(scene);
+	printf("Parsing complete\n");
+}
+
+int	check_scene_data(int dest_fd, t_scene *scene, int force)
+{
+	char *srv_data;
+	char *ptr;
+
+	srv_data = get_scene_name(dest_fd);
+	if (!srv_data)
+		return (0);
+	ptr = srv_data;
+	srv_data += sizeof(t_vec3f) * 2;
+	if (ft_strcmp(srv_data, scene->name) || force)
+	{
+		printf("\nchanging to map %s\n", srv_data);
+		change_scene(scene, srv_data);
+		return(0);
+	}
+	if(ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
+	{
+		ft_memcpy(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2);
+		return(0);
+	}
+	free(ptr);
+	return(1);
 }
 
 void	wait_for_server(t_scene *scene)
@@ -89,34 +130,28 @@ void	wait_for_server(t_scene *scene)
 		sleep(1);
 		fd = open_client_socket(scene->server.ip, scene->server.port);
 	}
+	check_scene_data(fd, scene, 1);
 	close(fd);
-	free(scene->name);
-	scene->name = NULL;
 }
 
-int	send_map(t_scene *scene, t_vec3f **map)
+int	send_img(t_scene *scene, t_vec3f **img)
 {
 	int		dest_fd;
 	int		i;
-	char	*scene_name;
 
 	dest_fd = open_client_socket(scene->server.ip, scene->server.port);
 	if (dest_fd < 0)
 		return (0);
-	scene_name = get_scene_name(dest_fd);
-	if (!scene_name)
-		return (0);
-	if (ft_strcmp(scene_name, scene->name))
+	if(!check_scene_data(dest_fd, scene, 0))
 	{
-		printf("\nchanging to map %s\n", scene_name);
 		close(dest_fd);
-		return (change_scene(scene, scene_name));
+		printf("changed \n");
+		return (1);
 	}
-	free(scene_name);
 	i = 0;
 	while (i < HEIGHT)
 	{
-		if (write(dest_fd, map[i], WIDTH * sizeof(t_vec3f)) < 0)
+		if (write(dest_fd, img[i], WIDTH * sizeof(t_vec3f)) < 0)
 		{
 			close(dest_fd);
 			return (0);
@@ -131,6 +166,7 @@ void	rt_to_server(t_scene *scene, char *ip, char *port_str)
 {
 	int	port;
 
+	signal(SIGPIPE, SIG_IGN);
 	port = ft_atoi(port_str);
 	if (port < 0 || port > 65535)
 	{

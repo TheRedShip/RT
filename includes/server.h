@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:33 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/07 17:55:40 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/11 17:47:54 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <netinet/in.h>
+# include <signal.h>
 
 # define SOCKET_BUFFER_SIZE 100000
 # define MAX_BUFFER 5000

@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:24:35 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/07 18:38:57 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 15:43:39 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	start_server(t_scene *scene, char *port_str)
 	uint16_t	port;
 	pthread_t	mlx_thread;
 
+	signal(SIGPIPE, SIG_IGN);
 	port = ft_atoi(port_str);
 	if (pthread_mutex_init(&scene->server.mutex, 0))
 		return (1);
