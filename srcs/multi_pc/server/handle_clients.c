@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 15:46:08 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 17:01:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	send_data_to_client(int client_fd, t_scene *scene)
 {
-	int ret;
+	int	ret;
 
 	ret = write(client_fd, &scene->camera->origin, sizeof(t_vec3f) * 2);
-	if(ret < 0)
-		return(0);
+	if (ret < 0)
+		return (0);
 	ret = write(client_fd, scene->name, ft_strlen(scene->name) + 1);
-	return(ret > 0);
+	return (ret > 0);
 }
 
 char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
@@ -30,7 +30,7 @@ char	*buffer_to_str(t_buffer *buffer, int expect_size, t_scene *scene)
 
 	len = get_buffer_str_len(buffer);
 	printf("len : %d\n", len);
-	if(scene)
+	if (scene)
 	{
 		pthread_mutex_lock(&scene->server.mutex);
 		scene->server.acc_block_received += (len / 1000);
@@ -95,28 +95,28 @@ void	add_to_acc_img(t_vec3f *data, t_scene *scene)
 	}
 }
 
-long unsigned get_avg_time(t_scene *scene)
+long unsigned	get_avg_time(t_scene *scene)
 {
-	long unsigned time;
+	long unsigned	time;
 
-	if(scene->mlx->frame_index <= 2)
+	if (scene->mlx->frame_index <= 2)
 		return (0);
 	time = get_time() - scene->server.acc_start_time;
-	return(time / (scene->mlx->frame_index - 2));
+	return (time / (scene->mlx->frame_index - 2));
 }
 
-float get_avg_speed(t_scene *scene)
+float	get_avg_speed(t_scene *scene)
 {
-	int seconds;
-	uint64_t nb_blocks;
-	float res;
+	int			s;
+	float		res;
+	uint64_t	nb_blocks;
 
-	seconds = (get_time() - scene->server.acc_start_time) / 1000;
-	if(!seconds)
-		return(0);
+	s = (get_time() - scene->server.acc_start_time) / 1000;
+	if (!s)
+		return (0);
 	nb_blocks = scene->server.acc_block_received / 1000;
-	res = (float)nb_blocks / (float)seconds;
-	return(res);
+	res = (float)nb_blocks / (float)s;
+	return (res);
 }
 
 void	*handle_client(void *data)
@@ -129,7 +129,7 @@ void	*handle_client(void *data)
 	patate = data;
 	client_fd = patate->fd;
 	scene = patate->scene;
-	if(!send_data_to_client(client_fd, scene))
+	if (!send_data_to_client(client_fd, scene))
 	{
 		close(client_fd);
 		printf("stopped\n");
@@ -148,7 +148,8 @@ void	*handle_client(void *data)
 			scene->server.acc_start_time = get_time();
 			scene->server.acc_block_received = 0;
 		}
-		printf("time : %lums, frames: %d, speed: %.2f MB/s         \r", get_avg_time(scene), scene->mlx->frame_index, get_avg_speed(scene));
+		printf("time : %lums, frames: %d, speed: %.2f MB/s         \r", \
+			get_avg_time(scene), scene->mlx->frame_index, get_avg_speed(scene));
 		fflush(stdout);
 	}
 	free(client_data);

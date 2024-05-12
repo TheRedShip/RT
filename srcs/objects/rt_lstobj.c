@@ -21,7 +21,7 @@ t_objects	*rt_lstobj_last(t_objects *lst)
 	return (lst);
 }
 
-void		rt_lstobj_addback(t_objects **lst, t_objects *new)
+void	rt_lstobj_addback(t_objects **lst, t_objects *new)
 {
 	t_objects	*last;
 
@@ -34,4 +34,13 @@ void		rt_lstobj_addback(t_objects **lst, t_objects *new)
 	}
 	last = rt_lstobj_last(*lst);
 	last->next = new;
+}
+
+void	rt_add_objlst(t_scene *scene, t_objects *objects)
+{
+	if (!scene->objects)
+		scene->objects = objects;
+	else
+		scene->last_objects->next = objects;
+	scene->last_objects = objects;
 }

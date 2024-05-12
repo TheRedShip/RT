@@ -28,7 +28,7 @@ int	rt_parse_sphere(char *line, t_scene *scene)
 		return (rt_return(s));
 	if (ft_tab_len(s) == 6)
 	{
-		o->sphere->rotation = rt_atof3(s[5], 0.0, 180.0);
+		o->sphere->rotation = rt_atof3(s[5], -180.0, 180.0);
 		o->sphere->rotation.x = o->sphere->rotation.x * M_PI / 180.0;
 		o->sphere->rotation.y = o->sphere->rotation.y * M_PI / 180.0;
 		o->sphere->rotation.z = o->sphere->rotation.z * M_PI / 180.0;

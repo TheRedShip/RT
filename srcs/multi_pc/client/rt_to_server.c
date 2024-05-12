@@ -6,23 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 14:29:17 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 18:26:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void print_binary(void *ptr, int num_bytes) {
-    unsigned char *byte_ptr = (unsigned char *)ptr;
-    
-    for (int i = num_bytes - 1; i >= 0; i--) {
-        for (int j = 7; j >= 0; j--) {
-            printf("%d", (byte_ptr[i] >> j) & 1);
-        }
-        printf(" ");
-    }
-    printf("\n");
-}
 
 int	open_client_socket(char *ip, uint16_t port)
 {
@@ -68,19 +56,16 @@ char	*get_scene_name(int fd)
 		read_len = read(fd, buffer->str, SOCKET_BUFFER_SIZE);
 		msg_len += read_len;
 		buffer->len = read_len;
-		i = 0;
-		printf("msg_len : %d\ncam data len : %lu\n",msg_len,sizeof(t_vec3f) * 2); 
-		while (i < read_len && msg_len > (int)sizeof(t_vec3f) * 2)
-		{
+		printf("mlen : %d\ncam data len : %lu\n", msg_len, sizeof(t_vec3f) * 2);
+		i = -1;
+		while (++i < read_len && msg_len > (int) sizeof(t_vec3f) * 2)
 			if (!buffer->str[i])
 				read_len = 0;
-			i++;
-		}
 	}
 	return (buffer_to_str(buffer, 0, 0));
 }
 
-void change_scene(t_scene *scene, char *scene_name)
+void	change_scene(t_scene *scene, char *scene_name)
 {
 	rt_free_scene(scene, 0);
 	init_scene(scene_name, scene);
@@ -97,8 +82,8 @@ void change_scene(t_scene *scene, char *scene_name)
 
 int	check_scene_data(int dest_fd, t_scene *scene, int force)
 {
-	char *srv_data;
-	char *ptr;
+	char	*srv_data;
+	char	*ptr;
 
 	srv_data = get_scene_name(dest_fd);
 	if (!srv_data)
@@ -109,15 +94,15 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 	{
 		printf("\nchanging to map %s\n", srv_data);
 		change_scene(scene, srv_data);
-		return(0);
+		return (0);
 	}
-	if(ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
+	if (ft_memcmp(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2))
 	{
 		ft_memcpy(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2);
-		return(0);
+		return (0);
 	}
 	free(ptr);
-	return(1);
+	return (1);
 }
 
 void	wait_for_server(t_scene *scene)
@@ -142,7 +127,7 @@ int	send_img(t_scene *scene, t_vec3f **img)
 	dest_fd = open_client_socket(scene->server.ip, scene->server.port);
 	if (dest_fd < 0)
 		return (0);
-	if(!check_scene_data(dest_fd, scene, 0))
+	if (!check_scene_data(dest_fd, scene, 0))
 	{
 		close(dest_fd);
 		printf("changed \n");

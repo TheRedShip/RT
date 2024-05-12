@@ -6,18 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:16:19 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 15:43:20 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/12 18:50:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	render_new_acc(t_scene *scene)
-{
-	rt_render_image(bloom(scene, scene->mlx->final_img), &scene->mlx->img);
-	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->win, \
-							scene->mlx->img.img, 0, 0);
-}
 
 int	server_stop(void *data)
 {
@@ -33,16 +26,16 @@ int	server_stop(void *data)
 
 void	reset_img(t_vec3f **img)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
-	while(i < HEIGHT)
+	while (i < HEIGHT)
 	{
 		j = 0;
-		while(j < WIDTH)
+		while (j < WIDTH)
 		{
-			img[i][j] = (t_vec3f){0, 0,0};
+			img[i][j] = (t_vec3f){0, 0, 0};
 			j++;
 		}
 		i++;
@@ -55,7 +48,7 @@ int	server_key_hook(int key, void *data)
 
 	scene = data;
 	pthread_mutex_lock(&scene->server.mutex);
-	if(key_move_hook(key, scene))
+	if (key_move_hook(key, scene))
 	{
 		scene->mlx->frame_index = 1;
 		reset_img(scene->mlx->acc_img);
@@ -93,7 +86,7 @@ int	server_loop_hook(void *data)
 		scene->camera->rotation_matrix_x);
 	apply_rotation_matrix_y(scene->camera->direction.y,
 		scene->camera->rotation_matrix_y);
-	render_new_acc(scene);
+	rt_render_image(scene, bloom(scene, scene->mlx->final_img));
 	pthread_mutex_unlock(&scene->server.mutex);
 	usleep(1000 * 100);
 	return (0);
@@ -104,7 +97,6 @@ int	mouse_hook_press_server(int button, int x, int y, t_scene *scene)
 	t_vec2f		uv;
 	t_ray		ray;
 	t_hit_info	hit_info;
-
 
 	pthread_mutex_lock(&scene->server.mutex);
 	if (button == 3)
@@ -128,8 +120,8 @@ int	mouse_hook_press_server(int button, int x, int y, t_scene *scene)
 
 int	mouse_hook_release_server(int button, int x, int y, t_scene *scene)
 {
-	(void)x;
-	(void)y;
+	(void) x;
+	(void) y;
 	if (button == 3)
 	{
 		pthread_mutex_lock(&scene->server.mutex);

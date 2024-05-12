@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_hit_info	hit_sphere(t_ray r, t_objects *obj, t_sphere *sphere)
+t_hit_info	hit_sphere(t_ray r, t_objects *obj, t_sphere *sp)
 {
 	float		a;
 	float		b;
@@ -20,20 +20,15 @@ t_hit_info	hit_sphere(t_ray r, t_objects *obj, t_sphere *sphere)
 	t_hit_info	hit_info;
 	float		discriminant;
 
+	hit_info.distance = -1.0f;
+	r.origin = v_sub_v(r.origin, obj->origin);
 	a = v_dot(r.direction, r.direction);
-	b = (2 * r.origin.x * r.direction.x - 2 * r.direction.x * obj->origin.x) + \
-		(2 * r.origin.y * r.direction.y - 2 * r.direction.y * obj->origin.y) + \
-		(2 * r.origin.z * r.direction.z - 2 * r.direction.z * obj->origin.z);
-	c = (r.origin.x * r.origin.x - 2 * r.origin.x * obj->origin.x + obj->origin.x * obj->origin.x) + 
-		(r.origin.y * r.origin.y - 2 * r.origin.y * obj->origin.y + obj->origin.y * obj->origin.y) + 
-		(r.origin.z * r.origin.z - 2 * r.origin.z * obj->origin.z + obj->origin.z * obj->origin.z) - 
-		(sphere->diameter / 2 * sphere->diameter / 2);
+	b = 2.0f * v_dot(r.origin, r.direction);
+	c = v_dot(r.origin, r.origin) - (sp->diameter / 2) * (sp->diameter / 2);
+	r.origin = v_add_v(r.origin, obj->origin);
 	discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0.0f)
-	{
-		hit_info.distance = -1.0f;
 		return (hit_info);
-	}
 	hit_info.distance = (-b - sqrt(discriminant)) / (2.0f * a);
 	if (hit_info.distance < 0.0f)
 		hit_info.distance = (-b + sqrt(discriminant)) / (2.0f * a);
@@ -48,7 +43,7 @@ t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
 	float		a;
 	float		b;
 	float		c;
-	t_hit_info	hit_info;
+	t_hit_info	hit;
 	float		discriminant;
 
 	ray.origin = v_sub_v(ray.origin, obj->origin);
@@ -65,33 +60,33 @@ t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *ellipse)
 	discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0.0f)
 	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
+		hit.distance = -1.0f;
+		return (hit);
 	}
-	hit_info.distance = (-b - sqrt(discriminant)) / (2.0f * a);
-	if (hit_info.distance < 0.0f)
-		hit_info.distance = (-b + sqrt(discriminant)) / (2.0f * a);
-	hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
-	hit_info.normal = normalize(v_sub_v(hit_info.position, obj->origin));
-	return (hit_info);
+	hit.distance = (-b - sqrt(discriminant)) / (2.0f * a);
+	if (hit.distance < 0.0f)
+		hit.distance = (-b + sqrt(discriminant)) / (2.0f * a);
+	hit.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit.distance));
+	hit.normal = normalize(v_sub_v(hit.position, obj->origin));
+	return (hit);
 }
 
 t_hit_info	hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 {
-	t_hit_info	hit_info;
+	t_hit_info	hit;
 	float		denom;
 
 	denom = v_dot(plane->normal, ray.direction);
 	if (denom == 0)
 	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
+		hit.distance = -1.0f;
+		return (hit);
 	}
-	hit_info.distance = v_dot(v_sub_v(obj->origin, ray.origin), \
+	hit.distance = v_dot(v_sub_v(obj->origin, ray.origin), \
 						plane->normal) / denom;
-	hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
-	hit_info.normal = plane->normal;
-	return (hit_info);
+	hit.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit.distance));
+	hit.normal = plane->normal;
+	return (hit);
 }
 
 t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
@@ -126,64 +121,78 @@ t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	return (hit_info);
 }
 
-t_hit_info	hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cylinder)
+t_hit_info	hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cy)
 {
-	t_hit_info	hit_info;
+	float		t_final;
+	t_hit_info	h;
+	t_vec3f		tmp1;
+	t_vec3f		tmp_vect;
+	t_vec3f		tmp2;
+	float		a;
+	float		b;
+	float		c;
+	float		discriminant;
+	float		t1;
+	float		t2;
+	float		tmp;
+	t_vec3f		mid_vect;
+	t_vec3f		mid_point;
+	float		tmp1_bis;
+	float		tmp2_bis;
+	float		t3;
+	float		t4;
 
-	t_vec3f tmp1 = v_cross(ray.direction, cylinder->orientation);
-	t_vec3f	tmp_vect = v_sub_v(ray.origin, obj->origin);
-	t_vec3f	tmp2 = v_cross(tmp_vect, cylinder->orientation);
-	
-	float	a = v_dot(tmp1, tmp1);
-	float	b = 2.0 * v_dot(tmp1, tmp2);
-	float	c = v_dot(tmp2, tmp2) - (cylinder->diameter / 2.0) * (cylinder->diameter / 2.0);
-	float	discriminant = b*b - 4.0 * a * c;
-
-	float	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
-	float	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
+	tmp1 = v_cross(ray.direction, cy->orientation);
+	tmp_vect = v_sub_v(ray.origin, obj->origin);
+	tmp2 = v_cross(tmp_vect, cy->orientation);
+	a = v_dot(tmp1, tmp1);
+	b = 2.0 * v_dot(tmp1, tmp2);
+	c = v_dot(tmp2, tmp2) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
+	discriminant = b * b - 4.0 * a * c;
+	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
+	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
 	if (t1 > t2)
 	{
-		float tmp = t1;
+		tmp = t1;
 		t1 = t2;
 		t2 = tmp;
 	}
-
-	t_vec3f	mid_vect = v_mul_f(cylinder->orientation, (cylinder->height / 2.0));
-	t_vec3f	mid_point = v_add_v(obj->origin, mid_vect);
-	float	tmp1_bis = v_dot(v_sub_v(mid_point, ray.origin), cylinder->orientation);
-	float	tmp2_bis = v_dot(ray.direction, cylinder->orientation);
-	float	t3 = (tmp1_bis + (cylinder->height / 2.0)) / tmp2_bis;
-	float	t4 = (tmp1_bis - (cylinder->height / 2.0)) / tmp2_bis;
+	mid_vect = v_mul_f(cy->orientation, (cy->height / 2.0));
+	mid_point = v_add_v(obj->origin, mid_vect);
+	tmp1_bis = v_dot(v_sub_v(mid_point, ray.origin), cy->orientation);
+	tmp2_bis = v_dot(ray.direction, cy->orientation);
+	t3 = (tmp1_bis + (cy->height / 2.0)) / tmp2_bis;
+	t4 = (tmp1_bis - (cy->height / 2.0)) / tmp2_bis;
 	if (t3 > t4)
 	{
-		float tmp = t3;
+		tmp = t3;
 		t3 = t4;
 		t4 = tmp;
 	}
 	if (t3 > t2 || t4 < t1)
 	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
+		h.distance = -1.0f;
+		return (h);
 	}
-	float	t_final = fmax(t1, t3);
+	t_final = fmax(t1, t3);
 	if (t_final < 0)
 		t_final = fmin(t2, t4);
 	if (t_final <= 0)
 	{
-		hit_info.distance = -1.0f;
-		return (hit_info);
+		h.distance = -1.0f;
+		return (h);
 	}
-	hit_info.distance = t_final;
-	hit_info.position = v_add_v(ray.origin, v_mul_f(ray.direction, hit_info.distance));
+	h.distance = t_final;
+	h.position = v_add_v(ray.origin, v_mul_f(ray.direction, h.distance));
 	if (t3 < t1)
-		hit_info.normal = normalize(v_sub_v(v_sub_v(hit_info.position, \
-						obj->origin), v_mul_f(cylinder->orientation, \
-						v_dot(v_sub_v(hit_info.position, obj->origin), \
-						cylinder->orientation))));
+		h.normal = normalize(v_sub_v(v_sub_v(h.position, \
+						obj->origin), v_mul_f(cy->orientation, \
+						v_dot(v_sub_v(h.position, obj->origin), \
+						cy->orientation))));
 	else
-		hit_info.normal = v_mul_f(cylinder->orientation, \
-					-ft_sign(v_dot(ray.direction, cylinder->orientation)));
-	return (hit_info);
+		h.normal = v_mul_f(cy->orientation, \
+					-ft_sign(v_dot(ray.direction, cy->orientation)));
+	return (h);
 }
 
 int	triangle_test(t_hit_info hit_info, t_triangle *tri, t_objects *obj, int abc)
@@ -228,7 +237,6 @@ t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
 		h.normal = v_mul_f(h.normal, -1);
 	return (h);
 }
-
 
 t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 {

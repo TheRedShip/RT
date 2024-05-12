@@ -109,4 +109,6 @@ void	rt_parse(char *file, t_scene *scene)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	link_portals(scene);
+	printf("Parsing successful\n");
 }

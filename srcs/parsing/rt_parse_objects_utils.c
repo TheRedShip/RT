@@ -104,3 +104,28 @@ void	scale_quad(t_vec3f *up, t_vec3f *right, t_vec3f *origin, t_vec2f size)
 	origin->y -= (right->y + up->y) * 0.5;
 	origin->z -= (right->z + up->z) * 0.5;
 }
+
+void	link_portals(t_scene *scene)
+{
+	t_objects	*obj;
+	t_objects	*tmp;
+	t_objects	*start;
+
+	obj = scene->objects;
+	start = obj;
+	while (obj)
+	{
+		if (obj->type == OBJ_PORTA)
+		{
+			tmp = start;
+			while (tmp && !obj->portal->linked_portal)
+			{
+				if (tmp->type == OBJ_PORTA
+					&& obj->portal->linked_id == tmp->portal->portal_id)
+					obj->portal->linked_portal = tmp;
+				tmp = tmp->next;
+			}
+		}
+		obj = obj->next;
+	}
+}

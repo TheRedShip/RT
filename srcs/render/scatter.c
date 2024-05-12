@@ -55,31 +55,30 @@ t_ray	dielectric_ray(t_hit_info hit_info, t_ray ray)
 	return (ray);
 }
 
-t_ray	portal_ray(t_scene *scene, t_hit_info *hit, t_ray ray)
+t_hit_info	portal_ray(t_scene *scene, t_hit_info hit, t_ray ray)
 {
 	t_vec3f	portal_offset;
 	t_vec3f	cross;
 
-	if (hit->obj->portal->linked_portal == NULL)
-		return (ray);
-	portal_offset = v_sub_v(hit->obj->portal->linked_portal->origin, \
-							hit->obj->origin);
-	ray.origin = v_add_v(hit->position, portal_offset);
+	if (hit.obj->portal->linked_portal == NULL)
+		return (hit);
+	portal_offset = v_sub_v(hit.obj->portal->linked_portal->origin, \
+							hit.obj->origin);
+	ray.origin = v_add_v(hit.position, portal_offset);
 	if (v_dot(ray.direction, \
-			hit->obj->portal->linked_portal->portal->quad.normal) < 0.0f)
+			hit.obj->portal->linked_portal->portal->quad.normal) < 0.0f)
 		ray.direction = reflect(ray.direction, \
-						hit->obj->portal->linked_portal->portal->quad.normal);
+						hit.obj->portal->linked_portal->portal->quad.normal);
 	else
 	{
-		cross = v_cross(hit->obj->portal->linked_portal->portal->quad.up_corner,
-				hit->obj->portal->linked_portal->portal->quad.normal);
+		cross = v_cross(hit.obj->portal->linked_portal->portal->quad.up_corner,
+				hit.obj->portal->linked_portal->portal->quad.normal);
 		cross = v_mul_f(normalize(cross), 2.0f);
 		ray.origin = v_sub_v(ray.origin, cross);
 	}
 	ray.origin = v_add_v(ray.origin, \
-		v_mul_f(hit->obj->portal->linked_portal->portal->quad.normal, 0.0001f));
-	*hit = trace_ray(scene, ray);
-	return (ray);
+		v_mul_f(hit.obj->portal->linked_portal->portal->quad.normal, 0.0001f));
+	return (trace_ray(scene, ray));
 }
 
 t_ray	new_ray(t_hit_info hit_info, t_ray ray, \
