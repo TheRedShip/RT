@@ -121,77 +121,38 @@ t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	return (hit_info);
 }
 
-t_hit_info	hit_cylinder(t_ray ray, t_objects *obj, t_cylinder *cy)
+t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
 {
-	float		t_final;
 	t_hit_info	h;
-	t_vec3f		tmp1;
-	t_vec3f		tmp_vect;
-	t_vec3f		tmp2;
-	float		a;
-	float		b;
-	float		c;
-	float		discriminant;
-	float		t1;
-	float		t2;
-	float		tmp;
-	t_vec3f		mid_vect;
-	t_vec3f		mid_point;
-	float		tmp1_bis;
-	float		tmp2_bis;
-	float		t3;
-	float		t4;
+	t_vec3f		tv[2];
+	float		tmp1_f;
+	float		g[3];
+	float		t[4];
 
-	tmp1 = v_cross(ray.direction, cy->orientation);
-	tmp_vect = v_sub_v(ray.origin, obj->origin);
-	tmp2 = v_cross(tmp_vect, cy->orientation);
-	a = v_dot(tmp1, tmp1);
-	b = 2.0 * v_dot(tmp1, tmp2);
-	c = v_dot(tmp2, tmp2) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
-	discriminant = b * b - 4.0 * a * c;
-	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
-	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
-	if (t1 > t2)
-	{
-		tmp = t1;
-		t1 = t2;
-		t2 = tmp;
-	}
-	mid_vect = v_mul_f(cy->orientation, (cy->height / 2.0));
-	mid_point = v_add_v(obj->origin, mid_vect);
-	tmp1_bis = v_dot(v_sub_v(mid_point, ray.origin), cy->orientation);
-	tmp2_bis = v_dot(ray.direction, cy->orientation);
-	t3 = (tmp1_bis + (cy->height / 2.0)) / tmp2_bis;
-	t4 = (tmp1_bis - (cy->height / 2.0)) / tmp2_bis;
-	if (t3 > t4)
-	{
-		tmp = t3;
-		t3 = t4;
-		t4 = tmp;
-	}
-	if (t3 > t2 || t4 < t1)
-	{
+	tv[0] = v_cross(ray.direction, cy->orientation);
+	tv[1] = v_cross(v_sub_v(ray.origin, o->origin), cy->orientation);
+	g[0] = v_dot(tv[0], tv[0]);
+	g[1] = 2.0 * v_dot(tv[0], tv[1]);
+	g[2] = v_dot(tv[1], tv[1]) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
+	t[0] = (-g[1] - sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	t[1] = (-g[1] + sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	ft_swap(&t[0], &t[1], t[0] > t[1]);
+	tmp1_f = v_dot(v_sub_v(v_add_v(o->origin, v_mul_f(cy->orientation,
+				(cy->height / 2.0))), ray.origin), cy->orientation);
+	t[2] = (tmp1_f + (cy->height / 2)) / v_dot(ray.direction, cy->orientation);
+	t[3] = (tmp1_f - (cy->height / 2)) / v_dot(ray.direction, cy->orientation);
+	ft_swap(&t[2], &t[3], t[2] > t[3]);
+	h.distance = fmin(fmax(t[0], t[2]), fmin(t[1], t[3]));
+	if (t[2] > t[1] || t[3] < t[0])
 		h.distance = -1.0f;
+	if (h.distance <= 0)
 		return (h);
-	}
-	t_final = fmax(t1, t3);
-	if (t_final < 0)
-		t_final = fmin(t2, t4);
-	if (t_final <= 0)
-	{
-		h.distance = -1.0f;
-		return (h);
-	}
-	h.distance = t_final;
 	h.position = v_add_v(ray.origin, v_mul_f(ray.direction, h.distance));
-	if (t3 < t1)
-		h.normal = normalize(v_sub_v(v_sub_v(h.position, \
-						obj->origin), v_mul_f(cy->orientation, \
-						v_dot(v_sub_v(h.position, obj->origin), \
-						cy->orientation))));
+	if (t[2] < t[0])
+		h.normal = normalize(v_sub_v(v_sub_v(h.position, o->origin), v_mul_f(\
+	cy->orientation, v_dot(v_sub_v(h.position, o->origin), cy->orientation))));
 	else
-		h.normal = v_mul_f(cy->orientation, \
-					-ft_sign(v_dot(ray.direction, cy->orientation)));
+		h.normal = v_mul_f(cy->orientation, -ft_sign(v_dot(ray.direction, cy->orientation)));
 	return (h);
 }
 

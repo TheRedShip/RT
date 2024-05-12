@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/05/10 16:42:31 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 21:05:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,8 @@ char	*ft_strlow(char *str);
 char	*ft_strupp(char *str);
 
 void	ft_swap_strs(char **a, char **b);
+
+void	ft_swap(float *a, float *b, int condition);
 
 void	ft_sort_strs_tab(char **tab, int size);
 

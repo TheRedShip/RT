@@ -30,8 +30,8 @@ typedef struct s_ray
 }	t_ray;
 
 t_vec3f		calculate_ray_direction(t_scene *scene, t_vec3f prev);
-void		calcul_light(t_hit_info hit_info, t_scene *scene, \
-			t_vec3f *light, t_vec3f *contribution, int is_specular);
+void		calcul_light(t_hit_info h, t_scene *s, \
+						t_vec3f *l_c[2], int is_specular);
 t_hit_info	trace_ray(t_scene *scene, t_ray ray);
 
 t_hit_info	portal_ray(t_scene *scene, t_hit_info hit, t_ray ray);
