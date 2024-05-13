@@ -106,30 +106,28 @@ int	rt_parse_quad(char *line, t_scene *scene)
 
 int	rt_parse_triangle(char *line, t_scene *scene)
 {
-	t_objects	*objects;
-	t_triangle	*tri;
+	t_objects	*o;
 	char		**s;
 
 	s = ft_split(line, '\t');
 	if (!s)
 		return (0);
-	objects = rt_add_objects(scene, "tr");
-	objects->origin = rt_atof3(s[1], -1000.0, 1000.0);
-	tri = objects->triangle;
-	tri->pb = rt_atof3(s[2], -1000.0, 1000.0);
-	tri->pc = rt_atof3(s[3], -1000.0, 1000.0);
-	tri->edge[0] = v_sub_v(tri->pb, objects->origin);
-	tri->edge[1] = v_sub_v(tri->pc, tri->pb);
-	tri->edge[2] = v_sub_v(objects->origin, tri->pc);
-	tri->normal = normalize(v_cross(tri->edge[2], tri->edge[0]));
-	tri->traverse = -v_dot(tri->normal, objects->origin);
-	objects->material.color = v_div_f(rt_atof3(s[4], 0.0f, 4000.0f), 255.0f);
-	if (objects->material.color.x > 1.0f || objects->material.color.y > 1.0f || \
-		objects->material.color.z > 1.0f)
-		objects->material.emission_power = (objects->material.color.x + \
-											objects->material.color.y + \
-											objects->material.color.z) / 3.0f;
-	if (rt_parse_material(scene, s[5], &(objects->material)) == -1)
+	o = rt_add_objects(scene, "tr");
+	o->origin = rt_atof3(s[1], -1000.0, 1000.0);
+	o->triangle->pb = rt_atof3(s[2], -1000.0, 1000.0);
+	o->triangle->pc = rt_atof3(s[3], -1000.0, 1000.0);
+	o->triangle->edge[0] = v_sub_v(o->triangle->pb, o->origin);
+	o->triangle->edge[1] = v_sub_v(o->triangle->pc, o->triangle->pb);
+	o->triangle->edge[2] = v_sub_v(o->origin, o->triangle->pc);
+	o->triangle->normal = \
+		normalize(v_cross(o->triangle->edge[2], o->triangle->edge[0]));
+	o->triangle->traverse = -v_dot(o->triangle->normal, o->origin);
+	o->material.color = v_div_f(rt_atof3(s[4], 0.0f, 4000.0f), 255.0f);
+	if (o->material.color.x > 1.0f || o->material.color.y > 1.0f || \
+		o->material.color.z > 1.0f)
+		o->material.emission_power = \
+		(o->material.color.x + o->material.color.y + o->material.color.z) / 3;
+	if (rt_parse_material(scene, s[5], &(o->material)) == -1)
 		return (rt_return(s));
 	ft_free_tab((void **)(s));
 	return (1);

@@ -18,11 +18,12 @@
 
 # define THREADS 16
 
+# include <math.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdint.h>
-# include <sys/time.h>
-# include <math.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 # include "libft.h"
 
@@ -40,8 +41,7 @@
 
 u_int64_t	get_time(void);
 
-int		rt_free_scene(t_scene *scene, int ex);
-
-t_scene	*init_scene(char *name, t_scene *scene);
+int			rt_free_scene(t_scene *scene, int ex);
+t_scene		*init_scene(char *name, t_scene *scene);
 
 #endif

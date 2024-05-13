@@ -36,19 +36,9 @@ int	is_file_valid(char *file_name)
 	return (1);
 }
 
-int	rt_verify_parsing(char *line, t_scene *scene)
+int	rt_verify_parsing_obj(char *line, t_scene *scene)
 {
-	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(scene, line))
-		return (rt_parse_ambient(line, scene));
-	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(scene, line))
-		return (rt_parse_camera(line, scene));
-	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(scene, line))
-		return (rt_parse_light(line, scene));
-	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(scene, line))
-		return (rt_parse_bloom(line, scene));
-	else if (ft_strncmp(line, "K", 1) == 0 && rt_verify_kdtree(scene, line))
-		return (rt_parse_kdtree(line, scene));
-	else if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
+	if (ft_strncmp(line, "sp\t", 3) == 0 && rt_verify_sphere(line))
 		return (rt_parse_sphere(line, scene));
 	else if (ft_strncmp(line, "pl\t", 3) == 0 && rt_verify_plane(line))
 		return (rt_parse_plane(line, scene));
@@ -72,11 +62,26 @@ int	rt_verify_parsing(char *line, t_scene *scene)
 		return (rt_parse_portal(line, scene));
 	else if (ft_strncmp(line, "tr\t", 3) == 0 && rt_verify_triangle(line))
 		return (rt_parse_triangle(line, scene));
+	return (0);
+}
+
+int	rt_verify_parsing(char *line, t_scene *scene)
+{
+	if (rt_verify_parsing_obj(line, scene))
+		return (1);
+	if (ft_strncmp(line, "A\t", 2) == 0 && rt_verify_ambient(scene, line))
+		return (rt_parse_ambient(line, scene));
+	else if (ft_strncmp(line, "C\t", 2) == 0 && rt_verify_camera(scene, line))
+		return (rt_parse_camera(line, scene));
+	else if (ft_strncmp(line, "L\t", 2) == 0 && rt_verify_light(scene, line))
+		return (rt_parse_light(line, scene));
+	else if (ft_strncmp(line, "B\t", 2) == 0 && rt_verify_bloom(scene, line))
+		return (rt_parse_bloom(line, scene));
+	else if (ft_strncmp(line, "K", 1) == 0 && rt_verify_kdtree(scene, line))
+		return (rt_parse_kdtree(line, scene));
 	else
-	{
 		if ((line[0] != '\r' && line[0] != '\n') && line[0] != '#')
 			return (0);
-	}
 	return (1);
 }
 

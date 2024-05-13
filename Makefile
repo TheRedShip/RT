@@ -84,6 +84,7 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					billard/billard_15.jpg			\
 					thing/skybox.jpg				
 
+
 SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/rt_parse_glass.c			\
 				parsing/rt_parse_lights.c			\
@@ -100,11 +101,11 @@ SRC_PARSING	:=  parsing/rt_parse.c					\
 				parsing/rt_verify_utils.c
 
 
-
 SRC_OBJECTS :=	objects/init.c						\
 				objects/hit_func.c					\
 				objects/rt_lstobj.c					\
-				objects/texture_obj.c	
+				objects/texture_obj.c				\
+				objects/hit_func_objects.c
 
 SRC_WINDOW	:=	window/window.c						\
 				window/hook.c						\

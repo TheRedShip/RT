@@ -62,15 +62,10 @@ int	rt_parse_cube(char *line, t_scene *scene)
 	return (1);
 }
 
-int	rt_parse_portal(char *line, t_scene *scene)
+void	setup_quad_portal(t_scene *scene, char **s)
 {
-	t_objects	*portal;
 	t_objects	*support;
-	char		**s;
 
-	s = ft_split(line, '\t');
-	if (!s)
-		return (0);
 	support = rt_add_objects(scene, "qd");
 	support->origin = rt_atof3(s[1], -1000.0, 1000.0);
 	support->quad->normal = rt_atof3(s[2], -1.0, 1.0);
@@ -83,6 +78,17 @@ int	rt_parse_portal(char *line, t_scene *scene)
 					v_dot(support->quad->normal, support->quad->normal));
 	support->material.color = v_div_f(rt_atof3(s[5], 0, 255), 255);
 	support->material.emission_power = 1.5;
+}
+
+int	rt_parse_portal(char *line, t_scene *scene)
+{
+	t_objects	*portal;
+	char		**s;
+
+	s = ft_split(line, '\t');
+	if (!s)
+		return (0);
+	setup_quad_portal(scene, s);
 	portal = rt_add_objects(scene, "po");
 	portal->portal->portal_id = ft_atoi(s[3]);
 	portal->portal->linked_id = ft_atoi(s[4]);
