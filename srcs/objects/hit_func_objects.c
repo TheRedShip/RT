@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 01:55:00 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 01:55:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/13 14:26:43 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,27 +112,42 @@ t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 	return (hit);
 }
 
+void	yavin_je_te_laisse_trouver_un_nom_pour_cette_fonction_j_ai_la_flemme_de_reflechir_ducoup_je_mets_un_nom_un_petit_peu_long(t_vec3f *tv, float *g, float *t, void **info)
+{
+	float	tmp1_f;
+
+	tv[0] = v_cross(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	tv[1] = v_cross(v_sub_v(((t_ray *)info[0])->origin, \
+		((t_objects *)info[1])->origin), ((t_cylinder *)info[2])->orientation);
+	g[0] = v_dot(tv[0], tv[0]);
+	g[1] = 2.0 * v_dot(tv[0], tv[1]);
+	g[2] = v_dot(tv[1], tv[1]) - (((t_cylinder *)info[2])->diameter / 2.0) *\
+		(((t_cylinder *)info[2])->diameter / 2.0);
+	t[0] = (-g[1] - sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	t[1] = (-g[1] + sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	ft_swap(&t[0], &t[1], t[0] > t[1]);
+	tmp1_f = v_dot(v_sub_v(v_add_v(((t_objects *)info[1])->origin, \
+		v_mul_f(((t_cylinder *)info[2])->orientation, \
+		(((t_cylinder *)info[2])->height / 2.0))), \
+		((t_ray *)info[0])->origin), ((t_cylinder *)info[2])->orientation);
+	t[2] = (tmp1_f + (((t_cylinder *)info[2])->height / 2)) \
+		/ v_dot(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	t[3] = (tmp1_f - (((t_cylinder *)info[2])->height / 2)) \
+		/ v_dot(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	ft_swap(&t[2], &t[3], t[2] > t[3]);
+}
+
 t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
 {
 	t_hit_info	h;
 	t_vec3f		tv[2];
-	float		tmp1_f;
 	float		g[3];
 	float		t[4];
 
-	tv[0] = v_cross(ray.direction, cy->orientation);
-	tv[1] = v_cross(v_sub_v(ray.origin, o->origin), cy->orientation);
-	g[0] = v_dot(tv[0], tv[0]);
-	g[1] = 2.0 * v_dot(tv[0], tv[1]);
-	g[2] = v_dot(tv[1], tv[1]) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
-	t[0] = (-g[1] - sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
-	t[1] = (-g[1] + sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
-	ft_swap(&t[0], &t[1], t[0] > t[1]);
-	tmp1_f = v_dot(v_sub_v(v_add_v(o->origin, v_mul_f(cy->orientation,
-						(cy->height / 2.0))), ray.origin), cy->orientation);
-	t[2] = (tmp1_f + (cy->height / 2)) / v_dot(ray.direction, cy->orientation);
-	t[3] = (tmp1_f - (cy->height / 2)) / v_dot(ray.direction, cy->orientation);
-	ft_swap(&t[2], &t[3], t[2] > t[3]);
+	yavin_je_te_laisse_trouver_un_nom_pour_cette_fonction_j_ai_la_flemme_de_reflechir_ducoup_je_mets_un_nom_un_petit_peu_long(tv, g, t, (void *[3]){&ray, o, cy});
 	h.distance = fmin(fmax(t[0], t[2]), fmin(t[1], t[3]));
 	if (t[2] > t[1] || t[3] < t[0])
 		h.distance = -1.0f;
@@ -143,6 +158,7 @@ t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
 		h.normal = normalize(v_sub_v(v_sub_v(h.position, o->origin), v_mul_f(\
 	cy->orientation, v_dot(v_sub_v(h.position, o->origin), cy->orientation))));
 	else
-		h.normal = v_mul_f(cy->orientation, -ft_sign(v_dot(ray.direction, cy->orientation)));
+		h.normal = v_mul_f(cy->orientation, -ft_sign(v_dot(ray.direction, \
+		cy->orientation)));
 	return (h);
 }
