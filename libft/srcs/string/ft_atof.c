@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:20:17 by rgramati          #+#    #+#             */
-/*   Updated: 2024/04/30 17:51:34 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/13 18:12:32 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static float	after_point(char *nptr, float res, int index)
 	return (res);
 }
 
-float			ft_atof(char *nptr)
+float	ft_atof(char *nptr)
 {
 	int		i;
 	int		sign;
