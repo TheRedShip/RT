@@ -55,6 +55,57 @@ t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
 	return (h);
 }
 
+void	cylinder_get_distance(t_vec3f *tv, float *g, float *t, void **info)
+{
+	float	tmp1_f;
+
+	tv[0] = v_cross(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	tv[1] = v_cross(v_sub_v(((t_ray *)info[0])->origin, \
+		((t_objects *)info[1])->origin), ((t_cylinder *)info[2])->orientation);
+	g[0] = v_dot(tv[0], tv[0]);
+	g[1] = 2.0 * v_dot(tv[0], tv[1]);
+	g[2] = v_dot(tv[1], tv[1]) - (((t_cylinder *)info[2])->diameter / 2.0) *\
+		(((t_cylinder *)info[2])->diameter / 2.0);
+	t[0] = (-g[1] - sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	t[1] = (-g[1] + sqrt(g[1] * g[1] - 4.0 * g[0] * g[2])) / (2.0 * g[0]);
+	ft_swap(&t[0], &t[1], t[0] > t[1]);
+	tmp1_f = v_dot(v_sub_v(v_add_v(((t_objects *)info[1])->origin, \
+		v_mul_f(((t_cylinder *)info[2])->orientation, \
+		(((t_cylinder *)info[2])->height / 2.0))), \
+		((t_ray *)info[0])->origin), ((t_cylinder *)info[2])->orientation);
+	t[2] = (tmp1_f + (((t_cylinder *)info[2])->height / 2)) \
+		/ v_dot(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	t[3] = (tmp1_f - (((t_cylinder *)info[2])->height / 2)) \
+		/ v_dot(((t_ray *)info[0])->direction, \
+		((t_cylinder *)info[2])->orientation);
+	ft_swap(&t[2], &t[3], t[2] > t[3]);
+}
+
+t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
+{
+	t_hit_info	h;
+	t_vec3f		tv[2];
+	float		g[3];
+	float		t[4];
+
+	cylinder_get_distance(tv, g, t, (void *[3]){&ray, o, cy});
+	h.distance = fmin(fmax(t[0], t[2]), fmin(t[1], t[3]));
+	if (t[2] > t[1] || t[3] < t[0])
+		h.distance = -1.0f;
+	if (h.distance <= 0)
+		return (h);
+	h.position = v_add_v(ray.origin, v_mul_f(ray.direction, h.distance));
+	if (t[2] < t[0])
+		h.normal = normalize(v_sub_v(v_sub_v(h.position, o->origin), v_mul_f(\
+	cy->orientation, v_dot(v_sub_v(h.position, o->origin), cy->orientation))));
+	else
+		h.normal = v_mul_f(cy->orientation, -ft_sign(v_dot(ray.direction, \
+		cy->orientation)));
+	return (h);
+}
+
 t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 {
 	t_hit_info	hit_info;

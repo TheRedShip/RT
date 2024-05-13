@@ -35,7 +35,6 @@ typedef enum e_mat_type
 typedef struct s_hit_info	t_hit_info;
 typedef struct s_ray		t_ray;
 
-t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy);
 t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *el);
 t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad);
 t_hit_info	hit_plane(t_ray ray, t_objects *obj, t_plane *plane);
