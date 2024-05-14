@@ -26,10 +26,8 @@ t_vec3f	get_bump_normal(t_hit_info hit_info, t_texture bump)
 		uv = get_plane_uv(hit_info);
 	else if (hit_info.obj->type == OBJ_QUADS)
 		uv = get_quad_uv(hit_info);
-	color_hex = get_pixel(&bump.data, \
+	color_hex = get_pixel(&bump.d, \
 			uv.x * (bump.width - 1), uv.y * (bump.height - 1));
-	// return (hit_info.normal);
-	
 	bump_normal = hex_to_rgb(color_hex);
 	bump_normal = v_add_f(v_mul_f(bump_normal, 2.0f), -1.0f);
 	bump_normal = normalize(bump_normal);
@@ -52,7 +50,7 @@ t_vec3f	get_texture_color(t_hit_info hit_info, int is_specular)
 		uv = get_plane_uv(hit_info);
 	else if (hit_info.obj->type == OBJ_QUADS)
 		uv = get_quad_uv(hit_info);
-	color_hex = get_pixel(&hit_info.obj->material.texture.data, \
+	color_hex = get_pixel(&hit_info.obj->material.texture.d, \
 						uv.x * (hit_info.obj->material.texture.width - 1), \
 						uv.y * (hit_info.obj->material.texture.height - 1));
 	color = hex_to_rgb(color_hex);

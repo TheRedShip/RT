@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void		init_texture(t_scene *s, t_material *material, char *pa)
+void	init_texture(t_scene *s, t_material *material, char *pa)
 {
 	t_texture	t;
 	t_texture	b;
@@ -22,26 +22,22 @@ void		init_texture(t_scene *s, t_material *material, char *pa)
 		pa[ft_strlen(pa) - 2] = '\0';
 	if (pa[ft_strlen(pa) - 1] == '\n')
 		pa[ft_strlen(pa) - 1] = '\0';
-	t.data.img = mlx_xpm_file_to_image(s->mlx->mlx, pa, &t.width, &t.height);
-	if (t.data.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
+	t.d.img = mlx_xpm_file_to_image(s->mlx->mlx, pa, &t.width, &t.height);
+	if (t.d.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
 		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), pa);
-	if (t.data.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
+	if (t.d.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
 		rt_free_scene(s, 1);
 	t.exist = 1;
-	t.data.addr = mlx_get_data_addr(t.data.img, &t.data.bits_per_pixel, \
-									&t.data.line_length, &t.data.endian);
+	t.d.addr = mlx_get_data_addr(t.d.img, &t.d.bpp, &t.d.size, &t.d.endian);
 	material->texture = t;
 	pa[ft_strlen(pa) - 4] = '\0';
 	bu_pa = ft_strjoin(pa, "_bump.xpm", "", 0);
-	printf("Bump map path: %s\n", bu_pa);
-	b.data.img = mlx_xpm_file_to_image(s->mlx->mlx, bu_pa, &b.width, &b.height);
+	b.d.img = mlx_xpm_file_to_image(s->mlx->mlx, bu_pa, &b.width, &b.height);
 	free(bu_pa);
-	if (b.data.img == NULL)
+	if (b.d.img == NULL)
 		return ;
-	printf("Bump map found\n");
 	b.exist = 1;
-	b.data.addr = mlx_get_data_addr(b.data.img, &b.data.bits_per_pixel, \
-									&b.data.line_length, &b.data.endian);
+	b.d.addr = mlx_get_data_addr(b.d.img, &b.d.bpp, &b.d.size, &b.d.endian);
 	material->bump_map = b;
 }
 

@@ -35,8 +35,7 @@ typedef enum e_mat_type
 typedef struct s_texture
 {
 	int			exist;
-	char		*path;
-	t_data		data;
+	t_data		d;
 	int			width;
 	int			height;
 }				t_texture;

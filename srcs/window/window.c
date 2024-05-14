@@ -24,7 +24,7 @@ void	create_window(t_scene *scene, int headless)
 		rt_free_scene(scene, 1);
 	scene->mlx->img.img = mlx_new_image(scene->mlx->mlx, WIDTH, HEIGHT);
 	scene->mlx->img.addr = mlx_get_data_addr(scene->mlx->img.img, \
-				&scene->mlx->img.bits_per_pixel, &scene->mlx->img.line_length, \
+				&scene->mlx->img.bpp, &scene->mlx->img.size, \
 				&scene->mlx->img.endian);
 }
 
@@ -32,12 +32,12 @@ void	put_pixel(t_data *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	dst = img->addr + (y * img->size + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
 unsigned int	get_pixel(t_data *img, int x, int y)
 {
 	return (*(unsigned int *)(img->addr + \
-		(y * img->line_length + x * (img->bits_per_pixel / 8))));
+		(y * img->size + x * (img->bpp / 8))));
 }

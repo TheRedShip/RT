@@ -68,9 +68,9 @@ void	rt_free_obj(t_scene *scene)
 		tmp = scene->objects;
 		scene->objects = scene->objects->next;
 		if (tmp->material.texture.exist == 1)
-			mlx_destroy_image(scene->mlx->mlx, tmp->material.texture.data.img);
+			mlx_destroy_image(scene->mlx->mlx, tmp->material.texture.d.img);
 		if (tmp->material.bump_map.exist == 1)
-			mlx_destroy_image(scene->mlx->mlx, tmp->material.bump_map.data.img);
+			mlx_destroy_image(scene->mlx->mlx, tmp->material.bump_map.d.img);
 		free(tmp->sphere);
 		free(tmp->plane);
 		free(tmp->cylinder);

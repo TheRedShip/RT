@@ -85,8 +85,6 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					thing/skybox.jpg				\
 					thing/concrete.jpg				\
 					thing/concrete_bump.jpg			\
-					thing/glass.jpg					\
-					thing/glass_bump.jpg			\
 					thing/crystal.jpg				\
 					thing/crystal_bump.jpg			\
 
