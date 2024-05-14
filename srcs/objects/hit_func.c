@@ -110,20 +110,25 @@ t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 {
 	t_hit_info	hit_info;
 
-	if (obj->type == OBJ_SPHER)
-		return (hit_sphere(ray, obj, obj->sphere));
-	else if (obj->type == OBJ_PLANE)
-		return (hit_plane(ray, obj, obj->plane));
-	else if (obj->type == OBJ_CYLIN)
-		return (hit_cylinder(ray, obj, obj->cylinder));
-	else if (obj->type == OBJ_QUADS)
-		return (hit_quad(ray, obj, obj->quad));
-	else if (obj->type == OBJ_ELLIP)
-		return (hit_ellipse(ray, obj, obj->ellipse));
-	else if (obj->type == OBJ_PORTA)
-		return (hit_quad(ray, obj, &obj->portal->quad));
-	else if (obj->type == OBJ_TRIAN)
-		return (hit_triangle(ray, obj, obj->triangle));
 	hit_info.distance = -1.0f;
+	if (obj->type == OBJ_SPHER)
+		hit_info = hit_sphere(ray, obj, obj->sphere);
+	else if (obj->type == OBJ_PLANE)
+		hit_info = hit_plane(ray, obj, obj->plane);
+	else if (obj->type == OBJ_CYLIN)
+		hit_info = hit_cylinder(ray, obj, obj->cylinder);
+	else if (obj->type == OBJ_QUADS)
+		hit_info = hit_quad(ray, obj, obj->quad);
+	else if (obj->type == OBJ_ELLIP)
+		hit_info = hit_ellipse(ray, obj, obj->ellipse);
+	else if (obj->type == OBJ_PORTA)
+		hit_info = hit_quad(ray, obj, &obj->portal->quad);
+	else if (obj->type == OBJ_TRIAN)
+		hit_info = hit_triangle(ray, obj, obj->triangle);
+	if (hit_info.distance > 0.0f && obj->material.bump_map.exist == 1)
+	{
+		hit_info.obj = obj;
+		hit_info.normal = get_bump_normal(hit_info, obj->material.bump_map);
+	}
 	return (hit_info);
 }

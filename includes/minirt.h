@@ -24,6 +24,7 @@
 # include <stdint.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <libgen.h>
 
 # include "libft.h"
 

@@ -15,9 +15,9 @@
 
 # include "minirt.h"
 
-typedef struct s_objects	t_objects;
 typedef struct s_bvh		t_bvh;
 typedef struct s_kd_tree	t_kd_tree;
+typedef struct s_objects	t_objects;
 
 typedef struct s_camera
 {
@@ -170,42 +170,5 @@ typedef struct s_triangle
 	t_vec3f		edge[3];
 	float		traverse;
 }				t_triangle;
-
-typedef struct s_texture
-{
-	int			exist;
-	char		*path;
-	t_data		data;
-	int			width;
-	int			height;
-}				t_texture;
-
-typedef struct s_material
-{
-	int			type;
-	t_vec3f		color;
-	t_texture	texture;
-	int			checkered;
-	float		roughness;
-	float		specular_probs;
-	float		emission_power;
-	float		refraction_index;
-}				t_material;
-
-typedef struct s_objects
-{
-	int					type;
-	t_vec3f				origin;
-	t_quad				*quad;
-	t_plane				*plane;
-	t_sphere			*sphere;
-	t_portal			*portal;
-	t_ellipse			*ellipse;
-	t_triangle			*triangle;
-	t_cylinder			*cylinder;
-	t_material			material;
-	struct s_objects	*next;
-	struct s_objects	*next_bvh;
-}				t_objects;
 
 #endif

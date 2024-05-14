@@ -59,15 +59,13 @@ void	calcul_spots_lights(t_scene *s, float *dr, t_hit_info h, t_vec3f *l_c[2])
 
 	if (s->lights->ratio > 0.0f)
 	{
-		l_direction = v_mul_f(normalize(v_sub_v(h.position, s->lights->origin)), -1.0f);
+		l_direction = normalize(v_sub_v(s->lights->origin, h.position));
 		shadow_ray.origin = v_add_v(h.position, v_mul_f(h.normal, 0.0001f));
 		shadow_ray.direction = l_direction;
 		shadow_h = trace_ray(s, shadow_ray);
 		if (!(shadow_h.distance > 0.0f && shadow_h.distance < \
 				v_length(v_sub_v(s->lights->origin, h.position))))
-			*dr = v_dot(h.normal, l_direction);
-		if (*dr < 0.0f)
-			*dr = 0.0f;
+			*dr = fmax(0.0f, v_dot(h.normal, l_direction));
 		t_vec3f reflection_direction = reflect(l_direction, h.normal);
 		float specular_term = pow(fmax(0.0f, v_dot(reflection_direction, normalize(v_sub_v(h.position, s->camera->origin)))), 5);//h.obj->material.specular_exponent);
 		t_vec3f specular_color = v_mul_f(s->lights->color, specular_term * s->lights->ratio * *dr);

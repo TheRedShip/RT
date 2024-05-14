@@ -24,7 +24,7 @@ int	rt_parse_material(t_scene *scene, char *str, t_material *material)
 	if (ft_tab_len(split) == 3 && ft_atoi(split[2]) == 1)
 		material->checkered = 1;
 	if (ft_tab_len(split) == 4)
-		material->texture = init_texture(scene, split[3]);
+		init_texture(scene, material, split[3]);
 	ft_free_tab((void **)(split));
 	return (1);
 }

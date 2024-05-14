@@ -12,26 +12,37 @@
 
 #include "minirt.h"
 
-t_texture	init_texture(t_scene *scene, char *path)
+void		init_texture(t_scene *s, t_material *material, char *pa)
 {
-	t_texture	tex;
+	t_texture	t;
+	t_texture	b;
+	char		*bu_pa;
 
-	tex.exist = 1;
-	tex.path = path;
-	if (tex.path[ft_strlen(tex.path) - 2] == '\r')
-		tex.path[ft_strlen(tex.path) - 2] = '\0';
-	if (tex.path[ft_strlen(tex.path) - 1] == '\n')
-		tex.path[ft_strlen(tex.path) - 1] = '\0';
-	tex.data.img = mlx_xpm_file_to_image(scene->mlx->mlx, tex.path, \
-						&tex.width, &tex.height);
-	if (tex.data.img == NULL)
-	{
-		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), path);
-		rt_free_scene(scene, 1);
-	}
-	tex.data.addr = mlx_get_data_addr(tex.data.img, &tex.data.bits_per_pixel, \
-									&tex.data.line_length, &tex.data.endian);
-	return (tex);
+	if (pa[ft_strlen(pa) - 2] == '\r')
+		pa[ft_strlen(pa) - 2] = '\0';
+	if (pa[ft_strlen(pa) - 1] == '\n')
+		pa[ft_strlen(pa) - 1] = '\0';
+	t.data.img = mlx_xpm_file_to_image(s->mlx->mlx, pa, &t.width, &t.height);
+	if (t.data.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
+		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), pa);
+	if (t.data.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
+		rt_free_scene(s, 1);
+	t.exist = 1;
+	t.data.addr = mlx_get_data_addr(t.data.img, &t.data.bits_per_pixel, \
+									&t.data.line_length, &t.data.endian);
+	material->texture = t;
+	pa[ft_strlen(pa) - 4] = '\0';
+	bu_pa = ft_strjoin(pa, "_bump.xpm", "", 0);
+	printf("Bump map path: %s\n", bu_pa);
+	b.data.img = mlx_xpm_file_to_image(s->mlx->mlx, bu_pa, &b.width, &b.height);
+	free(bu_pa);
+	if (b.data.img == NULL)
+		return ;
+	printf("Bump map found\n");
+	b.exist = 1;
+	b.data.addr = mlx_get_data_addr(b.data.img, &b.data.bits_per_pixel, \
+									&b.data.line_length, &b.data.endian);
+	material->bump_map = b;
 }
 
 t_material	init_material(void)
@@ -46,6 +57,8 @@ t_material	init_material(void)
 	mat.specular_probs = 0.0f;
 	mat.emission_power = 0.0f;
 	mat.refraction_index = 1.0f;
+	mat.texture.exist = 0;
+	mat.bump_map.exist = 0;
 	return (mat);
 }
 
