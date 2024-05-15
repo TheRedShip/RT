@@ -12,6 +12,7 @@
 
 #include "minirt.h"
 
+__always_inline
 t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
 	t_ray		ray;

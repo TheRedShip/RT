@@ -12,16 +12,19 @@
 
 #include "minirt.h"
 
+__always_inline
 float	v_dot(t_vec3f a, t_vec3f b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
+__always_inline
 t_vec3f	normalize(t_vec3f v)
 {
 	return (v_div_f(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z)));
 }
 
+__always_inline
 t_vec3f	clamp_max(t_vec3f vec, float max)
 {
 	return ((t_vec3f){fminf(vec.x, max), \
@@ -29,11 +32,13 @@ t_vec3f	clamp_max(t_vec3f vec, float max)
 						fminf(vec.z, max)});
 }
 
+__always_inline
 t_vec3f	reflect(t_vec3f vec, t_vec3f normal)
 {
 	return (v_sub_v(vec, v_mul_f(normal, 2 * v_dot(vec, normal))));
 }
 
+__always_inline
 t_vec3f	refract(t_vec3f uv, t_vec3f n, float etai_over_etat)
 {
 	float	cos_theta;

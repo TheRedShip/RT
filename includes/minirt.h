@@ -18,6 +18,8 @@
 
 # define THREADS 16
 
+# include <sys/cdefs.h>
+
 # include <math.h>
 # include <fcntl.h>
 # include <stdio.h>

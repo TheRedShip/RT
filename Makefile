@@ -172,7 +172,7 @@ HEADERS		:=	includes/minirt.h
 
 CC          :=	clang
 
-CFLAGS      :=	-Ofast -pthread -g -Wall -Wextra -Werror
+CFLAGS      :=	-Ofast -pthread -Wall -Wextra -Werror -flto
 
 IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes -I $(MINILIB_DIR)
 

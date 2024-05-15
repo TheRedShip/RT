@@ -12,6 +12,7 @@
 
 #include "minirt.h"
 
+__always_inline
 t_hit_info	hit_sphere(t_ray r, t_objects *obj, t_sphere *sp)
 {
 	float		a;
@@ -38,6 +39,7 @@ t_hit_info	hit_sphere(t_ray r, t_objects *obj, t_sphere *sp)
 	return (hit_info);
 }
 
+__always_inline
 t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *el)
 {
 	float		abc[3];
@@ -67,6 +69,7 @@ t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *el)
 	return (hit);
 }
 
+__always_inline
 t_hit_info	hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 {
 	t_hit_info	hit;
@@ -83,6 +86,7 @@ t_hit_info	hit_plane(t_ray ray, t_objects *obj, t_plane *plane)
 	return (hit);
 }
 
+__always_inline
 t_hit_info	hit_quad(t_ray ray, t_objects *obj, t_quad *quad)
 {
 	float		denom;

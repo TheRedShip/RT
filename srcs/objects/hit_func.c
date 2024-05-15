@@ -12,6 +12,7 @@
 
 #include "minirt.h"
 
+__always_inline
 int	triangle_test(t_hit_info hit_info, t_triangle *tri, t_objects *obj, int abc)
 {
 	t_vec3f		diff;
@@ -29,6 +30,7 @@ int	triangle_test(t_hit_info hit_info, t_triangle *tri, t_objects *obj, int abc)
 	return (test >= 0);
 }
 
+__always_inline
 t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
 {
 	t_hit_info	h;
@@ -55,6 +57,7 @@ t_hit_info	hit_triangle(t_ray ray, t_objects *obj, t_triangle *tri)
 	return (h);
 }
 
+__always_inline
 void	cylinder_get_distance(t_vec3f *tv, float *g, float *t, void **info)
 {
 	float	tmp1_f;
@@ -83,6 +86,7 @@ void	cylinder_get_distance(t_vec3f *tv, float *g, float *t, void **info)
 	ft_swap(&t[2], &t[3], t[2] > t[3]);
 }
 
+__always_inline
 t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
 {
 	t_hit_info	h;
@@ -106,6 +110,7 @@ t_hit_info	hit_cylinder(t_ray ray, t_objects *o, t_cylinder *cy)
 	return (h);
 }
 
+__always_inline
 t_hit_info	hit_objects(t_ray ray, t_objects *obj)
 {
 	t_hit_info	hit_info;
