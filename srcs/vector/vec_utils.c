@@ -22,9 +22,8 @@ t_vec3f	normalize(t_vec3f v)
 	return (v_div_f(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z)));
 }
 
-t_vec3f	clamp(t_vec3f vec, float min, float max)
+t_vec3f	clamp_max(t_vec3f vec, float max)
 {
-	(void) min;
 	return ((t_vec3f){fminf(vec.x, max), \
 						fminf(vec.y, max), \
 						fminf(vec.z, max)});

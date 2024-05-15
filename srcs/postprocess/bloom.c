@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bloom.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:36:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/07 00:35:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/15 17:09:43 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,11 @@ void	calcul_treshold(t_vec3f ***result, t_vec3f **i, float treshold)
 
 t_vec3f	**bloom(t_scene *scene, t_vec3f **image)
 {
-	if (scene->mlx->is_bloom == 1)
-	{
-		calcul_treshold(&scene->mlx->postpro_img, image, \
-						scene->bloom->treshold);
-		scene->mlx->postpro_img = sample(scene->mlx->postpro_img, \
-					scene->bloom->mip_num, scene->bloom->blur_size);
-		return (add_img(scene->mlx->postpro_img, image));
-	}
-	else
+	if (scene->mlx->is_bloom != 1)
 		return (image);
+	calcul_treshold(&scene->mlx->postpro_img, image, \
+					scene->bloom->treshold);
+	scene->mlx->postpro_img = sample(scene->mlx->postpro_img, \
+				scene->bloom->mip_num, scene->bloom->blur_size);
+	return (add_img(scene->mlx->postpro_img, image));
 }

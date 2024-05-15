@@ -63,10 +63,12 @@ SRC_ASSETS_NAME	:=	solar_system/saturn.jpg			\
 					solar_system/earth.jpg			\
 					solar_system/venus.jpg			\
 					portal_map/cube_blue.jpg		\
+					portal_map/cube_blue_bump.jpg	\
 					portal_map/platform.jpg			\
 					portal_map/wall.jpg				\
 					portal_map/floor.jpg			\
 					portal_map/cube.jpg				\
+					portal_map/cube_bump.jpg		\
 					billard/billard_1.jpg			\
 					billard/billard_2.jpg			\
 					billard/billard_3.jpg			\

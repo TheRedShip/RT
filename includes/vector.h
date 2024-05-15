@@ -40,7 +40,7 @@ t_vec3f		v_div_v(t_vec3f a, t_vec3f b);
 float		v_dot(t_vec3f a, t_vec3f b);
 float		v_length(t_vec3f a);
 t_vec3f		normalize(t_vec3f vec);
-t_vec3f		clamp(t_vec3f vec, float min, float max);
+t_vec3f		clamp_max(t_vec3f vec, float max);
 t_vec3f		reflect(t_vec3f vec, t_vec3f normal);
 t_vec3f		refract(t_vec3f uv, t_vec3f n, float etai_over_etat);
 t_vec3f		v_cross(t_vec3f a, t_vec3f b);

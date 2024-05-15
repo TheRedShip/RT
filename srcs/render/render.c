@@ -14,11 +14,11 @@
 
 t_vec3f	per_pixel(t_scene *scene, t_vec2f uv, t_threads *thread)
 {
+	t_ray		ray;
 	t_hit_info	hit;
 	t_vec3f		l_c[2];
-	t_ray		ray;
-	int			is_specular;
 	int			i;
+	int			is_specular;
 
 	ray.origin = scene->camera->origin;
 	ray.direction = calculate_ray_direction(scene, (t_vec3f){uv.x, uv.y, -1});
@@ -80,7 +80,7 @@ void	rt_render_image(t_scene *scene, t_vec3f **image)
 		while (pos.x < WIDTH)
 		{
 			color = image[(int)pos.y][(int)pos.x];
-			color = clamp(color, 0.0f, 1.0f);
+			color = clamp_max(color, 1.0f);
 			put_pixel(&scene->mlx->img, pos.x, pos.y, rgb_to_hex(color));
 			pos.x++;
 		}
@@ -111,8 +111,8 @@ int	rt_render_scene(t_scene *scene)
 	u_int64_t	t;
 	t_threads	threads[THREADS];
 
-	rt_init_render(scene);
 	t = get_time();
+	rt_init_render(scene);
 	i = -1;
 	while (++i < THREADS)
 	{
