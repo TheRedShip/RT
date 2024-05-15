@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   server_data.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 21:02:09 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 21:35:38 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/15 20:43:31 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minirt.h"
 
 char	*get_scene_name(int fd)
@@ -45,7 +46,8 @@ void	change_scene(t_scene *scene, char *scene_name)
 	rt_free_scene(scene, 0);
 	init_scene(scene_name, scene);
 	create_window(scene, 1);
-	scene->objects = 0;
+	scene->bvh = NULL;
+	scene->objects = NULL;
 	scene->server.nb_acc = 1;
 	rt_parse(scene_name, scene);
 	link_portals(scene);
