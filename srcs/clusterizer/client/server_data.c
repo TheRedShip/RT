@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 21:02:09 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/15 20:43:31 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/05/16 17:18:04 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 		return (0);
 	ptr = srv_data;
 	srv_data += sizeof(t_vec3f) * 2;
+	if (!*srv_data)
+		return (0);
 	if (ft_strcmp(srv_data, scene->name) || force)
 	{
 		printf("\nchanging to map %s\n", srv_data);

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 22:32:01 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/16 17:17:31 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	add_to_acc_img(t_vec3f *data, t_scene *scene)
 		j = 0;
 		while (j < WIDTH)
 		{
-			if (scene->mlx->is_acc)
+			if (scene->mlx->is_acc && scene->mlx->frame_index > 1)
 				scene->mlx->acc_img[i][j] = \
 				v_add_v(scene->mlx->acc_img[i][j], data[i * WIDTH + j]);
 			else
@@ -78,7 +78,7 @@ void	handle_client_data(char *client_data, t_scene *scene)
 		scene->server.acc_start_time = get_time();
 		scene->server.acc_block_received = 0;
 	}
-	printf("time : %lums, frames: %d, speed: %.2f MB/s         \r", \
+	printf("time : %lums, frames: %d, speed: %.2f MB/s                    \r", \
 		get_avg_time(scene), scene->mlx->frame_index, get_avg_speed(scene));
 	fflush(stdout);
 }
@@ -93,15 +93,16 @@ void	*handle_client(void *data_ptr)
 	data = data_ptr;
 	client_fd = data->fd;
 	scene = data->scene;
+	pthread_mutex_lock(&scene->server.mutex);
 	if (!send_data_to_client(client_fd, scene))
 	{
 		close(client_fd);
 		free(data);
+		pthread_mutex_unlock(&scene->server.mutex);
 		return (0);
 	}
 	client_data = get_client_data(scene, client_fd);
 	close(client_fd);
-	pthread_mutex_lock(&scene->server.mutex);
 	if (!scene->server.stop && client_data)
 		handle_client_data(client_data, scene);
 	free(client_data);
