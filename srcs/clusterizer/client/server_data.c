@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 21:02:09 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/16 17:18:04 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/17 17:14:48 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 	{
 		ft_memcpy(&scene->camera->origin, ptr, sizeof(t_vec3f) * 2);
 		scene->server.nb_acc = 1;
+		scene->mlx->frame_index = 0;
+		reset_img(scene->mlx->acc_img);
 		return (0);
 	}
 	free(ptr);

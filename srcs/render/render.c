@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:35:16 by ycontre           #+#    #+#             */
-/*   Updated: 2024/05/12 22:31:21 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/17 17:03:30 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ void	rt_init_render(t_scene *scene)
 {
 	if (scene->mlx->frame_index == 1)
 	{
-		ft_free_tab((void **)(scene->mlx->acc_img));
-		scene->mlx->acc_img = init_img(scene, WIDTH, HEIGHT);
+		reset_img(scene->mlx->acc_img);
 		if (!scene->server.ip)
 			ft_memset(scene->mlx->img.addr, 0, WIDTH * HEIGHT * 4);
 	}

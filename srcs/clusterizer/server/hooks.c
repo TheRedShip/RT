@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:16:19 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/12 22:32:17 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/17 15:26:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	server_key_hook(int key, void *data)
 	if (key_move_hook(key, scene))
 	{
 		scene->mlx->frame_index = 1;
-		reset_img(scene->mlx->acc_img);
 	}
 	if (key == KEY_ESCH)
 		scene->server.stop = 1;
@@ -73,7 +72,6 @@ int	mouse_hook_press_server(int button, int x, int y, t_scene *scene)
 	{
 		scene->mlx->frame_index = 1;
 		scene->mouse.is_pressed = 1;
-		reset_img(scene->mlx->acc_img);
 	}
 	else if (button == 1)
 	{
@@ -97,7 +95,6 @@ int	mouse_hook_release_server(int button, int x, int y, t_scene *scene)
 		pthread_mutex_lock(&scene->server.mutex);
 		scene->mlx->frame_index = 1;
 		scene->mouse.is_pressed = 0;
-		reset_img(scene->mlx->acc_img);
 		pthread_mutex_unlock(&scene->server.mutex);
 	}
 	return (0);
@@ -115,7 +112,6 @@ int	mouse_hook_move_server(int x, int y, t_scene *scene)
 		scene->camera->direction.y += mouse_delta.x * 0.002f;
 		scene->camera->direction.x -= mouse_delta.y * 0.002f;
 		scene->mlx->frame_index = 1;
-		reset_img(scene->mlx->acc_img);
 		pthread_mutex_unlock(&scene->server.mutex);
 	}
 	scene->mouse.pos.x = x;

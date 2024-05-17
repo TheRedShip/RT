@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:10:50 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/16 17:18:26 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/17 15:23:32 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	add_buffer(t_buffer **buffer)
 	return (1);
 }
 
-char	*buffer_to_str(t_buffer *buffer, int srv_size, t_scene *scene)
+char	*buffer_to_str(t_buffer *buffer, int srv, t_scene *scene)
 {
 	char	*res;
 	long	len;
@@ -94,8 +94,8 @@ char	*buffer_to_str(t_buffer *buffer, int srv_size, t_scene *scene)
 		scene->server.acc_block_received += (len / 1000);
 		pthread_mutex_unlock(&scene->server.mutex);
 	}
-	if ((srv_size && len != ((long)(WIDTH * HEIGHT * sizeof(t_vec3f)) + 1))
-		|| (!srv_size && len < (long)(sizeof(t_vec3f) * 2) + 1))
+	if ((srv && len != ((long)((WIDTH * HEIGHT + 2) * sizeof(t_vec3f)) + 1))
+		|| (!srv && len < (long)(sizeof(t_vec3f) * 2) + 1))
 	{
 		free_buffer(buffer);
 		return (0);

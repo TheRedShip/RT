@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/16 17:17:31 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/17 17:20:57 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ void	add_to_acc_img(t_vec3f *data, t_scene *scene)
 		while (j < WIDTH)
 		{
 			if (scene->mlx->is_acc && scene->mlx->frame_index > 1)
-				scene->mlx->acc_img[i][j] = \
-				v_add_v(scene->mlx->acc_img[i][j], data[i * WIDTH + j]);
+				scene->mlx->acc_img[i][j] = v_add_v(scene->mlx->acc_img[i][j],
+						data[i * WIDTH + j]);
 			else
 				scene->mlx->acc_img[i][j] = data[i * WIDTH + j];
-			scene->mlx->final_img[i][j] = \
-				v_div_f(scene->mlx->acc_img[i][j], scene->mlx->frame_index);
+			scene->mlx->final_img[i][j] = v_div_f(scene->mlx->acc_img[i][j],
+					scene->mlx->frame_index);
 			j++;
 		}
 		i++;
@@ -70,15 +70,19 @@ void	add_to_acc_img(t_vec3f *data, t_scene *scene)
 
 void	handle_client_data(char *client_data, t_scene *scene)
 {
+	if (ft_memcmp(client_data + 1, &scene->camera->origin, sizeof(t_vec3f) * 2))
+		return ;
 	add_to_acc_img((t_vec3f *)(client_data + 1), scene);
 	if (scene->mlx->is_acc)
 		scene->mlx->frame_index += *(uint8_t *)client_data;
+	else
+		scene->mlx->frame_index = *(uint8_t *)client_data;
 	if (scene->mlx->frame_index <= 3)
 	{
 		scene->server.acc_start_time = get_time();
 		scene->server.acc_block_received = 0;
 	}
-	printf("time : %lums, frames: %d, speed: %.2f MB/s                    \r", \
+	printf("time : %lums, frames: %d, speed: %.2f MB/s                    \r",
 		get_avg_time(scene), scene->mlx->frame_index, get_avg_speed(scene));
 	fflush(stdout);
 }
@@ -101,8 +105,10 @@ void	*handle_client(void *data_ptr)
 		pthread_mutex_unlock(&scene->server.mutex);
 		return (0);
 	}
+	pthread_mutex_unlock(&scene->server.mutex);
 	client_data = get_client_data(scene, client_fd);
 	close(client_fd);
+	pthread_mutex_lock(&scene->server.mutex);
 	if (!scene->server.stop && client_data)
 		handle_client_data(client_data, scene);
 	free(client_data);
