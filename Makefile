@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 19:05:58 by marvin            #+#    #+#              #
-#    Updated: 2024/05/12 22:23:20 by tomoron          ###   ########.fr        #
+#    Updated: 2024/05/17 13:43:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,7 +172,7 @@ HEADERS		:=	includes/minirt.h
 
 CC          :=	clang
 
-CFLAGS      :=	-Ofast -pthread -Wall -Wextra -Werror -flto
+CFLAGS      :=	-g -Ofast -pthread -Wall -Wextra -Werror -flto
 
 IFLAGS	    :=	-I $(LFT_DIR)/includes -I ./includes -I $(MINILIB_DIR)
 
@@ -186,6 +186,8 @@ DIR_DUP     =	mkdir -p $(@D)
 # RULES ********************************************************************** #
 
 all: $(NAME)
+
+bonus: all
 
 $(NAME): $(LFT) $(MLX) $(OBJS) $(HEADERS) $(ASSETS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LFT_DIR)/libft.a -Lmlx -lmlx_Linux -I./mlx -lXext -lX11 -lm -lz -o $(NAME)
@@ -242,4 +244,4 @@ re:
 
 # **************************************************************************** #
 
-.PHONY: all clean fclean dclean re
+.PHONY: all clean fclean dclean re bonus
