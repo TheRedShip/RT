@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:12:14 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/17 17:20:57 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/24 14:56:23 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,14 @@ void	*handle_client(void *data_ptr)
 	int				client_fd;
 	t_scene			*scene;
 	char			*client_data;
-	t_thread_data	*data;
 
-	data = data_ptr;
-	client_fd = data->fd;
-	scene = data->scene;
+	client_fd = ((t_thread_data *) data_ptr)->fd;
+	scene = ((t_thread_data *) data_ptr)->scene;
 	pthread_mutex_lock(&scene->server.mutex);
 	if (!send_data_to_client(client_fd, scene))
 	{
 		close(client_fd);
-		free(data);
+		free(data_ptr);
 		pthread_mutex_unlock(&scene->server.mutex);
 		return (0);
 	}
@@ -113,6 +111,6 @@ void	*handle_client(void *data_ptr)
 		handle_client_data(client_data, scene);
 	free(client_data);
 	pthread_mutex_unlock(&scene->server.mutex);
-	free(data);
+	free(data_ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:12:26 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/17 15:51:00 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/24 14:17:55 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minirt.h"
@@ -40,21 +40,23 @@ void	check_send_time(t_scene *scene)
 	scene->server.send_time = get_time() - scene->server.send_time;
 	if (scene->server.send_time >= MAX_SEND_TIME)
 	{
-		if(scene->server.nb_acc != 255)
+		if (scene->server.nb_acc != 255)
 		{
 			scene->server.nb_acc++;
-			printf("\nnetwork bottleneck detected, increasing number of images to %\
-d\n", scene->server.nb_acc);
+			printf("\nnetwork bottleneck detected, increasing number of images\
+to %d\n",
+				scene->server.nb_acc);
 		}
 		else
-			printf("\nnetwork bottleneck detected, can't increase, too many images\n");
+			printf("\nnetwork bottleneck detected, can't increase, too many \
+images\n");
 	}
 }
 
 int	send_img(t_scene *scene, t_vec3f **img)
 {
-	int			dest_fd;
-	int			i;
+	int	dest_fd;
+	int	i;
 
 	if (scene->mlx->frame_index < scene->server.nb_acc)
 		return (1);
@@ -70,10 +72,7 @@ int	send_img(t_scene *scene, t_vec3f **img)
 	while (++i < HEIGHT)
 	{
 		if (write(dest_fd, img[i], WIDTH * sizeof(t_vec3f)) < 0)
-		{
-			close(dest_fd);
-			return (0);
-		}
+			return (close(dest_fd) && 0);
 	}
 	close(dest_fd);
 	scene->mlx->frame_index = 0;

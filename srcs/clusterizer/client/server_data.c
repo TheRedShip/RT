@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 21:02:09 by tomoron           #+#    #+#             */
-/*   Updated: 2024/05/17 17:14:48 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/05/24 14:14:15 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,11 @@ void	change_scene(t_scene *scene, char *scene_name)
 		create_bvh(scene);
 }
 
-int	check_scene_data(int dest_fd, t_scene *scene, int force)
+int	handle_scene_data(char *ptr, t_scene *scene, int force)
 {
 	char	*srv_data;
-	char	*ptr;
 
-	srv_data = get_scene_name(dest_fd);
-	if (!srv_data)
-		return (0);
-	ptr = srv_data;
-	srv_data += sizeof(t_vec3f) * 2;
-	if (!*srv_data)
-		return (0);
+	srv_data = ptr + (sizeof(t_vec3f) * 2);
 	if (ft_strcmp(srv_data, scene->name) || force)
 	{
 		printf("\nchanging to map %s\n", srv_data);
@@ -83,4 +76,22 @@ int	check_scene_data(int dest_fd, t_scene *scene, int force)
 	}
 	free(ptr);
 	return (1);
+}
+
+int	check_scene_data(int dest_fd, t_scene *scene, int force)
+{
+	char	*srv_data;
+	char	*ptr;
+
+	srv_data = get_scene_name(dest_fd);
+	if (!srv_data)
+		return (0);
+	ptr = srv_data;
+	srv_data += sizeof(t_vec3f) * 2;
+	if (!*srv_data)
+	{
+		free(srv_data);
+		return (0);
+	}
+	return (handle_scene_data(ptr, scene, force));
 }
