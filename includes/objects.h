@@ -81,7 +81,7 @@ t_hit_info	hit_ellipse(t_ray ray, t_objects *obj, t_ellipse *el);
 void		link_portals(t_scene *scene);
 
 t_material	init_material(void);
-void		init_texture(t_scene *scene, t_material *material, char *path);
+int			init_texture(t_scene *scene, t_material *material, char *path);
 
 t_vec2f		get_quad_uv(t_hit_info hit_info);
 t_vec2f		get_plane_uv(t_hit_info hit_info);

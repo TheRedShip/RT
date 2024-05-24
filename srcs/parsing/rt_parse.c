@@ -85,13 +85,9 @@ int	rt_verify_parsing(char *line, t_scene *scene)
 	return (1);
 }
 
-void	rt_exit_parsing(char *line, t_scene *scene, int fd)
+void	rt_exit_parsing(t_scene *scene, int fd)
 {
-	if (line)
-	{
-		printf("Error: Parsing failed : %s\n", line);
-		free(line);
-	}
+	printf("Error: Parsing failed\n");
 	if (fd != -1)
 		close(fd);
 	rt_free_scene(scene, 1);
@@ -101,18 +97,22 @@ void	rt_parse(char *file, t_scene *scene)
 {
 	int		fd;
 	char	*line;
+	int		is_good;
 
 	if (!is_file_valid(file))
-		rt_exit_parsing(NULL, scene, -1);
+		rt_exit_parsing(scene, -1);
+	is_good = 1;
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
 		if (!rt_verify_parsing(line, scene))
-			rt_exit_parsing(line, scene, fd);
+			is_good = 0;
 		free(line);
 		line = get_next_line(fd);
 	}
+	if (!is_good)
+		rt_exit_parsing(scene, fd);
 	close(fd);
 	link_portals(scene);
 	printf("Parsing successful\n");

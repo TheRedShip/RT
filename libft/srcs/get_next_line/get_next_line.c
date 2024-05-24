@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 23:09:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/05/03 02:32:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:31:57 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ char	*get_next_line(int fd)
 	static t_slist	*lst[1024];
 	char			*line;
 
-	if (!lst[fd])
-		lst[fd] = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!lst[fd])
+		lst[fd] = NULL;
 	fill_list(&(lst[fd]), fd);
 	if (lst[fd] && !*(lst[fd]->str))
 	{

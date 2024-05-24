@@ -12,33 +12,32 @@
 
 #include "minirt.h"
 
-void	init_texture(t_scene *s, t_material *material, char *pa)
+int	init_texture(t_scene *s, t_material *material, char *p)
 {
 	t_texture	t;
 	t_texture	b;
 	char		*bu_pa;
 
-	if (pa[ft_strlen(pa) - 2] == '\r')
-		pa[ft_strlen(pa) - 2] = '\0';
-	if (pa[ft_strlen(pa) - 1] == '\n')
-		pa[ft_strlen(pa) - 1] = '\0';
-	t.d.img = mlx_xpm_file_to_image(s->mlx->mlx, pa, &t.width, &t.height);
-	if (t.d.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
-		printf("Error: Texture not found : %s/%s\n", getenv("PWD"), pa);
-	if (t.d.img == NULL || ft_strncmp(pa + (ft_strlen(pa) - 4), ".xpm", 4))
-		rt_free_scene(s, 1);
+	if (p[ft_strlen(p) - 2] == '\r')
+		p[ft_strlen(p) - 2] = '\0';
+	if (p[ft_strlen(p) - 1] == '\n')
+		p[ft_strlen(p) - 1] = '\0';
+	t.d.img = mlx_xpm_file_to_image(s->mlx->mlx, p, &t.width, &t.height);
+	if (t.d.img == NULL || ft_strncmp(p + (ft_strlen(p) - 4), ".xpm", 4))
+		return (printf("Error: Texture not found : %s/%s\n", getenv("PWD"), p));
 	t.exist = 1;
 	t.d.addr = mlx_get_data_addr(t.d.img, &t.d.bpp, &t.d.size, &t.d.endian);
 	material->texture = t;
-	pa[ft_strlen(pa) - 4] = '\0';
-	bu_pa = ft_strjoin(pa, "_bump.xpm", "", 0);
+	p[ft_strlen(p) - 4] = '\0';
+	bu_pa = ft_strjoin(p, "_bump.xpm", "", 0);
 	b.d.img = mlx_xpm_file_to_image(s->mlx->mlx, bu_pa, &b.width, &b.height);
 	free(bu_pa);
 	if (b.d.img == NULL)
-		return ;
+		return (0);
 	b.exist = 1;
 	b.d.addr = mlx_get_data_addr(b.d.img, &b.d.bpp, &b.d.size, &b.d.endian);
 	material->bump_map = b;
+	return (0);
 }
 
 t_material	init_material(void)
